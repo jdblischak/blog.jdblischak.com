@@ -1,6 +1,6 @@
 baseurl = "/"
 languageCode = "en-us"
-title = "A minimal Hugo website"
+title = "John Blischak's blog"
 theme = "hugo-xmin"
 googleAnalytics = ""
 disqusShortname = ""
@@ -33,5 +33,5 @@ footnotereturnlinkcontents = "↩"
     url = "/index.xml"
 
 [params]
-    description = "A website built through Hugo and blogdown."
-    footer = "&copy; [Yihui Xie](https://yihui.name) 2017 -- 2018 | [Github](https://github.com/yihui) | [Twitter](https://twitter.com/xieyihui)"
+    description = "A blog about R and reproducible research"
+    footer = "&copy; [John Blischak](https://jdblischak.com) 2018 | [Github](https://github.com/jdblischak) | [Twitter](https://twitter.com/jdblischak)"
