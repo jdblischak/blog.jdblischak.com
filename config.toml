@@ -35,3 +35,4 @@ footnotereturnlinkcontents = "↩"
 [params]
     description = "A blog about R and reproducible research"
     footer = "&copy; [John Blischak](https://jdblischak.com) 2018 | [Github](https://github.com/jdblischak) | [Twitter](https://twitter.com/jdblischak)"
+    GithubEdit = "https://github.com/jdblischak/blog.jdblischak.com/edit/master/content/"
