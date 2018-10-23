@@ -19,10 +19,27 @@ pre {
   border-radius: 0;
   /* Override the shadow */
   box-shadow: none;
+  border-radius: 5px;
 }
 
 
 /* To maintain background color after loading highlight.js. It uses #f8f8f8. */
 .hljs {
   background:  #f5f5f5;
+}
+
+
+.article-meta {
+  background-color: rgb(110, 46, 158, 0.5);
+  border-radius: 25px;
+}
+
+
+a {
+  color: black;
+}
+
+
+a:visited {
+  color: rgb(110, 46, 158, 0.5);
 }
