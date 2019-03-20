@@ -4,11 +4,26 @@ author: John Blischak
 ---
 
 Hi! I'm John. I'm the author of the R package [workflowr][] for reproducible
-research. This is my personal blog where I'll share my thoughts on...you guessed
-it, R and reproducible research.
+research. This is my personal blog where I'll share my thoughts on various
+technical topics: R, reproducible research, open science, bioinformatics,
+genetics, statistics, etc. For more information about my background and other
+projects, please see my [personal website](https://jdblischak.com/).
 
 I created this site using [blogdown][] with [Yihui's][yihui] minimal Hugo theme
-[XMin][hugo-xmin]. The blog content is licensed under [CC-BY 4.0][cc-by].
+[XMin][hugo-xmin], with minimal [modifications][css]. The blog content is
+licensed under [CC-BY 4.0][cc-by].
+
+Some of my favorite tools that I use often and hope to blog about in the future
+(in no particular order) include
+[R](https://www.r-project.org/),
+[RStudio](https://www.rstudio.com/),
+[knitr](https://yihui.name/knitr/)/[rmarkdown](https://rmarkdown.rstudio.com/),
+[limma](https://bioconductor.org/packages/release/bioc/html/limma.html),
+[Git](https://git-scm.com/),
+[Python](https://www.python.org/),
+[Snakemake](https://snakemake.readthedocs.io),
+[conda](https://docs.conda.io),
+[Firefox](https://www.mozilla.org/firefox/this-browser-comes-highly-recommended/?utm_source=devs-for.firefox.com&utm_medium=referral&utm_campaign=devs-for-firefox&utm_content=Developers_For_Firefox_Dark)
 
 <a title="Developers for Firefox"
    rel="nofollow"
@@ -22,6 +37,7 @@ I created this site using [blogdown][] with [Yihui's][yihui] minimal Hugo theme
 
 [blogdown]: https://bookdown.org/yihui/blogdown/
 [cc-by]: https://creativecommons.org/licenses/by/4.0/legalcode
+[css]: https://github.com/jdblischak/blog.jdblischak.com/blob/master/static/css/jdblischak.css
 [hugo-xmin]: https://xmin.yihui.name/
 [workflowr]: https://github.com/jdblischak/workflowr
 [yihui]: https://yihui.name/
