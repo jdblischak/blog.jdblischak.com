@@ -1,0 +1,180 @@
+---
+title: Test your R packages and projects with CircleCI
+author: John Blischak
+date: '2019-03-19'
+slug: r-pkg-circleci
+categories:
+  - Software Development with R
+tags:
+  - R
+  - CircleCI
+  - devops
+draft: true
+---
+
+
+
+<p>I really enjoy Continuous Integration (CI) testing. The immediate feedback is
+super useful, especially when you need to test your code across multiple
+different setups (e.g. different operating systems or versions of dependencies).
+The rise of free CI services has hugely impacted my workflow, similar to when I
+started using Git and GitHub.</p>
+<p>If you haven’t started using CI to automatically test your R package(s), you
+should go run <code>usethis::use_appveyor()</code> and <code>usethis::use_travis()</code>. These will
+setup Windows testing on AppVeyor and Linux testing on Travis CI, respectively.
+Since AppVeyor and Travis CI are the best supported CI platforms for R packages,
+they are definitely where you should start.</p>
+<p>However, if you’ve already started using CI services, I want to encourage you to
+try CircleCI. I recently started using it to test an R package and various
+analysis projects, and it has a nice feature set that can make it more
+convenient to customize compared to either AppVeyor or Travis.</p>
+<p><strong>tl;dr</strong> If you like using Docker, you should try out CircleCI for testing your
+R packages and projects.</p>
+<div id="why-try-circleci" class="section level2">
+<h2>Why try CircleCI?</h2>
+<p>CircleCI has various features that I have found useful:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Specify any Docker image on DockerHub for the computational environment.</strong>
+This makes local debugging much easier. If it works in a local Docker container,
+you know it’ll also work on CirlceCI’s servers. I’m too often surprised by the
+errors I get from AppVeyor or Travis that I don’t get on my local machines. Note
+that while you can <a href="https://docs.travis-ci.com/user/docker/">use Docker with Travis</a>, it’s more
+cumbersome (you have to prefix all your commands with <code>docker run</code> or similar).</p></li>
+<li><p><strong>Easy to upload artifacts.</strong> Similar to AppVeyor, it is very easy to specify
+individual files or entire directories to upload as artifacts. This makes it
+very convenient to find the error in a log file or inspect the result of the CI
+build. This is much easier to configure compared to Travis, which <a href="https://docs.travis-ci.com/user/uploading-artifacts/">requires you
+to setup an AWS instance to upload artifacts</a>.</p></li>
+<li><p><strong>Long run time.</strong> Travis builds time out after 50 minutes. AppVeyor builds
+time out after 1 hour. I have had CircleCI jobs successfully complete after
+running for over 2 hours. The <a href="https://circleci.com/pricing/">offical pricing information</a>
+states that the free plan provides 1,000 build minutes for free, but this only
+applies to private projects. There is <a href="https://circleci.com/blog/building-open-source-projects-on-circleci/">no monthly limit on build minutes for
+open source projects</a>.</p></li>
+<li><p><strong>Straight-forward to setup SSH keys.</strong> For my analysis projects, I often
+want to be able to commit some result back to my GitHub repository. A common
+technique for authenticating the CI server to push a commit to one of your Git
+repositories is to use an SSH deploy key. The basic idea is that you upload a
+public key to the repository, and then you upload the encrypted private key to
+the CI server. This way if the private key were to be compromised, an attacker
+would only have access to one repository. I found the <a href="https://docs.travis-ci.com/user/private-dependencies/#deploy-key">Travis instructions for
+setting up a deploy key</a> to be confusing and unnecessarily
+tedious (from what I can tell, you have to specify the key by committing an
+encrypted file to the repository). This is likely because they recommended you
+use <a href="https://docs.travis-ci.com/user/private-dependencies/">other deployment strategies</a>. In contrast, I found the
+<a href="https://circleci.com/docs/2.0/add-ssh-key/">CircleCI instructions and steps</a> much more
+straight-forward to follow.</p></li>
+</ol>
+</div>
+<div id="minimal-setup-to-check-an-r-package" class="section level2">
+<h2>Minimal setup to check an R package</h2>
+<p>Now I’ll demonstrate how to configure a minimal setup to check an R package on
+CircleCI. In a future post, I’ll detail some options for customization. The
+first decision is which Docker image to use. Fortunately for R users, the
+[rocker][] project provides many Docker images customized for running R. I’ve
+chosen the image <a href="https://hub.docker.com/r/rocker/verse/tags">verse</a> because it
+contains everything you’ll likely need for checking your package, specifically
+devtools for installing dependencies and texlive/pandoc for building
+documentation. I also use the tag <code>3.5.3</code> to always use the image with R 3.5.3
+installed, the latest relase when this post was published.</p>
+<p>Next we need to know what commands to run to build and check the R package. For
+this I copied the <a href="https://docs.travis-ci.com/user/languages/r#customizing-the-travis-build-steps">main steps from the Travis CI R
+setup</a>:</p>
+<pre><code># Install package dependencies
+R -e &quot;devtools::install_deps(dep = TRUE)&quot;
+# Build package
+R CMD build .
+# Check package
+R CMD check *tar.gz</code></pre>
+<p>To instruct CircleCI to run these commands inside the specified Docker image, we
+need to translate this to the <a href="">CircleCI YAML configuration file</a>. Below is a
+basic template. We specify the Docker image to pull from DockerHub and then
+specify the steps to run. The first is the keyword <code>checkout</code>, which essentially
+runs <code>git clone</code>. Then for each custom step, we use the key word <code>run</code> and
+specify a <code>name</code> and <code>command</code>.</p>
+<pre><code>version: 2
+jobs:
+  build:
+    docker:
+      - image: &lt;DockerHub image&gt;
+    steps:
+      - checkout
+      - run:
+          name: &lt;description of this step&gt;
+          command: &lt;code to run&gt;</code></pre>
+<p>Thus our minimal setup to build and check an R package looks like this:</p>
+<pre><code>version: 2
+jobs:
+  build:
+    docker:
+      - image: rocker/verse:3.5.3
+    steps:
+      - checkout
+      - run:
+          name: Install package dependencies
+          command: R -e &quot;devtools::install_deps(dep = TRUE)&quot;
+      - run:
+          name: Build package
+          command: R CMD build .
+      - run:
+          name: Check package
+          command: R CMD check *tar.gz</code></pre>
+<p>Which we save in <code>.circleci/config.yml</code>. Note that you will also need to ignore
+this directory when building your R package. You can automatically add it to
+your <code>.Rbuildignore</code> with <code>usethis::use_build_ignore(&quot;.circleci&quot;)</code>. Next, commit
+the new files and push to the remote repository.</p>
+<pre><code>git add .circleci/ .Rbuildignore
+git commit -m &quot;Configure CircleCI&quot;
+git push origin master</code></pre>
+<p>Go to <a href="https://circleci.com/"></a> and login with your GitHub or Bitbucket
+credentials. Click on “Add Projects” in the left sidebar. Find your repository
+in the list and click “Set Up Project”. This will present you with a ton of
+options. You can ignore all these since you’ve already committed
+<code>.circleci/config.yml</code>. Scroll to the bottom and click “Start Building”. Note
+that you’ll receive an email notification stating that a new SSH deploy key has
+been added to your repository.</p>
+<div class="figure">
+<img src="/post/2019-03-19-r-pkg-circleci_files/circleci-setup-icons.png" alt="Figure: CircleCI setup icons" />
+<p class="caption">Figure: CircleCI setup icons</p>
+</div>
+<p>Now your build should start. It will perform each step in sequence, and you can
+click on any of the steps to see its log. Once it finishes, it should look like
+below:</p>
+<div class="figure">
+<img src="/post/2019-03-19-r-pkg-circleci_files/circleci-build-steps.png" alt="CircleCI build steps" />
+<p class="caption">CircleCI build steps</p>
+</div>
+<p>And now this build will be triggered each time you push a new commit!</p>
+<p>One last thing for the minimal setup. You can upload the entire results
+directory by adding the following two lines after the build steps, including the
+name of your package in the filepath.</p>
+<pre><code>      - store_artifacts:
+          path: &lt;insert-name-of-pkg&gt;.Rcheck/</code></pre>
+<p>After you commit and push this change to <code>.circleci/config.yml</code>, there will be a
+new step named “Uploading artifacts”. Once this step has completed, you can
+click on the tab named “Artifacts” to view any of the files, e.g. <code>00check.log</code>.</p>
+</div>
+<div id="circleci-limitations" class="section level2">
+<h2>CircleCI limitations</h2>
+<p>Every CI platform I have used has had its advantages and disadvantages. I hope
+I’ve convinced you that CircleCI is worth trying, but I also want to highlight
+some of its limitations.</p>
+<p>First, it is not possible to link to a specific line in the build logs. This is
+really unfortunate, especially when build logs get really long (e.g. lots of
+package dependencies with compiled code). When using Travis and AppVeyor, I
+often link to the exact line that contains the relevant error message when
+creating a GitHub Issue or asking someone else to help troubleshoot.</p>
+<p>Second, pull requests send by other users are not built automatically. This is
+really unfortunate since one the main advantages of using CI is that it helps
+you evaluate code that others contribute to your project. To activate this
+important feature, you have to manually go to Settings -&gt; Advanced Settings and
+turn on “Build forked pull requests”.</p>
+</div>
+<div id="future-posts" class="section level2">
+<h2>Future posts</h2>
+<p>There is a lot more you can do with CircleCI. In future posts, I’ll address
+<a href="https://circleci.com/docs/2.0/caching/">dependency caching</a>, adding an <a href="https://circleci.com/docs/2.0/add-ssh-key/">SSH deploy
+key</a>, and testing an analysis project. To learn more about
+testing R packages on CircleCI, I highly recommend this <a href="https://appsilon.com/continuous-integration-for-your-private-r-projects-with-circleci/">post</a> by
+Marek Rogal on the Appsilon blog.</p>
+</div>
