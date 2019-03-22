@@ -1,0 +1,12 @@
+
+.distill-site-nav {
+  background-color: #543a54; /*#6914aa;*/
+}
+
+.distill-site-footer a {
+  text-decoration: underline;
+}
+
+code {
+  background-color: RGBA(250, 250, 250, 1);
+}

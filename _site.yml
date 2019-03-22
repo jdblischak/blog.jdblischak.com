@@ -1,0 +1,23 @@
+title: "John Blischak's blog"
+description: |
+  My tech blog
+output_dir: "public"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - icon: fa fa-rss
+      href: index.xml
+output:
+  distill::distill_article:
+    css: static/styles.css
+base_url: https://blog.jdblischak.com
+collections:
+  posts:
+    share: [twitter]
+twitter:
+  creator: "@jdblischak"
+repository_url: https://github.com/jdblischak/blog.jdblischak.com
+creative_commons: CC BY
