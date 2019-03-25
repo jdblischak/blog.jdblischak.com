@@ -7,6 +7,15 @@
     <description>My tech blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 21 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 25 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>CircleCI for R: Motivation and basic setup</title>
+      <dc:creator>John Blischak</dc:creator>
+      <link>https://blog.jdblischak.com/posts/circleci-for-r-1</link>
+      <description>If you like using Docker, you should try out CircleCI for testing your
+R packages and projects.</description>
+      <guid>https://blog.jdblischak.com/posts/circleci-for-r-1</guid>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+    </item>
   </channel>
 </rss>

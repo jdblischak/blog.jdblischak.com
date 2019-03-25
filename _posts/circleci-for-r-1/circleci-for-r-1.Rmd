@@ -6,7 +6,7 @@ description: |
 author:
   - name: John Blischak
     url: https://jdblischak.com
-date: 03-21-2019
+date: 03-25-2019
 output:
   distill::distill_article:
     self_contained: false
@@ -14,14 +14,13 @@ output:
 categories:
   - Software Development with R
   - devops
-draft: true
 ---
 
 I really enjoy Continuous Integration (CI) testing. The immediate feedback is
 super useful, especially when you need to test your code across multiple
 different setups (e.g. different operating systems or versions of dependencies).
 The rise of free CI services has hugely impacted my workflow, similar to when I
-started using Git and GitHub.
+started using version control.
 
 If you haven't started using CI to automatically test your R package(s), you
 should go run `usethis::use_appveyor()` and `usethis::use_travis()`. These will
@@ -67,7 +66,7 @@ the CI server. This way if the private key were to be compromised, an attacker
 would only have access to one repository. I found the [Travis instructions for
 setting up a deploy key][travis-deploy-key] to be confusing and unnecessarily
 tedious (from what I can tell, you have to specify the key by committing an
-encrypted file to the repository). This is likely because they recommended you
+encrypted file to the repository). This is likely because they recommend you
 use [other deployment strategies][travis-deploy]. In contrast, I found the
 [CircleCI instructions and steps][circleci-deploy-key] much more
 straight-forward to follow.
@@ -82,18 +81,29 @@ straight-forward to follow.
 
 ## Minimal setup to check an R package
 
-Now I'll demonstrate how to configure a minimal setup to check an R package on
-CircleCI. In a future post, I'll detail some options for customization. The
+Now I'll demonstrate how you can configure a minimal setup to check an R package
+on CircleCI. In a future post, I'll detail some options for customization. The
 first decision is which Docker image to use. Fortunately for R users, the
-[rocker][] project provides many Docker images customized for running R. I've
-chosen the image [verse](https://hub.docker.com/r/rocker/verse/tags) because it
-contains everything you'll likely need for checking your package, specifically
-devtools for installing dependencies and texlive/pandoc for building
-documentation. I also use the tag `3.5.3` to always use the image with R 3.5.3
-installed, the latest relase when this post was published.
+[rocker][] project provides many Docker images customized for running R. I
+recommend that you start with the image [verse][] because it contains everything
+you'll likely need for checking your package, specifically devtools for
+installing dependencies and texlive/pandoc for building documentation. You'll
+also need to decide whether you want to specify the exact version of R used in
+the Docker image or to always use the latest version of R available.^[The
+decision is a tradeoff. Always using the latest version of R ensures that your
+package is compatible with any new R behavior. This will hopefully catch the
+error before any of your users, which is one of the main advantages of CI. The
+downside is that it can make it harder to debug. If you push a new commit to
+your Git repository and the version of R used for the check has changed, it will
+be harder to discern if the failure is due to your new change or the change in R
+version.] Below I will use the tag `3.5.3` to always use the image with R 3.5.3
+installed, the latest release when this post was published.
 
-Next we need to know what commands to run to build and check the R package. For
-this I copied the [main steps from the Travis CI R
+[rocker]: https://github.com/rocker-org/rocker
+[verse]: https://hub.docker.com/r/rocker/verse/tags
+
+Next you need to know what commands to run to build and check the R package. For
+this you can copy the [main steps from the Travis CI R
 setup](https://docs.travis-ci.com/user/languages/r#customizing-the-travis-build-steps):
 
 ```
@@ -105,11 +115,11 @@ R CMD build .
 R CMD check *tar.gz
 ```
 
-To instruct CircleCI to run these commands inside the specified Docker image, we
+To instruct CircleCI to run these commands inside the specified Docker image, you
 need to translate this to the [CircleCI YAML configuration file](). Below is a
-basic template. We specify the Docker image to pull from DockerHub and then
+basic template. You specify the Docker image to pull from DockerHub and then
 specify the steps to run. The first is the keyword `checkout`, which essentially
-runs `git clone`. Then for each custom step, we use the key word `run` and
+runs `git clone`. Then for each custom step, you use the key word `run` and
 specify a `name` and `command`.
 
 
@@ -126,7 +136,7 @@ jobs:
           command: <code to run>
 ```
 
-Thus our minimal setup to build and check an R package looks like this:
+Thus your minimal setup to build and check an R package looks like this:
 
 ```
 version: 2
@@ -147,10 +157,11 @@ jobs:
           command: R CMD check *tar.gz
 ```
 
-Which we save in `.circleci/config.yml`. Note that you will also need to ignore
-this directory when building your R package. You can automatically add it to
-your `.Rbuildignore` with `usethis::use_build_ignore(".circleci")`. Next, commit
-the new files and push to the remote repository.
+Which you need to save in a file named `.circleci/config.yml`. Note that you
+will also need to ignore this directory when building your R package. You can
+automatically add it to your `.Rbuildignore` with
+`usethis::use_build_ignore(".circleci")`. Next, commit the new files and push to
+the remote repository.
 
 ```
 git add .circleci/ .Rbuildignore
@@ -158,7 +169,7 @@ git commit -m "Configure CircleCI"
 git push origin master
 ```
 
-Go to [](https://circleci.com/) and login with your GitHub or Bitbucket
+Go to https://circleci.com/ and login with your GitHub or Bitbucket
 credentials. Click on "Add Projects" in the left sidebar. Find your repository
 in the list and click "Set Up Project". This will present you with a ton of
 options. You can ignore all these since you've already committed
@@ -201,11 +212,11 @@ package dependencies with compiled code). When using Travis and AppVeyor, I
 often link to the exact line that contains the relevant error message when
 creating a GitHub Issue or asking someone else to help troubleshoot.
 
-Second, pull requests send by other users are not built automatically. This is
-really unfortunate since one the main advantages of using CI is that it helps
-you evaluate code that others contribute to your project. To activate this
-important feature, you have to manually go to Settings -> Advanced Settings and
-turn on "Build forked pull requests".
+Second, pull requests sent by other users to your repository are not built
+automatically. This is really unfortunate since one the main advantages of using
+CI is that it helps you evaluate code that others contribute to your project. To
+activate this important feature, you have to manually go to Settings -> Advanced
+Settings and turn on "Build forked pull requests".
 
 ## Future posts
 
@@ -213,8 +224,11 @@ There is a lot more you can do with CircleCI. In future posts, I'll address
 [dependency caching][circleci-caching], adding an [SSH deploy
 key][circleci-ssh-key], and testing an analysis project. To learn more about
 testing R packages on CircleCI, I highly recommend this [post][appsilon] by
-Marek Rogal on the Appsilon blog.
+Marek Rogal on the Appsilon blog. You can also check out my example GitHub
+repository [ci4r][], which has a small R package that is setup for automatic
+checking with AppVeyor, CircleCI, and Travis CI.
  
 [appsilon]: https://appsilon.com/continuous-integration-for-your-private-r-projects-with-circleci/
+[ci4r]: https://github.com/jdblischak/ci4r
 [circleci-caching]: https://circleci.com/docs/2.0/caching/
 [circleci-ssh-key]: https://circleci.com/docs/2.0/add-ssh-key/
