@@ -1,5 +1,24 @@
 [
   {
+    "path": "posts/debug-travis/",
+    "title": "Debug your R package on Travis CI via SSH",
+    "description": "If you can't replicate the error locally, you can SSH into a Travis server to\ninteractively debug your R package.",
+    "author": [
+      {
+        "name": "John Blischak",
+        "url": "https://jdblischak.com"
+      }
+    ],
+    "date": "2019-03-26",
+    "categories": [
+      "Software Development with R",
+      "devops",
+      "debugging"
+    ],
+    "preview": {},
+    "last_modified": "2019-03-26T12:25:09-04:00"
+  },
+  {
     "path": "posts/circleci-for-r-1/",
     "title": "CircleCI for R: Motivation and basic setup",
     "description": "If you like using Docker, you should try out CircleCI for testing your\nR packages and projects.",

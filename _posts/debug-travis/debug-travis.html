@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
-  <link rel="alternate" type="application/rss+xml" href="https://blog.jdblischak.com/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -20,368 +19,39 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>John Blischak's blog: Posts</title>
+  <title>Debug your R package on Travis CI via SSH</title>
+  
+  <meta property="description" itemprop="description" content="If you can&#39;t replicate the error locally, you can SSH into a Travis server to&#10;interactively debug your R package."/>
   
   
-  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
-  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2019-03-26"/>
+  <meta property="article:created" itemprop="dateCreated" content="2019-03-26"/>
+  <meta name="article:author" content="John Blischak"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="John Blischak&#39;s blog: Posts"/>
+  <meta property="og:title" content="Debug your R package on Travis CI via SSH"/>
   <meta property="og:type" content="article"/>
+  <meta property="og:description" content="If you can&#39;t replicate the error locally, you can SSH into a Travis server to&#10;interactively debug your R package."/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="John Blischak&#39;s blog"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="John Blischak&#39;s blog: Posts"/>
-  <meta property="twitter:creator" content="@jdblischak"/>
+  <meta property="twitter:title" content="Debug your R package on Travis CI via SSH"/>
+  <meta property="twitter:description" content="If you can&#39;t replicate the error locally, you can SSH into a Travis server to&#10;interactively debug your R package."/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories"]}},"value":[{"type":"character","attributes":{},"value":["Debug your R package on Travis CI via SSH"]},{"type":"character","attributes":{},"value":["If you can't replicate the error locally, you can SSH into a Travis server to\ninteractively debug your R package.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["03-26-2019"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["Software Development with R","devops","debugging"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
-  <!--radix_placeholder_navigation_in_header-->
   
-  <script type="application/javascript">
-  
-    window.headroom_prevent_pin = false;
-  
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-  
-      // initialize headroom for banner
-      var header = $('header').get(0);
-      var headerHeight = header.offsetHeight;
-      var headroom = new Headroom(header, {
-        onPin : function() {
-          if (window.headroom_prevent_pin) {
-            window.headroom_prevent_pin = false;
-            headroom.unpin();
-          }
-        }
-      });
-      headroom.init();
-      if(window.location.hash)
-        headroom.unpin();
-      $(header).addClass('headroom--transition');
-  
-      // offset scroll location for banner on hash change
-      // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
-      window.addEventListener("hashchange", function(event) {
-        window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
-      });
-  
-      // responsive menu
-      $('.distill-site-header').each(function(i, val) {
-        var topnav = $(this);
-        var toggle = topnav.find('.nav-toggle');
-        toggle.on('click', function() {
-          topnav.toggleClass('responsive');
-        });
-      });
-  
-      // nav dropdowns
-      $('.nav-dropbtn').click(function(e) {
-        $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
-        $(this).parent().siblings('.nav-dropdown')
-           .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $("body").click(function(e){
-        $('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $(".nav-dropdown").click(function(e){
-        e.stopPropagation();
-      });
-    });
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["debug-travis_files/bowser-1.9.3/bowser.min.js","debug-travis_files/distill-2.2.21/template.v2.js","debug-travis_files/jquery-1.11.3/jquery.min.js","debug-travis_files/webcomponents-2.0.0/webcomponents.js","img/travis-api-token.png"]}
   </script>
-  
-  <style type="text/css">
-  
-  /* Theme (user-documented overrideables for nav appearance) */
-  
-  .distill-site-nav {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: #455a64;
-    font-size: 15px;
-    font-weight: 300;
-  }
-  
-  .distill-site-nav a {
-    color: inherit;
-    text-decoration: none;
-  }
-  
-  .distill-site-nav a:hover {
-    color: white;
-  }
-  
-  @media print {
-    .distill-site-nav {
-      display: none;
-    }
-  }
-  
-  .distill-site-header {
-  
-  }
-  
-  .distill-site-footer {
-  
-  }
-  
-  
-  /* Site Header */
-  
-  .distill-site-header {
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 3;
-  }
-  
-  .distill-site-header .nav-left {
-    display: inline-block;
-    margin-left: 8px;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header .nav-left {
-      margin-left: 0;
-    }
-  }
-  
-  
-  .distill-site-header .nav-right {
-    float: right;
-    margin-right: 8px;
-  }
-  
-  .distill-site-header a,
-  .distill-site-header .title {
-    display: inline-block;
-    text-align: center;
-    padding: 14px 10px 14px 10px;
-  }
-  
-  .distill-site-header .title {
-    font-size: 18px;
-  }
-  
-  .distill-site-header .logo {
-    padding: 0;
-  }
-  
-  .distill-site-header .logo img {
-    display: none;
-    max-height: 20px;
-    width: auto;
-    margin-bottom: -4px;
-  }
-  
-  .distill-site-header .nav-image img {
-    max-height: 18px;
-    width: auto;
-    display: inline-block;
-    margin-bottom: -3px;
-  }
-  
-  
-  
-  @media screen and (min-width: 1000px) {
-    .distill-site-header .logo img {
-      display: inline-block;
-    }
-    .distill-site-header .nav-left {
-      margin-left: 20px;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 20px;
-    }
-    .distill-site-header .title {
-      padding-left: 12px;
-    }
-  }
-  
-  
-  .distill-site-header .nav-toggle {
-    display: none;
-  }
-  
-  .nav-dropdown {
-    display: inline-block;
-    position: relative;
-  }
-  
-  .nav-dropdown .nav-dropbtn {
-    border: none;
-    outline: none;
-    color: rgba(255, 255, 255, 0.8);
-    padding: 16px 10px;
-    background-color: transparent;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    margin: 0;
-    margin-top: 1px;
-    z-index: 2;
-  }
-  
-  .nav-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 200px;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 4px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    z-index: 1;
-    margin-top: 2px;
-    white-space: nowrap;
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-  
-  .nav-dropdown-content hr {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-dropdown-active {
-    display: block;
-  }
-  
-  .nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
-    color: black;
-    padding: 6px 24px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-  
-  .nav-dropdown-content .nav-dropdown-header {
-    display: block;
-    padding: 5px 24px;
-    padding-bottom: 0;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #999999;
-    white-space: nowrap;
-  }
-  
-  .nav-dropdown:hover .nav-dropbtn {
-    color: white;
-  }
-  
-  .nav-dropdown-content a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  .nav-right .nav-dropdown-content {
-    margin-left: -45%;
-    right: 0;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
-    .distill-site-header a.nav-toggle {
-      float: right;
-      display: block;
-    }
-    .distill-site-header .title {
-      margin-left: 0;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 0;
-    }
-    .distill-site-header {
-      overflow: hidden;
-    }
-    .nav-right .nav-dropdown-content {
-      margin-left: 0;
-    }
-  }
-  
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header.responsive {position: relative;}
-    .distill-site-header.responsive a.nav-toggle {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    .distill-site-header.responsive a,
-    .distill-site-header.responsive .nav-dropdown {
-      display: block;
-      text-align: left;
-    }
-    .distill-site-header.responsive .nav-left,
-    .distill-site-header.responsive .nav-right {
-      width: 100%;
-    }
-    .distill-site-header.responsive .nav-dropdown {float: none;}
-    .distill-site-header.responsive .nav-dropdown-content {position: relative;}
-    .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
-      display: block;
-      width: 100%;
-      text-align: left;
-    }
-  }
-  
-  /* Site Footer */
-  
-  .distill-site-footer {
-    width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    z-index: 3;
-    margin-top: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    text-align: center;
-  }
-  
-  /* Headroom */
-  
-  d-title {
-    padding-top: 6rem;
-  }
-  
-  @media print {
-    d-title {
-      padding-top: 4rem;
-    }
-  }
-  
-  .headroom {
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  .headroom--transition {
-    transition: all .4s ease-in-out;
-  }
-  
-  .headroom--unpinned {
-    top: -100px;
-  }
-  
-  .headroom--pinned {
-    top: 0;
-  }
-  
-  </style>
-  
-  <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
-  <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
-  <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
+  <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
   <!--radix_placeholder_distill-->
   
@@ -1257,451 +927,147 @@
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-  <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
-  <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
-  <script src="site_libs/distill-2.2.21/template.v2.js"></script>
+  <script src="debug-travis_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="debug-travis_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="debug-travis_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="debug-travis_files/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
-  <style type="text/css">
-  /*
-  Custom themes for blog.jdblischak.com
-  
-  https://rstudio.github.io/distill/website.html#theming
-  */
-  
-  .distill-site-nav {
-    background-color: #543a54;
-  }
-  
-  .distill-site-footer a {
-    text-decoration: underline;
-  }
-  
-  /*
-  This is the same color (#f5f5f5; white smoke) used in standard R Markdown code
-  chunks.
-  */
-  code {
-    background-color: RGB(245, 245, 245);
-  }
-  
-  </style>
   <!--/radix_placeholder_site_in_header-->
 
-  <link rel="stylesheet" href="static/styles.css" type="text/css"/>
 
 </head>
 
-<body class="layout-listing">
+<body>
 
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Posts","authors":[]}
+{"title":"Debug your R package on Travis CI via SSH","description":"If you can't replicate the error locally, you can SSH into a Travis server to\ninteractively debug your R package.","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2019-03-26T00:00:00.000-04:00","citationText":"Blischak, 2019"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
 <!--radix_placeholder_navigation_before_body-->
-<header class="header header--fixed" role="banner">
-<nav class="distill-site-nav distill-site-header">
-<div class="nav-left">
-<a href="index.html" class="title">John Blischak's blog</a>
-</div>
-<div class="nav-right">
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="index.xml">
-<i class="fa fa-rss"></i>
-</a>
-<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
-</div>
-</nav>
-</header>
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
-<!--radix_placeholder_article_listing-->
-
-<style type="text/css">
-
-/* Styles for listing layout (hide title) */
-.layout-listing d-title, .layout-listing .d-title {
-  display: none;
-}
-
-/* Styles for posts lists (not auto-injected) */
-
-
-.posts-with-sidebar {
-  padding-left: 45px;
-  padding-right: 45px;
-}
-
-.posts-list .description h2,
-.posts-list .description p {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-}
-
-.posts-list .description h2 {
-  font-weight: 700;
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.posts-list h2.post-tag {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding-bottom: 12px;
-}
-.posts-list {
-  margin-top: 60px;
-  margin-bottom: 24px;
-}
-
-.posts-list .post-preview {
-  text-decoration: none;
-  overflow: hidden;
-  display: block;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 24px 0;
-}
-
-.post-preview-last {
-  border-bottom: none !important;
-}
-
-.posts-list .posts-list-caption {
-  grid-column: screen;
-  font-weight: 400;
-}
-
-.posts-list .post-preview h2 {
-  margin: 0 0 6px 0;
-  line-height: 1.2em;
-  font-style: normal;
-  font-size: 24px;
-}
-
-.posts-list .post-preview p {
-  margin: 0 0 12px 0;
-  line-height: 1.4em;
-  font-size: 16px;
-}
-
-.posts-list .post-preview .thumbnail {
-  box-sizing: border-box;
-  margin-bottom: 24px;
-  position: relative;
-  max-width: 500px;
-}
-.posts-list .post-preview img {
-  width: 100%;
-  display: block;
-}
-
-.posts-list .metadata {
-  font-size: 12px;
-  line-height: 1.4em;
-  margin-bottom: 18px;
-}
-
-.posts-list .metadata > * {
-  display: inline-block;
-}
-
-.posts-list .metadata .publishedDate {
-  margin-right: 1em;
-}
-
-.posts-list .metadata .tags {
-  margin-top: 1em;
-}
-
-.posts-list .tags .tag {
-  color: rgba(0,0,0,0.67);
-  padding: 0.3em 0.5em;
-  margin: 0;
-  font-size: 80%;
-  border: 1px solid rgba(0,0,0,0.4);
-  border-radius: 3px;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-.posts-list img {
-  opacity: 1;
-}
-
-.posts-list img[data-src] {
-  opacity: 0;
-}
-
-.posts-more {
-  clear: both;
-}
-
-
-.posts-sidebar {
-  font-size: 16px;
-}
-
-.posts-sidebar h3 {
-  font-size: 16px;
-  margin-top: 0;
-  margin-bottom: 0.5em;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-.sidebar-section {
-  margin-bottom: 30px;
-}
-
-.categories ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.categories li {
-  color: rgba(0, 0, 0, 0.8);
-  margin-bottom: 0;
-}
-
-.categories li>a {
-  border-bottom: none;
-}
-
-.categories li>a:hover {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-}
-
-.categories .active {
-  font-weight: 600;
-}
-
-.categories .category-count {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-
-@media(min-width: 768px) {
-  .posts-list .post-preview h2 {
-    font-size: 26px;
-  }
-  .posts-list .post-preview .thumbnail {
-    float: right;
-    width: 35%;
-    margin-bottom: 0;
-  }
-  .posts-list .post-preview .description {
-    float: left;
-    width: 45%;
-  }
-  .posts-list .post-preview .metadata {
-    float: left;
-    width: 15%;
-    margin-top: 8px;
-  }
-  .posts-list .post-preview p {
-    margin: 0 0 12px 0;
-    line-height: 1.5em;
-    font-size: 16px;
-  }
-  .posts-with-sidebar .posts-list {
-    float: left;
-    width: 72%;
-  }
-  .posts-with-sidebar .posts-sidebar {
-    float: right;
-    width: 20%;
-    margin-top: 60px;
-    padding-top: 24px;
-    padding-bottom: 24px;
-  }
-}
-
-.downlevel .posts-list .post-preview {
-  color: inherit;
-}
-
-</style>
-
-<script type="application/javascript">
-
-function init_posts_list() {
-
-  function load_image(img) {
-    var src = $(img).attr('data-src');
-    if (src) {
-      $(img).attr('src', src);
-      $(img).load(function() {
-        img.removeAttribute('data-src');
-      });
-    }
-  }
-
-  function set_posts_visible(posts, visible) {
-    if (visible) {
-
-      // show bottom border by default
-      $(posts).removeClass('post-preview-last');
-
-      // apply limits if need be
-      var max_posts = 25;
-      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
-      if (apply_limits && posts.length > max_posts) {
-        posts = $(posts).slice(0, max_posts);
-      } else {
-        $('.posts-more a').addClass('hidden');
-      }
-
-      // apply last style
-      $(posts.slice(-1)[0]).addClass('post-preview-last');
-
-      $(posts).removeClass('hidden');
-      $(posts).find('img[data-src]').each(function(i, img) {
-        load_image(img);
-      });
-    } else {
-      $(posts).addClass('hidden');
-    }
-  }
-
-  function apply_hash_filter() {
-
-    // clear active state
-    $('.categories .active').removeClass('active');
-
-    // mark all posts invisible to start
-    set_posts_visible($('.posts-list').children('a'), false);
-
-    // if we have a hash filter
-    if (window.location.hash) {
-
-      // mark posts that match the category visible
-      var page_category = window.location.hash.replace("#", "");
-      var posts = $('.post-metadata').map(function(idx, script) {
-        var metadata = $.parseJSON($(script).html());
-        var post = null;
-        $.each(metadata.categories, function(idx, category) {
-          category = category.replace(/ /g,"_");
-          if (category == page_category) {
-            post = $(script).parent().get();
-            return false;
-          }
-        });
-        return post;
-      });
-      set_posts_visible(posts, true);
-
-      // mark the hash active
-      $('.categories li>a[href="' + window.location.hash + '"]').addClass('active');
-
-    } else {
-
-      // no hash filter, make all posts visible (subject to max display)
-      set_posts_visible($('.posts-list').children(), true);
-
-    }
-  }
-
-  // more articles
-  function apply_post_limits(apply) {
-    if (apply) {
-      $('.posts-container').addClass('posts-apply-limit');
-      $('.posts-more a').removeClass('hidden');
-    } else {
-      $('.posts-container').removeClass('posts-apply-limit');
-      $('.posts-more a').addClass('hidden');
-    }
-  }
-
-  // hash filter handling
-  apply_hash_filter();
-  $(window).on('hashchange',function() {
-    apply_post_limits(true);
-    apply_hash_filter();
-  });
-
-  // more articles link
-  $('.posts-more a').click(function(e) {
-    e.preventDefault();
-    apply_post_limits(false);
-    apply_hash_filter();
-    return false;
-  });
-
-}
-
-</script>
-
-
-
-<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
-<div class="posts-list">
-<h1 class="posts-list-caption">Posts</h1>
-<a href="posts/debug-travis/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops","debugging"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 26, 2019</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Debug your R package on Travis CI via SSH</h2>
-<p>If you can't replicate the error locally, you can SSH into a Travis server to
-interactively debug your R package.</p>
-</div>
-</a>
-<a href="posts/circleci-for-r-1/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 25, 2019</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>CircleCI for R: Motivation and basic setup</h2>
-<p>If you like using Docker, you should try out CircleCI for testing your
-R packages and projects.</p>
-</div>
-</a>
-</div>
-<div class="posts-sidebar">
-<div class="sidebar-section categories">
-<h3>Categories</h3>
-<ul>
-<li>
-<a href="#debugging">debugging</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#devops">devops</a>
-<span class="category-count">(2)</span>
-</li>
-<li>
-<a href="#Software_Development_with_R">Software Development with R</a>
-<span class="category-count">(2)</span>
-</li>
-</ul>
-</div>
-</div>
-<div class="posts-more">
-<a href="#">More articles &raquo;</a>
-</div>
-</div>
-<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>Posts</h1>
-
+<h1>Debug your R package on Travis CI via SSH</h1>
+<p>If you can’t replicate the error locally, you can SSH into a Travis server to interactively debug your R package.</p>
 </div>
 
+<div class="d-byline">
+  John Blischak <a href="https://jdblischak.com" class="uri">https://jdblischak.com</a> 
+  
+<br/>03-26-2019
+</div>
 
 <div class="d-article">
-
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#travis-ci.com-vs-travis-ci.org">travis-ci.com vs travis-ci.org</a></li>
+<li><a href="#email-for-debug-access">Email for debug access</a></li>
+<li><a href="#get-your-api-token">Get your API token</a></li>
+<li><a href="#find-job-id-number">Find job ID number</a></li>
+<li><a href="#restart-job-in-debug-mode">Restart job in debug mode</a></li>
+<li><a href="#miscellaneous">Miscellaneous</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<p>Ideally if <code>R CMD check</code> passes on your local machine, then hopefully it will also pass when run on remote CI servers. But of course this isn’t always the case, and it’s a great way to find bugs (since your users won’t have the exact same setup as your local machine). Often the error messages are sufficient for you to be able to guess at the solution. But if you’ve pushed multiple commits to try and fix the problem, and the CI jobs are still failing, it is probably worth investing the time to interactively debug the job on the remote server. In this post, I’ll describe how to do this for Travis CI. Travis CI documents the process in <a href="https://docs.travis-ci.com/user/running-build-in-debug-mode/">Running Build in Debug Mode</a>, and below I tailor this specifically for debugging R packages.</p>
+<h2 id="travis-ci.com-vs-travis-ci.org">travis-ci.com vs travis-ci.org</h2>
+<p>Before going any further, you should go check the URL of your Travis CI jobs, because this will affect the steps below. Initially Travis CI hosted open source repositories on travis-ci.org and private repositories on travis-ci.com. However, now they are migrating all projects to use travis-ci.com. Thus if you setup Travis prior to May 2018, you are likely using travis-ci.org; whereas if you set it up post May 2018, you are likely using travis-ci.com. See the documentation <a href="https://docs.travis-ci.com/user/migrate/open-source-on-travis-ci-com/">Open Source on travis-ci.com</a> for all the details. Currently the migration of open source projects from travis-ci.org to travis-ci.com is in <a href="https://docs.travis-ci.com/user/migrate/open-source-repository-migration">Beta</a>, so I wouldn’t recommend trying to migrate your repository unless you were really motivated to use the new GitHub App version of Travis CI.</p>
+<h2 id="email-for-debug-access">Email for debug access</h2>
+<p>To start, you’ll need to email Travis CI support at <a
+href="mailto:support@travis-ci.com" title="Email Travis CI
+support">support@travis-ci.com</a> to activate debug mode for your repository. They got back to me in about two hours.</p>
+<p>The reason that this feature is not automatically enabled is for security reasons. Below is the explanation from the email they sent me that confirmed activation of debug mode:</p>
+<blockquote>
+<p>The reason this is not enabled by default for public repositories is that anyone who happens to stumble across a log containing the SSH access can make a connection to the VM and potentially read out the secret environment variables.</p>
+</blockquote>
+<p>You can learn more in the section <a href="https://docs.travis-ci.com/user/running-build-in-debug-mode/#security-considerations">Security considerations</a>. Briefly, while only you are able to initiate a debugging session, if someone with malicious intent were to be watching that exact build log, they could also run the SSH command to login. This is mainly a concern if you’ve added encrypted environment variables ( e.g. SSH deploy keys or personal access tokens). A standard setup to test an R package, e.g. with <code>usethis::use_travis()</code>, does not involve any sensitive information, so this likely isn’t a concern for you.</p>
+<h2 id="get-your-api-token">Get your API token</h2>
+<p>Once you’ve received your email confirmation from Travis CI support, you can obtain your authentication token. The token allows only you to trigger a debug build for your repository. Thus do not save this anywhere that others can view. If you’re using travis-ci.com, go to <a href="https://travis-ci.com/profile" class="uri">https://travis-ci.com/profile</a>. If you’re using travis-ci.org, go to <a href="https://travis-ci.org/account/preferences" class="uri">https://travis-ci.org/account/preferences</a> (screenshot below).</p>
+<figure>
+<img src="img/travis-api-token.png" alt="Travis API token from travis-ci.org" /><figcaption>Travis API token from travis-ci.org</figcaption>
+</figure>
+<h2 id="find-job-id-number">Find job ID number</h2>
+<p>Next you need to find the job ID number of the job you want to restart in debug mode. The key is to not use the build ID number. When you first go to the build log, the URL will be <code>https://travis-ci.&lt;org|com&gt;/&lt;username&gt;/&lt;repository&gt;/builds/&lt;build ID&gt;</code>. When you click on the individual job that you want to debug, the URL will change to <code>https://travis-ci.&lt;org|com&gt;/&lt;username&gt;/&lt;repository&gt;/jobs/&lt;job ID&gt;</code>. Copy-paste the job ID. This isn’t sensitive information (because it’s already public), so you don’t need to be careful about it. If you only have one job, then click on either “Job log” or “View config” to change the URL.</p>
+<h2 id="restart-job-in-debug-mode">Restart job in debug mode</h2>
+<p>With both the authorization token and job ID, you can trigger the Travis API to restart the job in debug mode. Specifically you will use the <a href="https://developer.travis-ci.com/resource/job#debug">debug endpoint of the Travis API v3</a>.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>Open a terminal and copy-paste the following API call, replacing the placeholders with your actual API token and job ID. Also make sure to change the URL to travis-ci.com if that is what you are using.</p>
+<pre><code>
+$ curl -s -X POST \
+  -H &quot;Content-Type: application/json&quot; \
+  -H &quot;Accept: application/json&quot; \
+  -H &quot;Travis-API-Version: 3&quot; \
+  -H &quot;Authorization: token &lt;API token&gt;&quot; \
+  -d &quot;{\&quot;quiet\&quot;: true}&quot; \
+  https://api.travis-ci.org/job/&lt;job ID&gt;/debug</code></pre>
+<p>If this is successful, it will return a JSON blob that looks like the following:</p>
+<pre><code>
+{
+  &quot;@type&quot;: &quot;pending&quot;,
+  &quot;job&quot;: {
+    &quot;@type&quot;: &quot;job&quot;,
+    &quot;@href&quot;: &quot;/job/&lt;job ID&gt;&quot;,
+    &quot;@representation&quot;: &quot;minimal&quot;,
+    &quot;id&quot;: &lt;job ID&gt;
+  },
+  &quot;state_change&quot;: &quot;created&quot;,
+  &quot;resource_type&quot;: &quot;job&quot;
+}</code></pre>
+<p>Now go to the page of the job you just restarted. Recall that the URL will look like <code>https://travis-ci.&lt;org|com&gt;/&lt;username&gt;/&lt;repository&gt;/jobs/&lt;job ID&gt;</code>. Once the job starts, a few steps will be done prior to providing you SSH access:</p>
+<ul>
+<li>Install R</li>
+<li>Clone your Git repository</li>
+<li>Set any environment variables defined in <code>.travis.yml</code> or via the Travis Settings</li>
+<li>Restore cached packages</li>
+</ul>
+<p>Note that the last item could be a potential problem. If you suspect your errors may be due to an outdated dependency, you will want to first clear the package cache by clicking on “More options” -&gt; “Caches” and deleting the relevant cache.</p>
+<p>After these steps, the following message will be printed in the build log:</p>
+<pre><code>
+Debug build initiated by &lt;username&gt;
+rm: cannot remove ‘/home/travis/.netrc’: No such file or directory
+Setting up debug tools.
+Preparing debug sessions.
+Use the following SSH command to access the interactive debugging environment:
+ssh &lt;random string&gt;@to2.tmate.io
+This build is running in quiet mode. No session output will be displayed.</code></pre>
+<p>Copy-paste the <code>ssh</code> command into your terminal. Note that you’ll likely receive a warning about the authenticity of the host, which you can accept:</p>
+<pre><code>
+$ ssh RXkB2WDHNOeOAdYXumNzNU47f@to2.tmate.io
+The authenticity of host &#39;to2.tmate.io (159.203.36.122)&#39; can&#39;t be established.
+ECDSA key fingerprint is SHA256:8GmKHYHEJ6n0TEdciHeEGkKOigQfCFuBULdt6vZIhDc.
+Are you sure you want to continue connecting (yes/no)? yes</code></pre>
+<p>This will drop you into a <a href="https://tmate.io/">tmate</a><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> session. Note that the tmate terminal behaves a little differently than a typical terminal. You can move up and down the command history with the up and down arrows, but if you want to do anything more complicated, e.g. reverse search, you’ll need to first invest some time in learning the <a href="https://man.openbsd.org/OpenBSD-current/man1/tmux.1#DEFAULT_KEY_BINDINGS">tmux key bindings</a>.</p>
+<p>Now you can start interactively debugging your package! The next steps will be specific to your package and the given error. If one of your dependencies is failing to install, you can open R and try to install a previous version. Or you could try installing some system libraries with APT. If the error is in the check step, you can run the installation step with the <a href="https://docs.travis-ci.com/user/running-build-in-debug-mode/#convenience-bash-functions">convenience function</a> <code>travis_run_install</code>. There are convenience functions for each of the potential steps in <code>.travis.yml</code>, and you can see the default steps in the <a href="https://docs.travis-ci.com/user/languages/r#customizing-the-travis-build-steps">R-specific build documentation</a>.</p>
+<p>If you know that <code>R CMD check</code> results in a warning or an error, do not run <code>travis_run_script</code>. The SSH session will automatically terminate if there is an error. Instead you can run <code>devtools::install()</code> to install your R package and then interactively test it. If you’re using <a href="https://testthat.r-lib.org/">testthat</a>, you can run <code>devtools::test(filter = &quot;&lt;string&gt;&quot;)</code> to run the specific tests that are failing.</p>
+<p>To give you a sense of how much control you have, the last time I had to interactively debug my R package, I suspected that pandoc 2 was causing the issue. Thus after running <code>devtools::test()</code> to confirm the error, I <a href="https://github.com/jgm/pandoc/blob/master/INSTALL.md#linux">installed pandoc</a> 1.19.2.1<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> and then reran <code>devtools::test()</code> to confirm the error was fixed.</p>
+<pre><code>
+sudo apt remove pandoc
+wget https://github.com/jgm/pandoc/releases/download/1.19.2.1/pandoc-1.19.2.1-1-amd64.deb
+sudo dpkg -i pandoc-1.19.2.1-1-amd64.deb </code></pre>
+<h2 id="miscellaneous">Miscellaneous</h2>
+<p>A few final notes that may be helpful as you debug your Travis build:</p>
+<ul>
+<li>The working directory when you login is <code>/home/travis/build/&lt;username&gt;/&lt;repository&gt;</code></li>
+<li>The home directory is <code>/home/travis</code></li>
+<li>The debugging session will automatically end after 50 minutes, which is the time limit for open source jobs on Travis CI</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>With any luck you won’t have to interactively debug your R package directly on a Travis server. But if you can’t replicate the error locally, using debug mode is much easier than debugging by the method of guess-push-hope-repeat.</p>
+<p>Do you have any tips for debugging an R package on Travis? Any harrowing debugging adventures to share?</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Note that this viewing the API documentation requires you to login.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>A fork of <a href="https://tmux.github.io/">tmux</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>This was the latest of the 1.x series that had a <a href="https://github.com/jgm/pandoc/releases/tag/1.19.2.1">deb file</a> available.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1713,21 +1079,9 @@ R packages and projects.</p>
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom">
-<h3 id="updates-and-corrections">Corrections</h3>
-<p>If you see mistakes or want to suggest changes, please <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/new">create an issue</a> on the source repository.</p>
-<h3 id="reuse">Reuse</h3>
-<p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/jdblischak/blog.jdblischak.com">https://github.com/jdblischak/blog.jdblischak.com</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
-</div>
+<div class="appendix-bottom"></div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
-<div class="distill-site-nav distill-site-footer">
-<p>
-  &#169; 2019
-  <a href="https://jdblischak.com"> John Blischak</a>,
-  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY</a>
-</p>
-</div>
 <!--/radix_placeholder_navigation_after_body-->
 
 </body>

@@ -7,7 +7,16 @@
     <description>My tech blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 25 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 26 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Debug your R package on Travis CI via SSH</title>
+      <dc:creator>John Blischak</dc:creator>
+      <link>https://blog.jdblischak.com/posts/debug-travis</link>
+      <description>If you can't replicate the error locally, you can SSH into a Travis server to
+interactively debug your R package.</description>
+      <guid>https://blog.jdblischak.com/posts/debug-travis</guid>
+      <pubDate>Tue, 26 Mar 2019 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>CircleCI for R: Motivation and basic setup</title>
       <dc:creator>John Blischak</dc:creator>
