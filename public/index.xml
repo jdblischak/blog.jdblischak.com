@@ -7,7 +7,16 @@
     <description>My tech blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 26 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 04 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Debug your R package on AppVeyor via Remote Desktop</title>
+      <dc:creator>John Blischak</dc:creator>
+      <link>https://blog.jdblischak.com/posts/debug-appveyor</link>
+      <description>If you can't replicate the error locally, you can access an AppVeyor server
+via Remote Desktop to interactively debug your R package.</description>
+      <guid>https://blog.jdblischak.com/posts/debug-appveyor</guid>
+      <pubDate>Thu, 04 Apr 2019 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Debug your R package on Travis CI via SSH</title>
       <dc:creator>John Blischak</dc:creator>

@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
-  <link rel="alternate" type="application/rss+xml" href="https://blog.jdblischak.com/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -20,368 +19,39 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>John Blischak's blog: Posts</title>
+  <title>Debug your R package on AppVeyor via Remote Desktop</title>
+  
+  <meta property="description" itemprop="description" content="If you can&#39;t replicate the error locally, you can access an AppVeyor server&#10;via Remote Desktop to interactively debug your R package."/>
   
   
-  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
-  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2019-04-04"/>
+  <meta property="article:created" itemprop="dateCreated" content="2019-04-04"/>
+  <meta name="article:author" content="John Blischak"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="John Blischak&#39;s blog: Posts"/>
+  <meta property="og:title" content="Debug your R package on AppVeyor via Remote Desktop"/>
   <meta property="og:type" content="article"/>
+  <meta property="og:description" content="If you can&#39;t replicate the error locally, you can access an AppVeyor server&#10;via Remote Desktop to interactively debug your R package."/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="John Blischak&#39;s blog"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="John Blischak&#39;s blog: Posts"/>
-  <meta property="twitter:creator" content="@jdblischak"/>
+  <meta property="twitter:title" content="Debug your R package on AppVeyor via Remote Desktop"/>
+  <meta property="twitter:description" content="If you can&#39;t replicate the error locally, you can access an AppVeyor server&#10;via Remote Desktop to interactively debug your R package."/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories"]}},"value":[{"type":"character","attributes":{},"value":["Debug your R package on AppVeyor via Remote Desktop"]},{"type":"character","attributes":{},"value":["If you can't replicate the error locally, you can access an AppVeyor server\nvia Remote Desktop to interactively debug your R package.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["04-04-2019"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["Software Development with R","devops","debugging"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
-  <!--radix_placeholder_navigation_in_header-->
   
-  <script type="application/javascript">
-  
-    window.headroom_prevent_pin = false;
-  
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-  
-      // initialize headroom for banner
-      var header = $('header').get(0);
-      var headerHeight = header.offsetHeight;
-      var headroom = new Headroom(header, {
-        onPin : function() {
-          if (window.headroom_prevent_pin) {
-            window.headroom_prevent_pin = false;
-            headroom.unpin();
-          }
-        }
-      });
-      headroom.init();
-      if(window.location.hash)
-        headroom.unpin();
-      $(header).addClass('headroom--transition');
-  
-      // offset scroll location for banner on hash change
-      // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
-      window.addEventListener("hashchange", function(event) {
-        window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
-      });
-  
-      // responsive menu
-      $('.distill-site-header').each(function(i, val) {
-        var topnav = $(this);
-        var toggle = topnav.find('.nav-toggle');
-        toggle.on('click', function() {
-          topnav.toggleClass('responsive');
-        });
-      });
-  
-      // nav dropdowns
-      $('.nav-dropbtn').click(function(e) {
-        $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
-        $(this).parent().siblings('.nav-dropdown')
-           .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $("body").click(function(e){
-        $('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $(".nav-dropdown").click(function(e){
-        e.stopPropagation();
-      });
-    });
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["img/rdp-1.png","img/rdp-2.png","img/rdp-3.png","img/rdp-4.png","img/rdp-5.png","img/rdp-6.png"]}
   </script>
-  
-  <style type="text/css">
-  
-  /* Theme (user-documented overrideables for nav appearance) */
-  
-  .distill-site-nav {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: #455a64;
-    font-size: 15px;
-    font-weight: 300;
-  }
-  
-  .distill-site-nav a {
-    color: inherit;
-    text-decoration: none;
-  }
-  
-  .distill-site-nav a:hover {
-    color: white;
-  }
-  
-  @media print {
-    .distill-site-nav {
-      display: none;
-    }
-  }
-  
-  .distill-site-header {
-  
-  }
-  
-  .distill-site-footer {
-  
-  }
-  
-  
-  /* Site Header */
-  
-  .distill-site-header {
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 3;
-  }
-  
-  .distill-site-header .nav-left {
-    display: inline-block;
-    margin-left: 8px;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header .nav-left {
-      margin-left: 0;
-    }
-  }
-  
-  
-  .distill-site-header .nav-right {
-    float: right;
-    margin-right: 8px;
-  }
-  
-  .distill-site-header a,
-  .distill-site-header .title {
-    display: inline-block;
-    text-align: center;
-    padding: 14px 10px 14px 10px;
-  }
-  
-  .distill-site-header .title {
-    font-size: 18px;
-  }
-  
-  .distill-site-header .logo {
-    padding: 0;
-  }
-  
-  .distill-site-header .logo img {
-    display: none;
-    max-height: 20px;
-    width: auto;
-    margin-bottom: -4px;
-  }
-  
-  .distill-site-header .nav-image img {
-    max-height: 18px;
-    width: auto;
-    display: inline-block;
-    margin-bottom: -3px;
-  }
-  
-  
-  
-  @media screen and (min-width: 1000px) {
-    .distill-site-header .logo img {
-      display: inline-block;
-    }
-    .distill-site-header .nav-left {
-      margin-left: 20px;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 20px;
-    }
-    .distill-site-header .title {
-      padding-left: 12px;
-    }
-  }
-  
-  
-  .distill-site-header .nav-toggle {
-    display: none;
-  }
-  
-  .nav-dropdown {
-    display: inline-block;
-    position: relative;
-  }
-  
-  .nav-dropdown .nav-dropbtn {
-    border: none;
-    outline: none;
-    color: rgba(255, 255, 255, 0.8);
-    padding: 16px 10px;
-    background-color: transparent;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    margin: 0;
-    margin-top: 1px;
-    z-index: 2;
-  }
-  
-  .nav-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 200px;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 4px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    z-index: 1;
-    margin-top: 2px;
-    white-space: nowrap;
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-  
-  .nav-dropdown-content hr {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-dropdown-active {
-    display: block;
-  }
-  
-  .nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
-    color: black;
-    padding: 6px 24px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-  
-  .nav-dropdown-content .nav-dropdown-header {
-    display: block;
-    padding: 5px 24px;
-    padding-bottom: 0;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #999999;
-    white-space: nowrap;
-  }
-  
-  .nav-dropdown:hover .nav-dropbtn {
-    color: white;
-  }
-  
-  .nav-dropdown-content a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  .nav-right .nav-dropdown-content {
-    margin-left: -45%;
-    right: 0;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
-    .distill-site-header a.nav-toggle {
-      float: right;
-      display: block;
-    }
-    .distill-site-header .title {
-      margin-left: 0;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 0;
-    }
-    .distill-site-header {
-      overflow: hidden;
-    }
-    .nav-right .nav-dropdown-content {
-      margin-left: 0;
-    }
-  }
-  
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header.responsive {position: relative;}
-    .distill-site-header.responsive a.nav-toggle {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    .distill-site-header.responsive a,
-    .distill-site-header.responsive .nav-dropdown {
-      display: block;
-      text-align: left;
-    }
-    .distill-site-header.responsive .nav-left,
-    .distill-site-header.responsive .nav-right {
-      width: 100%;
-    }
-    .distill-site-header.responsive .nav-dropdown {float: none;}
-    .distill-site-header.responsive .nav-dropdown-content {position: relative;}
-    .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
-      display: block;
-      width: 100%;
-      text-align: left;
-    }
-  }
-  
-  /* Site Footer */
-  
-  .distill-site-footer {
-    width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    z-index: 3;
-    margin-top: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    text-align: center;
-  }
-  
-  /* Headroom */
-  
-  d-title {
-    padding-top: 6rem;
-  }
-  
-  @media print {
-    d-title {
-      padding-top: 4rem;
-    }
-  }
-  
-  .headroom {
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  .headroom--transition {
-    transition: all .4s ease-in-out;
-  }
-  
-  .headroom--unpinned {
-    top: -100px;
-  }
-  
-  .headroom--pinned {
-    top: 0;
-  }
-  
-  </style>
-  
-  <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
-  <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
-  <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
+  <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
   <!--radix_placeholder_distill-->
   
@@ -1257,463 +927,231 @@
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-  <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
-  <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
-  <script src="site_libs/distill-2.2.21/template.v2.js"></script>
+  <script src="debug-appveyor_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="debug-appveyor_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="debug-appveyor_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="debug-appveyor_files/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
-  <style type="text/css">
-  /*
-  Custom themes for blog.jdblischak.com
-  
-  https://rstudio.github.io/distill/website.html#theming
-  */
-  
-  .distill-site-nav {
-    background-color: #543a54;
-  }
-  
-  .distill-site-footer a {
-    text-decoration: underline;
-  }
-  
-  /*
-  This is the same color (#f5f5f5; white smoke) used in standard R Markdown code
-  chunks.
-  */
-  code {
-    background-color: RGB(245, 245, 245);
-  }
-  
-  </style>
   <!--/radix_placeholder_site_in_header-->
 
-  <link rel="stylesheet" href="static/styles.css" type="text/css"/>
 
 </head>
 
-<body class="layout-listing">
+<body>
 
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Posts","authors":[]}
+{"title":"Debug your R package on AppVeyor via Remote Desktop","description":"If you can't replicate the error locally, you can access an AppVeyor server\nvia Remote Desktop to interactively debug your R package.","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2019-04-04T00:00:00.000-04:00","citationText":"Blischak, 2019"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
 <!--radix_placeholder_navigation_before_body-->
-<header class="header header--fixed" role="banner">
-<nav class="distill-site-nav distill-site-header">
-<div class="nav-left">
-<a href="index.html" class="title">John Blischak's blog</a>
-</div>
-<div class="nav-right">
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="index.xml">
-<i class="fa fa-rss"></i>
-</a>
-<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
-</div>
-</nav>
-</header>
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
-<!--radix_placeholder_article_listing-->
-
-<style type="text/css">
-
-/* Styles for listing layout (hide title) */
-.layout-listing d-title, .layout-listing .d-title {
-  display: none;
-}
-
-/* Styles for posts lists (not auto-injected) */
-
-
-.posts-with-sidebar {
-  padding-left: 45px;
-  padding-right: 45px;
-}
-
-.posts-list .description h2,
-.posts-list .description p {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-}
-
-.posts-list .description h2 {
-  font-weight: 700;
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.posts-list h2.post-tag {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding-bottom: 12px;
-}
-.posts-list {
-  margin-top: 60px;
-  margin-bottom: 24px;
-}
-
-.posts-list .post-preview {
-  text-decoration: none;
-  overflow: hidden;
-  display: block;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 24px 0;
-}
-
-.post-preview-last {
-  border-bottom: none !important;
-}
-
-.posts-list .posts-list-caption {
-  grid-column: screen;
-  font-weight: 400;
-}
-
-.posts-list .post-preview h2 {
-  margin: 0 0 6px 0;
-  line-height: 1.2em;
-  font-style: normal;
-  font-size: 24px;
-}
-
-.posts-list .post-preview p {
-  margin: 0 0 12px 0;
-  line-height: 1.4em;
-  font-size: 16px;
-}
-
-.posts-list .post-preview .thumbnail {
-  box-sizing: border-box;
-  margin-bottom: 24px;
-  position: relative;
-  max-width: 500px;
-}
-.posts-list .post-preview img {
-  width: 100%;
-  display: block;
-}
-
-.posts-list .metadata {
-  font-size: 12px;
-  line-height: 1.4em;
-  margin-bottom: 18px;
-}
-
-.posts-list .metadata > * {
-  display: inline-block;
-}
-
-.posts-list .metadata .publishedDate {
-  margin-right: 1em;
-}
-
-.posts-list .metadata .tags {
-  margin-top: 1em;
-}
-
-.posts-list .tags .tag {
-  color: rgba(0,0,0,0.67);
-  padding: 0.3em 0.5em;
-  margin: 0;
-  font-size: 80%;
-  border: 1px solid rgba(0,0,0,0.4);
-  border-radius: 3px;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-.posts-list img {
-  opacity: 1;
-}
-
-.posts-list img[data-src] {
-  opacity: 0;
-}
-
-.posts-more {
-  clear: both;
-}
-
-
-.posts-sidebar {
-  font-size: 16px;
-}
-
-.posts-sidebar h3 {
-  font-size: 16px;
-  margin-top: 0;
-  margin-bottom: 0.5em;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-.sidebar-section {
-  margin-bottom: 30px;
-}
-
-.categories ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.categories li {
-  color: rgba(0, 0, 0, 0.8);
-  margin-bottom: 0;
-}
-
-.categories li>a {
-  border-bottom: none;
-}
-
-.categories li>a:hover {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-}
-
-.categories .active {
-  font-weight: 600;
-}
-
-.categories .category-count {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-
-@media(min-width: 768px) {
-  .posts-list .post-preview h2 {
-    font-size: 26px;
-  }
-  .posts-list .post-preview .thumbnail {
-    float: right;
-    width: 35%;
-    margin-bottom: 0;
-  }
-  .posts-list .post-preview .description {
-    float: left;
-    width: 45%;
-  }
-  .posts-list .post-preview .metadata {
-    float: left;
-    width: 15%;
-    margin-top: 8px;
-  }
-  .posts-list .post-preview p {
-    margin: 0 0 12px 0;
-    line-height: 1.5em;
-    font-size: 16px;
-  }
-  .posts-with-sidebar .posts-list {
-    float: left;
-    width: 72%;
-  }
-  .posts-with-sidebar .posts-sidebar {
-    float: right;
-    width: 20%;
-    margin-top: 60px;
-    padding-top: 24px;
-    padding-bottom: 24px;
-  }
-}
-
-.downlevel .posts-list .post-preview {
-  color: inherit;
-}
-
-</style>
-
-<script type="application/javascript">
-
-function init_posts_list() {
-
-  function load_image(img) {
-    var src = $(img).attr('data-src');
-    if (src) {
-      $(img).attr('src', src);
-      $(img).load(function() {
-        img.removeAttribute('data-src');
-      });
-    }
-  }
-
-  function set_posts_visible(posts, visible) {
-    if (visible) {
-
-      // show bottom border by default
-      $(posts).removeClass('post-preview-last');
-
-      // apply limits if need be
-      var max_posts = 25;
-      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
-      if (apply_limits && posts.length > max_posts) {
-        posts = $(posts).slice(0, max_posts);
-      } else {
-        $('.posts-more a').addClass('hidden');
-      }
-
-      // apply last style
-      $(posts.slice(-1)[0]).addClass('post-preview-last');
-
-      $(posts).removeClass('hidden');
-      $(posts).find('img[data-src]').each(function(i, img) {
-        load_image(img);
-      });
-    } else {
-      $(posts).addClass('hidden');
-    }
-  }
-
-  function apply_hash_filter() {
-
-    // clear active state
-    $('.categories .active').removeClass('active');
-
-    // mark all posts invisible to start
-    set_posts_visible($('.posts-list').children('a'), false);
-
-    // if we have a hash filter
-    if (window.location.hash) {
-
-      // mark posts that match the category visible
-      var page_category = window.location.hash.replace("#", "");
-      var posts = $('.post-metadata').map(function(idx, script) {
-        var metadata = $.parseJSON($(script).html());
-        var post = null;
-        $.each(metadata.categories, function(idx, category) {
-          category = category.replace(/ /g,"_");
-          if (category == page_category) {
-            post = $(script).parent().get();
-            return false;
-          }
-        });
-        return post;
-      });
-      set_posts_visible(posts, true);
-
-      // mark the hash active
-      $('.categories li>a[href="' + window.location.hash + '"]').addClass('active');
-
-    } else {
-
-      // no hash filter, make all posts visible (subject to max display)
-      set_posts_visible($('.posts-list').children(), true);
-
-    }
-  }
-
-  // more articles
-  function apply_post_limits(apply) {
-    if (apply) {
-      $('.posts-container').addClass('posts-apply-limit');
-      $('.posts-more a').removeClass('hidden');
-    } else {
-      $('.posts-container').removeClass('posts-apply-limit');
-      $('.posts-more a').addClass('hidden');
-    }
-  }
-
-  // hash filter handling
-  apply_hash_filter();
-  $(window).on('hashchange',function() {
-    apply_post_limits(true);
-    apply_hash_filter();
-  });
-
-  // more articles link
-  $('.posts-more a').click(function(e) {
-    e.preventDefault();
-    apply_post_limits(false);
-    apply_hash_filter();
-    return false;
-  });
-
-}
-
-</script>
-
-
-
-<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
-<div class="posts-list">
-<h1 class="posts-list-caption">Posts</h1>
-<a href="posts/debug-appveyor/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops","debugging"]}</script>
-<div class="metadata">
-<div class="publishedDate">April 4, 2019</div>
-</div>
-<div class="thumbnail"></div>
-<div class="description">
-<h2>Debug your R package on AppVeyor via Remote Desktop</h2>
-<p>If you can't replicate the error locally, you can access an AppVeyor server
-via Remote Desktop to interactively debug your R package.</p>
-</div>
-</a>
-<a href="posts/debug-travis/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops","debugging"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 26, 2019</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Debug your R package on Travis CI via SSH</h2>
-<p>If you can't replicate the error locally, you can SSH into a Travis server to
-interactively debug your R package.</p>
-</div>
-</a>
-<a href="posts/circleci-for-r-1/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 25, 2019</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>CircleCI for R: Motivation and basic setup</h2>
-<p>If you like using Docker, you should try out CircleCI for testing your
-R packages and projects.</p>
-</div>
-</a>
-</div>
-<div class="posts-sidebar">
-<div class="sidebar-section categories">
-<h3>Categories</h3>
-<ul>
-<li>
-<a href="#debugging">debugging</a>
-<span class="category-count">(2)</span>
-</li>
-<li>
-<a href="#devops">devops</a>
-<span class="category-count">(3)</span>
-</li>
-<li>
-<a href="#Software_Development_with_R">Software Development with R</a>
-<span class="category-count">(3)</span>
-</li>
-</ul>
-</div>
-</div>
-<div class="posts-more">
-<a href="#">More articles &raquo;</a>
-</div>
-</div>
-<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>Posts</h1>
-
+<h1>Debug your R package on AppVeyor via Remote Desktop</h1>
+<p>If you can’t replicate the error locally, you can access an AppVeyor server via Remote Desktop to interactively debug your R package.</p>
 </div>
 
+<div class="d-byline">
+  John Blischak <a href="https://jdblischak.com" class="uri">https://jdblischak.com</a> 
+  
+<br/>04-04-2019
+</div>
 
 <div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#install-remote-desktop">Install Remote Desktop</a></li>
+<li><a href="#configure-to-debug-on-failure">Configure to debug on failure</a></li>
+<li><a href="#set-a-password">Set a password</a></li>
+<li><a href="#login-to-appveyor-server-via-remote-desktop">Login to AppVeyor server via Remote Desktop</a></li>
+<li><a href="#navigating-the-file-system-with-powershell">Navigating the file system with PowerShell</a></li>
+<li><a href="#setup-for-r-debugging">Setup for R debugging</a></li>
+<li><a href="#install-system-packages-with-chocolatey">Install system packages with Chocolatey</a></li>
+<li><a href="#debugging-step-by-step">Debugging step-by-step</a></li>
+<li><a href="#resuming-the-build">Resuming the build</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<div class="layout-chunk" data-layout="l-body">
+<style type="text/css">
+d-article > p > img {
+  width: 50%;
+  display: block;
+  margin: auto;
+}
+</style>
+</div>
+<p>The continuous integration service <a href="https://www.appveyor.com/">AppVeyor</a> is great for regularly testing your software on Windows, and it is well-supported for R package developers via the <a href="https://github.com/krlmlr/r-appveyor">r-appveyor</a> project. Run <code>usethis::use_appveyor()</code> to add Windows testing to your R package.</p>
+<p>Even though I have access to a local Windows machine, there have still been times when I couldn’t replicate an AppVeyor error. The cause of hard-to-replicate bugs could be due to differences in the installed software versions (e.g. pandoc, which was the source of my most recent AppVeyor bug) or differences between the desktop and server versions of Windows. The good news is that it is possible to <a href="https://www.appveyor.com/docs/how-to/rdp-to-build-worker/">interactively debug</a> an AppVeyor build using <a href="https://en.wikipedia.org/wiki/Remote_Desktop_Services#Remote_Desktop_Connection">Remote Desktop</a><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> In this post, I provide step-by-step instructions on how to setup and debug your R package build on AppVeyor using Remote Desktop.</p>
+<h2 id="install-remote-desktop">Install Remote Desktop</h2>
+<p><strong>Windows:</strong> If you are using a Windows machine, you already have Remote Desktop installed. You can either type “Remote Desktop” into the search bar or navigate to Programs -&gt; Windows Accessories -&gt; Remote Desktop Connection.</p>
+<p><strong>macOS:</strong> Follow the instructions in <a href="https://docs.microsoft.com/en-us/windows-server/remote/remote-desktop-services/clients/remote-desktop-mac">Get started with Remote Desktop on Mac</a> to install <a href="https://itunes.apple.com/us/app/microsoft-remote-desktop/id1295203466?mt=12">Microsoft Remote Desktop 10</a> from the Mac App Store. Note that this requires macOS 10.11 or later.</p>
+<p><strong>Linux:</strong> Use your distribution’s package manager to install <a href="http://www.xrdp.org/">xrdp</a>, an open source implementation of Remote Desktop. For example, on Debian/Ubuntu, run <code>apt install xrdp</code>.</p>
+<aside>
+<p>I’ve only ever tested this on Windows. If you configure Remote Desktop on macOS or Linux and have tips to share, please open an <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/new">Issue</a> and I’ll update the post.</p>
+</aside>
+<h2 id="configure-to-debug-on-failure">Configure to debug on failure</h2>
+<p>To have AppVeyor open a connection for you to login and debug your build, add the following line to the <code>on_failure</code> section of <code>appveyor.yml</code>:</p>
+<pre><code>
+ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString(&#39;https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1&#39;))</code></pre>
+<p>If there is any error during the installation or checking of your R package, this line tells AppVeyor to pause the build and print the server details for you to connect and debug. If you’re using the default <a href="https://github.com/krlmlr/r-appveyor">r-appveyor</a> setup, your <code>on_failure</code> step will look like the following:</p>
+<pre><code>
+on_failure:
+  - 7z a failure.zip *.Rcheck\*
+  - appveyor PushArtifact failure.zip
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString(&#39;https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1&#39;))</code></pre>
+<p>These commands zip the <code>*.Rcheck/</code> directory, upload it as a build artifact for you to download, and then pause for debugging.</p>
+<h2 id="set-a-password">Set a password</h2>
+<p>Before you commit and push the update to <code>appveyor.yml</code>, it is highly recommended that you first set a password. If you don’t set a password, the default behavior is to print an automatically generated password to the build log. If you have any secrets that are used during your build (e.g. deploy SSH keys, access tokens, etc.), anyone that sees the build log would be able to access this information.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> Your secrets would be vulnerable every time your build failed for up to an hour (since that is the time limit for open source builds on AppVeyor).</p>
+<p>To set a password using the AppVeyor user interface, click on your project, then go to Settings -&gt; Environment -&gt; Add variable. Name the environment variable <code>APPVEYOR_RDP_PASSWORD</code>. Make sure your password meets the strict minimal requirements that Windows Server enforces for all passwords (see the <a href="https://www.appveyor.com/docs/how-to/rdp-to-build-worker/">AppVeyor documentation</a>).</p>
+<h2 id="login-to-appveyor-server-via-remote-desktop">Login to AppVeyor server via Remote Desktop</h2>
+<p>Once you push the update and your package build fails,<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> AppVeyor will print the connection details in the build log. It should look something like the following:</p>
+<pre><code>
+$blockRdp = $true; iex ((new-object net.webclient).DownloadString(&#39;https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1&#39;))
+Remote Desktop connection details:
+  Server: 67.225.165.193:33830
+  Username: appveyor
+Build paused. To resume it, open a RDP session to delete &#39;Delete me to continue build.txt&#39; file on Desktop.</code></pre>
+<p>The server address will be different, but the username is always <code>appveyor</code>.</p>
+<p>After you open Remote Desktop, click on “Show Options”:</p>
+<p><img src="img/rdp-1.png" /></p>
+<p>Then enter your server address and <code>appveyor</code> for the username:</p>
+<p><img src="img/rdp-2.png" /></p>
+<p>Next enter the password you had set as an environment variable:</p>
+<p><img src="img/rdp-3.png" /></p>
+<p>You may get a warning about the server’s certificate, but you can safely ignore this and click on Yes to proceed:</p>
+<p><img src="img/rdp-4.png" /></p>
+<p>If all goes well, you will now have access to the remote desktop!</p>
+<aside>
+If all did not go well, see the section <a href="#troubleshooting">Troubleshooting</a> below.
+</aside>
+<p><img src="img/rdp-5.png" /></p>
+<p>To start debugging, click on the PowerShell icon <img style="width:25px; display: inline;"
+src="https://upload.wikimedia.org/wikipedia/commons/2/2f/PowerShell_5.0_icon.png"> in the menu bar.</p>
+<!--
+According Wikimedia Commons, the PowerShell icon above is in the public domain.
 
+https://commons.wikimedia.org/wiki/File:PowerShell_5.0_icon.png
+-->
+<h2 id="navigating-the-file-system-with-powershell">Navigating the file system with PowerShell</h2>
+<p>Microsoft’s <a href="https://en.wikipedia.org/wiki/PowerShell">PowerShell</a> is quite different from a <a href="https://en.wikipedia.org/wiki/Unix_shell">Unix shell</a>. Fortunately, many of the commands for navigating the file system are similar.</p>
+<ul>
+<li><code>pwd</code> to print the current working directory</li>
+<li><code>cd</code> to change directory</li>
+<li><code>ls</code> to list files and directories</li>
+</ul>
+<p>If you aren’t familiar with Windows filepaths, note that the root of the file system is the Windows drive (in this case <code>C:</code>), paths are separated with <code>\</code>, and the names are case-insensitive.</p>
+<p>The session below navigates from the home directory (<code>C:\Users\appveyor</code>) to the cloned Git repository (<a href="https://github.com/jdblischak/debugAppveyor">debugAppveyor</a>).</p>
+<pre><code>
+PS C:\Users\appveyor&gt; pwd
+
+Path
+----
+C:\Users\appveyor
+
+
+PS C:\Users\appveyor&gt; cd C:\projects\debugappveyor
+PS C:\projects\debugappveyor&gt; ls
+
+
+    Directory: C:\projects\debugappveyor
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----         4/2/2019   8:22 PM                scripts
+d-----         4/2/2019   8:22 PM                tests
+-a----         4/2/2019   8:22 PM             40 .gitignore
+-a----         4/2/2019   8:22 PM             77 .Rbuildignore
+-a----         4/2/2019   8:22 PM           1158 appveyor.yml
+-a----         4/2/2019   8:22 PM            356 debugAppveyor.Rproj
+-a----         4/2/2019   8:22 PM            412 DESCRIPTION
+-a----         4/2/2019   8:22 PM             22 failure.zip
+-a----         4/2/2019   8:22 PM             31 NAMESPACE
+-a----         4/2/2019   8:22 PM            202 README.md
+-a----         4/2/2019   8:22 PM             32 travis-tool.sh.cmd</code></pre>
+<h2 id="setup-for-r-debugging">Setup for R debugging</h2>
+<p>Unfortunately you cannot immediately start debugging. First you have to setup the necessary environment variables to be able to access the R executable and packages that were installed via the steps in <code>appveyor.yml</code>.</p>
+<p>R is installed at <code>C:\R</code>. Add it to your path by running<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>:</p>
+<pre><code>
+$env:Path = &quot;C:\R\bin;&quot; + $env:Path</code></pre>
+<p>You should now be able to run <code>R.exe</code> to start the R console or <code>Rscript.exe</code>. If this isn’t working, run <code>$env:Path</code> to confirm that <code>C:\R\bin</code> was added to the beginning and <code>ls C:\R\bin</code> to confirm that R has been installed.</p>
+<p>The R packages were installed in <code>C:\Rlibrary</code>. Set this as your R user library with:</p>
+<pre><code>
+$env:R_LIBS_USER = &quot;C:\Rlibrary&quot;</code></pre>
+<p>And confirm that <code>Rscript.exe -e &quot;.libPaths()&quot;</code> returns <code>[1] &quot;C:/RLibrary&quot;  &quot;C:/R/library&quot;</code>.</p>
+<p>Now you can start debugging! Run <code>R.exe</code> to open the R console.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> You can install R packages with <code>install.packages()</code> as you normally would. You can build and test the package using devtools functions (e.g. <code>install()</code>, <code>build()</code>, <code>test()</code> or <code>check()</code>) or using <code>R.exe</code> directly:</p>
+<pre><code>
+R.exe CMD build .
+R.exe CMD check *tar.gz </code></pre>
+<p>If you need to edit a file, I recommend using Notepad++, since this will preserve the line breaks and provide some basic syntax highlighting. You can either open it through the Windows start menu or alternatively open files from R using <code>file.edit()</code> after setting the R option with</p>
+<pre><code>
+options(editor = &quot;C:/Program Files (x86)/Notepad++/notepad++.exe&quot;)</code></pre>
+<h2 id="install-system-packages-with-chocolatey">Install system packages with Chocolatey</h2>
+<p>If you need to install different versions of non-R dependencies, you can use the package manager <a href="https://chocolatey.org">Chocolatey</a>. Below is a quick primer to demonstrate how to <a href="https://chocolatey.org/docs/commands-install">install</a>, <a href="https://chocolatey.org/docs/commands-list">list</a>, and <a href="https://chocolatey.org/docs/commands-uninstall">uninstall</a>.</p>
+<pre><code>
+# Install latest version of pandoc
+choco install pandoc
+# View all available versions of pandoc
+choco list pandoc --exact --all
+# Install a previous version of pandoc
+choco install pandoc --version 1.19.1 --allow-downgrade
+# Uninstall pandoc
+choco uninstall pandoc</code></pre>
+<p>To quickly use the installed software, run <code>refreshenv</code> to update the environment variables. Unfortunately this only works for interactive use. If need the software to be available to your R package during the build, you need to manually add it to the path. For example, the configuration below installs pandoc 1.19.1 and adds it to the path.</p>
+<pre><code>
+before_test:
+  - ps: choco install pandoc --version 1.19.1 --allow-downgrade
+  - ps: $env:Path += &quot;;C:\Program Files (x86)\Pandoc\&quot;</code></pre>
+<h2 id="debugging-step-by-step">Debugging step-by-step</h2>
+<p>Instead of starting the debugger after a failure, you can also purposefully start the debugger earlier. This is useful if one of the setup steps is causing the failure. To start the debugger after the repository has been cloned but before any more setup has occurred, update the install step to include the debug line:</p>
+<pre><code>
+install:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString(&#39;https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1&#39;))
+  - ps: Bootstrap</code></pre>
+<p>Now when you login, R is not even installed yet. To run each step individually, navigate to your directory in <code>C:\projects</code>, load the functions in <a href="https://github.com/krlmlr/r-appveyor/blob/master/scripts/appveyor-tool.ps1">appveyor-tool.ps1</a>, and confirm the module was successfully loaded by running the <code>Progress</code> function, which prints the provided message along with the current date and time.</p>
+<pre><code>
+cd C:\projects\debugappveyor
+Import-Module ..\appveyor-tool.ps1
+Progress &quot;Module successfully loaded&quot;</code></pre>
+<p>Next run <code>Bootstrap</code> to install R and download the <a href="https://raw.githubusercontent.com/krlmlr/r-appveyor/master/r-travis/scripts/travis-tool.sh">travis-tool script</a>. Then you can install the dependencies and run the tests using <code>TravisTool</code>.</p>
+<pre><code>
+Bootstrap
+TravisTool install_deps
+TravisTool run_tests</code></pre>
+<h2 id="resuming-the-build">Resuming the build</h2>
+<p>To resume the build, you need to delete the file <code>Delete me to continue build.txt</code>. You can either delete it using the GUI interface or by running:</p>
+<pre><code>
+ rm &#39;C:\Users\appveyor\Desktop\Delete me to continue build.txt&#39;</code></pre>
+<p>After it has been deleted, any remaining steps will be performed and then the connection will close.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p><strong>Connection error</strong>: If you see a message like the following when you attempt to connect to the AppVeyor server, something is wrong on AppVeyor’s end. I recommend doing something else and returning to your debugging effort later. Even if you manage to log in, the connection can drop at any time if the service is experiencing problems.</p>
+<p><img src="img/rdp-6.png" /></p>
+<p><strong>Cached package error:</strong> If the error you are having is caused by a cached package that can’t be updated, you need to invalidate or delete the cache. The easiest method to invalidate the cache is to make it <a href="https://www.appveyor.com/docs/build-cache/#cache-dependencies">depend on a file</a>. Changing the cache step below will invalidate the cache every time you change <code>appveyor.yml</code>.</p>
+<pre><code>
+cache:
+  - C:\RLibrary -&gt; appveyor.yml</code></pre>
+<p>Alternatively, you can <a href="https://github.com/krlmlr/r-appveyor/issues/98#issuecomment-395058164">delete the cache manually in the JavaScript console via the AppVeyor API</a>, but this is a much more involved process, so I recommend using the strategy above instead.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Interactively debugging an AppVeyor build is an involved process, but it may be the only way to finally determine the problem, especially if you can’t replicate the bug on your local Windows machine or if you don’t have easy access to one. For more information, see the official AppVeyor documentation on <a href="https://www.appveyor.com/docs/how-to/rdp-to-build-worker/">Accessing Windows build worker via Remote Desktop</a>. And to practice debugging, check out my repository <a href="https://github.com/jdblischak/debugAppveyor">debugAppveyor</a>. Happy debugging!</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>I’ll refer to this software as Remote Desktop throughout this post. It used to be called <a href="https://en.wikipedia.org/wiki/Remote_Desktop_Protocol">Remote Desktop Protocol</a>, so the AppVeyor documentation refers to it as RDP. However, Microsoft now calls it Remote Desktop Connection.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>This is similar to how interactive debugging works on Travis CI. Anyone that sees the build log can access the server. The main difference is that a debug build has to be manually triggered via the Travis API, so you at least know every time your secrets are vulnerable. See my <a href="../debug-travis/index.html">previous post</a> for details.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>If you don’t currently have an R package that is failing on AppVeyor (lucky you!), you can try out the steps below by forking my repository <a href="https://github.com/jdblischak/debugAppveyor">debugAppveyor</a>. It already has <code>appveyor.yml</code> setup for debugging and a failing test, so you just have to activate AppVeyor for your forked repository, add a password, and then trigger a new build.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>The easiest method to paste into the PowerShell terminal is to right click. Alternatively, you can click on the icon in the top left of the window to open the menu, and then select Edit -&gt; Paste<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>Entering only <code>R</code> will re-execute the most recent command.<a href="#fnref5" class="footnote-back">↩</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1725,21 +1163,9 @@ R packages and projects.</p>
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom">
-<h3 id="updates-and-corrections">Corrections</h3>
-<p>If you see mistakes or want to suggest changes, please <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/new">create an issue</a> on the source repository.</p>
-<h3 id="reuse">Reuse</h3>
-<p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/jdblischak/blog.jdblischak.com">https://github.com/jdblischak/blog.jdblischak.com</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
-</div>
+<div class="appendix-bottom"></div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
-<div class="distill-site-nav distill-site-footer">
-<p>
-  &#169; 2019
-  <a href="https://jdblischak.com"> John Blischak</a>,
-  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY</a>
-</p>
-</div>
 <!--/radix_placeholder_navigation_after_body-->
 
 </body>
