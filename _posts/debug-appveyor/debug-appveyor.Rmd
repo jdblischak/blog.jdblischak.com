@@ -276,6 +276,32 @@ using `file.edit()` after setting the R option with
 options(editor = "C:/Program Files (x86)/Notepad++/notepad++.exe")
 ```
 
+**Update:** And if you need some more serious debugging tools, you can install
+RStudio (thanks to [Jim Hester][hester-tweet] for the tip!). You can open
+Internet Explorer, download the latest version of RStudio Desktop for Windows at
+https://www.rstudio.com/products/rstudio/download, and run the installer.
+
+And if you find yourself doing this often, you can automate this using the
+following PowerShell script:^[This will always install version 1.1.463, so you
+may want to update this. Unfortunately it is non-trivial to [determine the
+download URL of the latest RStudio release][so-rstudio-latest].]
+
+```
+Invoke-WebRequest https://download1.rstudio.org/RStudio-1.1.463.exe -OutFile rstudio.exe
+Start-Process -FilePath .\rstudio.exe -ArgumentList "/S /v/qn" -Wait
+Start-Process 'C:\Program Files\RStudio\bin\rstudio.exe'
+```
+
+I figured out how to install RStudio with PowerShell from this
+[script][ps-install-rstudio] from Tomaž Kaštrun. To learn more about automating
+installation steps with PowerShell, check out his blog post [Installing R using
+Powershell][blog-ps-install-r].
+
+[blog-ps-install-r]: https://tomaztsql.wordpress.com/2019/02/18/installing-r-using-powershell/
+[hester-tweet]: https://twitter.com/jimhester_/status/1114130092442181633
+[ps-install-rstudio]: https://github.com/tomaztk/Install_setup_R_using_Powershell/blob/master/04_PowerShell/InstallR_RStudio.ps1#L44
+[so-rstudio-latest]: https://stackoverflow.com/q/46023031/2483477
+
 ## Install system packages with Chocolatey
 
 If you need to install different versions of non-R dependencies, you can use the
