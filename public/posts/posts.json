@@ -1,5 +1,23 @@
 [
   {
+    "path": "posts/circleci-for-r-2/",
+    "title": "CircleCI for R: Workflows, caches, and more",
+    "description": "Enhance your continuous integration tests on CircleCI",
+    "author": [
+      {
+        "name": "John Blischak",
+        "url": "https://jdblischak.com"
+      }
+    ],
+    "date": "2019-05-17",
+    "categories": [
+      "Software Development with R",
+      "devops"
+    ],
+    "preview": {},
+    "last_modified": "2019-05-17T11:16:35-04:00"
+  },
+  {
     "path": "posts/debug-appveyor/",
     "title": "Debug your R package on AppVeyor via Remote Desktop",
     "description": "If you can't replicate the error locally, you can access an AppVeyor server\nvia Remote Desktop to interactively debug your R package.",
