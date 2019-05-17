@@ -2,7 +2,9 @@ title: "John Blischak's blog"
 description: |
   My tech blog
 output_dir: "public"
-exclude: ["README.md"]
+# Have to trick distill_website() into ignoring README.md by listing
+# non-existent Rmd file.
+exclude: ["README.Rmd"]
 navbar:
   right:
     - text: "Home"
