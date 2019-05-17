@@ -11,7 +11,7 @@ Build post for publication:
 ```
 library(rmarkdown)
 render("_posts/<post>/<post>.Rmd")
-render_site(encoding = 'UTF-8')
+render_site(input = "index.Rmd", encoding = "UTF-8")
 ```
 
 * [distill docs](https://rstudio.github.io/distill/)
