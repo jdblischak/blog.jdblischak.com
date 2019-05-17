@@ -1,0 +1,263 @@
+---
+title: "CircleCI for R: Workflows, caches, and more"
+description: |
+  Enhance your continuous integration tests on CircleCI
+author:
+  - name: John Blischak
+    url: https://jdblischak.com
+date: 05-17-2019
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+categories:
+  - Software Development with R
+  - devops
+---
+
+In my previous [post][circleci-for-r-1] on using [CircleCI][] for R, I provided
+a basic setup to start testing an R package. Now I'll discuss how to customize
+the configuration, specifically the following topics:
+
+* [Test multiple versions of R with workflows](#workflows)
+* [Cache the R packages](#cache)
+* [Calculate code coverage with covr and Codecov](#coverage)
+* [Add a status badge to your README file](#badge)
+
+[circleci-for-r-1]: ../circleci-for-r-1/index.html
+[CircleCI]: https://circleci.com
+
+## Test multiple versions of R with workflows {#workflows}
+
+In the basic setup from the previous [post][circleci-for-r-1], the version of R
+was specified by the tag of the Docker image on DockerHub:
+
+```
+jobs:
+  build:
+    docker:
+      - image: rocker/verse:3.5.3
+```
+
+Unfortunately it's not possible to simply list multiple Docker images and then
+have the same steps performed in each image. This behavior is possible using a
+[build matrix](https://docs.travis-ci.com/user/build-matrix/) in Travis CI or
+AppVeyor. Instead, each separate job has to list its own steps. This is more
+verbose, but using [CircleCI Workflows][workflows] provides much more
+flexibility. For example, you can have jobs depend on other jobs and even share
+files across jobs.
+
+[workflows]: https://circleci.com/docs/2.0/workflows/
+
+To demonstrate, the configuration file below tests an R package using the both
+the release version of R (currently 3.6.0) and the development version of R.
+
+```
+version: 2
+jobs:
+  release:
+    docker:
+      - image: rocker/verse:3.6.0
+    steps:
+      - checkout
+      - run:
+          name: Install package dependencies
+          command: R -e "devtools::install_deps(dep = TRUE)"
+      - run:
+          name: Build package
+          command: R CMD build .
+      - run:
+          name: Check package
+          command: R CMD check *tar.gz
+  devel:
+    docker:
+      - image: rocker/verse:devel
+    steps:
+      - checkout
+      - run:
+          name: Install package dependencies
+          command: R -e "devtools::install_deps(dep = TRUE)"
+      - run:
+          name: Build package
+          command: R CMD build .
+      - run:
+          name: Check package
+          command: R CMD check *tar.gz
+workflows:
+  version: 2
+  all:
+    jobs:
+      - release
+      - devel
+```
+
+This involves a lot of repeated code, which makes it more difficult to update
+(e.g. if you wanted to add the flag `--as-cran` to `R CMD check` for all the
+jobs). One option is to save each step in its own script inside of the
+`.circleci` directory, and then have each of the jobs execute each file for a
+given step. This allows you to update the code in one place and affect every
+job. This has the added benefit of making it easier to debug your code
+interactively because you can quickly run the same scripts in a local Docker
+container. This is the strategy I use in the [config.yml for testing my R
+package workflowr][workflowr-config].
+
+[workflowr-config]: https://github.com/jdblischak/workflowr/blob/master/.circleci/config.yml
+
+A second option is to use [YAML anchor syntax][yaml-anchor]. This allows you to
+specify YAML entries that can be reused throughout the file. For example, the
+file below runs the same steps in three different Docker images while only
+writing the steps in one location:
+
+[yaml-anchor]: https://en.wikipedia.org/wiki/YAML#Advanced_components
+
+```
+version: 2
+
+steps: &steps
+  steps:
+    - checkout
+    - run:
+        name: Install package dependencies
+        command: R -e "devtools::install_deps(dep = TRUE)"
+    - run:
+        name: Build package
+        command: R CMD build .
+    - run:
+        name: Check package
+        command: R CMD check *tar.gz
+
+jobs:
+  release:
+    docker:
+      - image: rocker/verse:3.6.0
+    <<: *steps
+  oldrel:
+    docker:
+      - image: rocker/verse:3.5.3
+    <<: *steps
+  devel:
+    docker:
+      - image: rocker/verse:devel
+    <<: *steps
+
+workflows:
+  version: 2
+  all:
+    jobs:
+      - release
+      - devel
+      - oldrel
+```
+
+You can see this approach used by the [pyodide project][pyodide-config] and also
+in my example repository [ci4r][ci4r-matrix-config].
+
+[pyodide-config]: https://github.com/iodide-project/pyodide/blob/8f675bf06396e839aae29edfe2ff8c3b6e6c024c/.circleci/config.yml#L3
+[ci4r-matrix-config]: https://github.com/jdblischak/ci4r/blob/matrix/.circleci/config.yml
+
+## Cache the R packages {#cache}
+
+A large fraction of a job's build time is dedicated to installing package
+dependencies, especially on Linux which always build packages from source. Thus
+a guaranteed way to reduce build times is to cache the R packages.
+
+Because [CircleCI Workflows][workflows] allow arbitrarily complex build
+pipelines, CircleCI also provides a [complex caching
+mechanism](https://circleci.com/docs/2.0/caching/). If you only have one job, I
+recommend ignoring this complexity entirely. To cache the R packages, add the
+following steps below. The `restore_cache` needs to before the installation step and
+the `save_cache` step after it. The nice thing is that since
+`devtools::install_deps()` always installs updated versions if available, you
+don't have to worry about the packages in the cache becoming outdated.
+
+```
+    steps:
+      - restore_cache:
+          keys:
+            - cache
+
+      - save_cache:
+          key: cache
+          paths:
+            - "/usr/local/lib/R/site-library"
+```
+
+However, this strategy won't work if you are building for different versions of
+R since these will require their own separate caches. Instead, you can create a
+separate cache for each job by adding the job name to the cache key.
+
+```
+    steps:
+      - restore_cache:
+          keys:
+            - cache-{{ .Environment.CIRCLE_JOB }}
+
+      - save_cache:
+          key: cache-{{ .Environment.CIRCLE_JOB }}
+          paths:
+            - "/usr/local/lib/R/site-library"
+```
+
+Lastly, if you wanted the cache to be invalidated every time a specific file is
+updated, e.g. `DESCRIPTION`, you could use the following cache key:
+
+```
+    steps:
+      - restore_cache:
+          keys:
+            - cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "DESCRIPTION" }}
+
+      - save_cache:
+          key: cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "DESCRIPTION" }}
+          paths:
+            - "/usr/local/lib/R/site-library"
+```
+
+## Calculate code coverage with covr and Codecov {#coverage}
+
+To calculate the code coverage of your tests with [covr][] and [Codecov][],
+add the following step to one of the jobs:
+
+[covr]: https://covr.r-lib.org/
+[Codecov]: https://codecov.io/
+
+```
+      - run:
+          name: Calculate code coverage
+          command: r -e 'covr::codecov()'
+```
+
+Fortunately, CircleCI doesn't require any extra configuration! See the [covr
+docs on using Codecov](https://github.com/r-lib/covr#codecov) if you haven't
+used this service before.
+
+## Add a status badge to your README file {#badge}
+
+Once you've started testing your R package on CircleCI, you'll want to share its
+current status in the README file. In the Project Settings, there is a section
+named Status Badges. This let's you choose the output format and, if desired, a
+specific branch. Most likely you'll want Markdown format for the master branch,
+which is shown below:
+
+```
+[![CircleCI](https://circleci.com/gh/<username>/<repository>/tree/master.svg?style=svg)](https://circleci.com/gh/<username>/<repository>/tree/master)
+```
+
+Copy-paste this to the top of your `README.md` file to start sharing.
+
+## Conclusion
+
+In this post, I detailed how to test multiple versions of R with workflows,
+cache the R packages, calculate code coverage with covr and Codecov, and add a
+status badge to your README file. However, using [CircleCI
+Workflows][workflows], it's possible to create much more complex testing
+pipelines if your package needs it. Is there any additional task you'd like to
+know how to accomplish using CircleCI?
+
+If you're interested in how best to use CircleCI for testing R packages, I have
+an open [Pull Request][pr] to add a function `use_circleci()` to the [usethis][]
+package. I'd appreciate any feedback on the default setup this function
+provides.
+
+[pr]: https://github.com/r-lib/usethis/pull/703
+[usethis]: https://github.com/r-lib/usethis
