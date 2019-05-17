@@ -2,6 +2,7 @@ title: "John Blischak's blog"
 description: |
   My tech blog
 output_dir: "public"
+exclude: ["README.md"]
 navbar:
   right:
     - text: "Home"
