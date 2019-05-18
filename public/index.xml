@@ -7,7 +7,16 @@
     <description>My tech blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 17 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 May 2019 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Debug your R package on CircleCI via Docker or SSH</title>
+      <dc:creator>John Blischak</dc:creator>
+      <link>https://blog.jdblischak.com/posts/debug-circleci</link>
+      <description>If your CircleCI build is failing, you can interactively debug it locally or
+remotely.</description>
+      <guid>https://blog.jdblischak.com/posts/debug-circleci</guid>
+      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>CircleCI for R: Workflows, caches, and more</title>
       <dc:creator>John Blischak</dc:creator>

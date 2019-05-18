@@ -1,5 +1,24 @@
 [
   {
+    "path": "posts/debug-circleci/",
+    "title": "Debug your R package on CircleCI via Docker or SSH",
+    "description": "If your CircleCI build is failing, you can interactively debug it locally or\nremotely.",
+    "author": [
+      {
+        "name": "John Blischak",
+        "url": "https://jdblischak.com"
+      }
+    ],
+    "date": "2019-05-18",
+    "categories": [
+      "Software Development with R",
+      "devops",
+      "debugging"
+    ],
+    "preview": {},
+    "last_modified": "2019-05-18T10:40:19-04:00"
+  },
+  {
     "path": "posts/circleci-for-r-2/",
     "title": "CircleCI for R: Workflows, caches, and more",
     "description": "Enhance your continuous integration tests on CircleCI",
