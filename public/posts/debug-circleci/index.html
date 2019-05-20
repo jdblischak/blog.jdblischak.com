@@ -1361,7 +1361,7 @@ code {
 </ul>
 </nav>
 <hr class="d-toc-separator"/>
-<p>If you’re testing your R package on CircleCI (see my previous posts on the [basic setup][] and [more advanced configuration][]), you’ll inevitably need to debug some issue with the build process. I have previously explained how to debug your R package on [Travis CI via SSH][] and on [AppVeyor via Remote Desktop][]. Fortunately debugging is much easier with CircleCI.</p>
+<p>If you’re testing your R package on CircleCI (see my previous posts on the <a href="../circleci-for-r-1/index.html">basic setup</a> and <a href="../circleci-for-r-2/index.html">more advanced configuration</a>), you’ll inevitably need to debug some issue with the build process. I have previously explained how to debug your R package on <a href="../debug-travis/index.html">Travis CI via SSH</a> and on <a href="../debug-appveyor/index.html">AppVeyor via Remote Desktop</a>. Fortunately debugging is much easier with CircleCI.</p>
 <h2 id="local">Debug locally with Docker</h2>
 <p>If you have Docker installed on your local machine, you can recreate the exact environment locally. Run the command below to enter a Docker container that has your R package copied to the directory <code>/project</code> (this is the directory that CircleCI uses by default):</p>
 <pre><code>

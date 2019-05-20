@@ -18,10 +18,16 @@ categories:
 ---
 
 If you're testing your R package on CircleCI (see my previous posts on the
-[basic setup][] and [more advanced configuration][]), you'll inevitably need to
-debug some issue with the build process. I have previously explained how to
-debug your R package on [Travis CI via SSH][] and on [AppVeyor via Remote
-Desktop][]. Fortunately debugging is much easier with CircleCI.
+[basic setup][circleci-for-r-1] and [more advanced
+configuration][circleci-for-r-2]), you'll inevitably need to debug some issue
+with the build process. I have previously explained how to debug your R package
+on [Travis CI via SSH][debug-travis] and on [AppVeyor via Remote
+Desktop][debug-appveyor]. Fortunately debugging is much easier with CircleCI.
+
+[circleci-for-r-1]: ../circleci-for-r-1/index.html
+[circleci-for-r-2]: ../circleci-for-r-2/index.html
+[debug-travis]: ../debug-travis/index.html
+[debug-appveyor]: ../debug-appveyor/index.html
 
 ## Debug locally with Docker {#local}
 
