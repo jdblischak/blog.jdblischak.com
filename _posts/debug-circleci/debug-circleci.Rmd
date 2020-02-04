@@ -33,11 +33,11 @@ Desktop][debug-appveyor]. Fortunately debugging is much easier with CircleCI.
 
 If you have Docker installed on your local machine, you can recreate the exact
 environment locally. Run the command below to enter a Docker container that has
-your R package copied to the directory `/project` (this is the directory that
+your R package copied to the directory `/root/project/` (this is the directory that
 CircleCI uses by default):
 
 ```
-docker run --rm -it -v <absolute path to R pkg>:/root rocker/verse:3.6.0 bash
+docker run --rm -it -v <absolute path to R pkg>:/root/project/ rocker/verse:3.6.0 bash
 ```
 
 Make sure to use an absolute path to your R package and also to specify `bash`
@@ -45,7 +45,7 @@ as the command to execute (otherwise it starts `R`, and some other rocker
 containers start RStudio Server).
 
 Once you've entered the running Docker container, you first need to run `cd
-project/` to enter your Git repository. Note that these files are not copies;
+/root/project/` to enter your Git repository. Note that these files are not copies;
 they are the files from your local machine mounted as a volume into the Docker
 container. Thus any changes you make will be reflected in the local file system.
 
@@ -102,7 +102,12 @@ could see if someone else was accessing your build.
 
 After SSH is enabled, the build continues. Thus you can simply wait until the
 build progresses to the current error that needs to be debugged, and everything
-will be setup for you.
+will be setup for you. As described above, you'll need to navigate to your
+repository on the remote machine:
+
+```
+cd /root/project/
+```
 
 Lastly, you should have plenty of time for debugging because it will stay
 connected for up to two hours as long as you are logged in.
