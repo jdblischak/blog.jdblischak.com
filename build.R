@@ -26,4 +26,6 @@ if (isAvailable()) {
   tmp <- fs::file_temp()
   dir_copy("public/", tmp)
   viewer(path(tmp, "index.html"))
+} else {
+  browseURL("public/index.html")
 }

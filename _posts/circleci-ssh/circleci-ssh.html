@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
-  <link rel="alternate" type="application/rss+xml" href="https://blog.jdblischak.com/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -20,368 +19,39 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>John Blischak's blog: Posts</title>
+  <title>Automate commits to GitHub from a CircleCI job</title>
+  
+  <meta property="description" itemprop="description" content="Automatically update your documentation or other repository content by&#10;authenticating CircleCI to push commits directly to GitHub"/>
   
   
-  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
-  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2020-02-04"/>
+  <meta property="article:created" itemprop="dateCreated" content="2020-02-04"/>
+  <meta name="article:author" content="John Blischak"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="John Blischak&#39;s blog: Posts"/>
+  <meta property="og:title" content="Automate commits to GitHub from a CircleCI job"/>
   <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Automatically update your documentation or other repository content by&#10;authenticating CircleCI to push commits directly to GitHub"/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="John Blischak&#39;s blog"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="John Blischak&#39;s blog: Posts"/>
-  <meta property="twitter:creator" content="@jdblischak"/>
+  <meta property="twitter:title" content="Automate commits to GitHub from a CircleCI job"/>
+  <meta property="twitter:description" content="Automatically update your documentation or other repository content by&#10;authenticating CircleCI to push commits directly to GitHub"/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories"]}},"value":[{"type":"character","attributes":{},"value":["Automate commits to GitHub from a CircleCI job"]},{"type":"character","attributes":{},"value":["Automatically update your documentation or other repository content by\nauthenticating CircleCI to push commits directly to GitHub\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["02-04-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["devops"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
-  <!--radix_placeholder_navigation_in_header-->
   
-  <script type="application/javascript">
-  
-    window.headroom_prevent_pin = false;
-  
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-  
-      // initialize headroom for banner
-      var header = $('header').get(0);
-      var headerHeight = header.offsetHeight;
-      var headroom = new Headroom(header, {
-        onPin : function() {
-          if (window.headroom_prevent_pin) {
-            window.headroom_prevent_pin = false;
-            headroom.unpin();
-          }
-        }
-      });
-      headroom.init();
-      if(window.location.hash)
-        headroom.unpin();
-      $(header).addClass('headroom--transition');
-  
-      // offset scroll location for banner on hash change
-      // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
-      window.addEventListener("hashchange", function(event) {
-        window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
-      });
-  
-      // responsive menu
-      $('.distill-site-header').each(function(i, val) {
-        var topnav = $(this);
-        var toggle = topnav.find('.nav-toggle');
-        toggle.on('click', function() {
-          topnav.toggleClass('responsive');
-        });
-      });
-  
-      // nav dropdowns
-      $('.nav-dropbtn').click(function(e) {
-        $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
-        $(this).parent().siblings('.nav-dropdown')
-           .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $("body").click(function(e){
-        $('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $(".nav-dropdown").click(function(e){
-        e.stopPropagation();
-      });
-    });
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["circleci-ssh_files/bowser-1.9.3/bowser.min.js","circleci-ssh_files/distill-2.2.21/template.v2.js","circleci-ssh_files/jquery-1.11.3/jquery.min.js","circleci-ssh_files/webcomponents-2.0.0/webcomponents.js","img/circleci-ssh-1.png","img/circleci-ssh-2.png"]}
   </script>
-  
-  <style type="text/css">
-  
-  /* Theme (user-documented overrideables for nav appearance) */
-  
-  .distill-site-nav {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: #455a64;
-    font-size: 15px;
-    font-weight: 300;
-  }
-  
-  .distill-site-nav a {
-    color: inherit;
-    text-decoration: none;
-  }
-  
-  .distill-site-nav a:hover {
-    color: white;
-  }
-  
-  @media print {
-    .distill-site-nav {
-      display: none;
-    }
-  }
-  
-  .distill-site-header {
-  
-  }
-  
-  .distill-site-footer {
-  
-  }
-  
-  
-  /* Site Header */
-  
-  .distill-site-header {
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 3;
-  }
-  
-  .distill-site-header .nav-left {
-    display: inline-block;
-    margin-left: 8px;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header .nav-left {
-      margin-left: 0;
-    }
-  }
-  
-  
-  .distill-site-header .nav-right {
-    float: right;
-    margin-right: 8px;
-  }
-  
-  .distill-site-header a,
-  .distill-site-header .title {
-    display: inline-block;
-    text-align: center;
-    padding: 14px 10px 14px 10px;
-  }
-  
-  .distill-site-header .title {
-    font-size: 18px;
-  }
-  
-  .distill-site-header .logo {
-    padding: 0;
-  }
-  
-  .distill-site-header .logo img {
-    display: none;
-    max-height: 20px;
-    width: auto;
-    margin-bottom: -4px;
-  }
-  
-  .distill-site-header .nav-image img {
-    max-height: 18px;
-    width: auto;
-    display: inline-block;
-    margin-bottom: -3px;
-  }
-  
-  
-  
-  @media screen and (min-width: 1000px) {
-    .distill-site-header .logo img {
-      display: inline-block;
-    }
-    .distill-site-header .nav-left {
-      margin-left: 20px;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 20px;
-    }
-    .distill-site-header .title {
-      padding-left: 12px;
-    }
-  }
-  
-  
-  .distill-site-header .nav-toggle {
-    display: none;
-  }
-  
-  .nav-dropdown {
-    display: inline-block;
-    position: relative;
-  }
-  
-  .nav-dropdown .nav-dropbtn {
-    border: none;
-    outline: none;
-    color: rgba(255, 255, 255, 0.8);
-    padding: 16px 10px;
-    background-color: transparent;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    margin: 0;
-    margin-top: 1px;
-    z-index: 2;
-  }
-  
-  .nav-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 200px;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 4px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    z-index: 1;
-    margin-top: 2px;
-    white-space: nowrap;
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-  
-  .nav-dropdown-content hr {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-dropdown-active {
-    display: block;
-  }
-  
-  .nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
-    color: black;
-    padding: 6px 24px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-  
-  .nav-dropdown-content .nav-dropdown-header {
-    display: block;
-    padding: 5px 24px;
-    padding-bottom: 0;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #999999;
-    white-space: nowrap;
-  }
-  
-  .nav-dropdown:hover .nav-dropbtn {
-    color: white;
-  }
-  
-  .nav-dropdown-content a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  .nav-right .nav-dropdown-content {
-    margin-left: -45%;
-    right: 0;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
-    .distill-site-header a.nav-toggle {
-      float: right;
-      display: block;
-    }
-    .distill-site-header .title {
-      margin-left: 0;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 0;
-    }
-    .distill-site-header {
-      overflow: hidden;
-    }
-    .nav-right .nav-dropdown-content {
-      margin-left: 0;
-    }
-  }
-  
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header.responsive {position: relative;}
-    .distill-site-header.responsive a.nav-toggle {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    .distill-site-header.responsive a,
-    .distill-site-header.responsive .nav-dropdown {
-      display: block;
-      text-align: left;
-    }
-    .distill-site-header.responsive .nav-left,
-    .distill-site-header.responsive .nav-right {
-      width: 100%;
-    }
-    .distill-site-header.responsive .nav-dropdown {float: none;}
-    .distill-site-header.responsive .nav-dropdown-content {position: relative;}
-    .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
-      display: block;
-      width: 100%;
-      text-align: left;
-    }
-  }
-  
-  /* Site Footer */
-  
-  .distill-site-footer {
-    width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    z-index: 3;
-    margin-top: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    text-align: center;
-  }
-  
-  /* Headroom */
-  
-  d-title {
-    padding-top: 6rem;
-  }
-  
-  @media print {
-    d-title {
-      padding-top: 4rem;
-    }
-  }
-  
-  .headroom {
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  .headroom--transition {
-    transition: all .4s ease-in-out;
-  }
-  
-  .headroom--unpinned {
-    top: -100px;
-  }
-  
-  .headroom--pinned {
-    top: 0;
-  }
-  
-  </style>
-  
-  <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
-  <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
-  <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
+  <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
   <!--radix_placeholder_distill-->
   
@@ -1257,504 +927,184 @@
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-  <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
-  <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
-  <script src="site_libs/distill-2.2.21/template.v2.js"></script>
+  <script src="circleci-ssh_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="circleci-ssh_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="circleci-ssh_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="circleci-ssh_files/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
-  <style type="text/css">
-  /*
-  Custom themes for blog.jdblischak.com
-  
-  https://rstudio.github.io/distill/website.html#theming
-  */
-  
-  .distill-site-nav {
-    background-color: #543a54;
-  }
-  
-  .distill-site-footer a {
-    text-decoration: underline;
-  }
-  
-  /*
-  This is the same color (#f5f5f5; white smoke) used in standard R Markdown code
-  chunks.
-  */
-  code {
-    background-color: RGB(245, 245, 245);
-  }
-  
-  </style>
   <!--/radix_placeholder_site_in_header-->
 
-  <link rel="stylesheet" href="static/styles.css" type="text/css"/>
 
 </head>
 
-<body class="layout-listing">
+<body>
 
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Posts","authors":[]}
+{"title":"Automate commits to GitHub from a CircleCI job","description":"Automatically update your documentation or other repository content by\nauthenticating CircleCI to push commits directly to GitHub","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-02-04T00:00:00.000-05:00","citationText":"Blischak, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
 <!--radix_placeholder_navigation_before_body-->
-<header class="header header--fixed" role="banner">
-<nav class="distill-site-nav distill-site-header">
-<div class="nav-left">
-<a href="index.html" class="title">John Blischak's blog</a>
-</div>
-<div class="nav-right">
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="index.xml">
-<i class="fa fa-rss"></i>
-</a>
-<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
-</div>
-</nav>
-</header>
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
-<!--radix_placeholder_article_listing-->
-
-<style type="text/css">
-
-/* Styles for listing layout (hide title) */
-.layout-listing d-title, .layout-listing .d-title {
-  display: none;
-}
-
-/* Styles for posts lists (not auto-injected) */
-
-
-.posts-with-sidebar {
-  padding-left: 45px;
-  padding-right: 45px;
-}
-
-.posts-list .description h2,
-.posts-list .description p {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-}
-
-.posts-list .description h2 {
-  font-weight: 700;
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.posts-list h2.post-tag {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding-bottom: 12px;
-}
-.posts-list {
-  margin-top: 60px;
-  margin-bottom: 24px;
-}
-
-.posts-list .post-preview {
-  text-decoration: none;
-  overflow: hidden;
-  display: block;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 24px 0;
-}
-
-.post-preview-last {
-  border-bottom: none !important;
-}
-
-.posts-list .posts-list-caption {
-  grid-column: screen;
-  font-weight: 400;
-}
-
-.posts-list .post-preview h2 {
-  margin: 0 0 6px 0;
-  line-height: 1.2em;
-  font-style: normal;
-  font-size: 24px;
-}
-
-.posts-list .post-preview p {
-  margin: 0 0 12px 0;
-  line-height: 1.4em;
-  font-size: 16px;
-}
-
-.posts-list .post-preview .thumbnail {
-  box-sizing: border-box;
-  margin-bottom: 24px;
-  position: relative;
-  max-width: 500px;
-}
-.posts-list .post-preview img {
-  width: 100%;
-  display: block;
-}
-
-.posts-list .metadata {
-  font-size: 12px;
-  line-height: 1.4em;
-  margin-bottom: 18px;
-}
-
-.posts-list .metadata > * {
-  display: inline-block;
-}
-
-.posts-list .metadata .publishedDate {
-  margin-right: 1em;
-}
-
-.posts-list .metadata .tags {
-  margin-top: 1em;
-}
-
-.posts-list .tags .tag {
-  color: rgba(0,0,0,0.67);
-  padding: 0.3em 0.5em;
-  margin: 0;
-  font-size: 80%;
-  border: 1px solid rgba(0,0,0,0.4);
-  border-radius: 3px;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-.posts-list img {
-  opacity: 1;
-}
-
-.posts-list img[data-src] {
-  opacity: 0;
-}
-
-.posts-more {
-  clear: both;
-}
-
-
-.posts-sidebar {
-  font-size: 16px;
-}
-
-.posts-sidebar h3 {
-  font-size: 16px;
-  margin-top: 0;
-  margin-bottom: 0.5em;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-.sidebar-section {
-  margin-bottom: 30px;
-}
-
-.categories ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.categories li {
-  color: rgba(0, 0, 0, 0.8);
-  margin-bottom: 0;
-}
-
-.categories li>a {
-  border-bottom: none;
-}
-
-.categories li>a:hover {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-}
-
-.categories .active {
-  font-weight: 600;
-}
-
-.categories .category-count {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-
-@media(min-width: 768px) {
-  .posts-list .post-preview h2 {
-    font-size: 26px;
-  }
-  .posts-list .post-preview .thumbnail {
-    float: right;
-    width: 35%;
-    margin-bottom: 0;
-  }
-  .posts-list .post-preview .description {
-    float: left;
-    width: 45%;
-  }
-  .posts-list .post-preview .metadata {
-    float: left;
-    width: 15%;
-    margin-top: 8px;
-  }
-  .posts-list .post-preview p {
-    margin: 0 0 12px 0;
-    line-height: 1.5em;
-    font-size: 16px;
-  }
-  .posts-with-sidebar .posts-list {
-    float: left;
-    width: 72%;
-  }
-  .posts-with-sidebar .posts-sidebar {
-    float: right;
-    width: 20%;
-    margin-top: 60px;
-    padding-top: 24px;
-    padding-bottom: 24px;
-  }
-}
-
-.downlevel .posts-list .post-preview {
-  color: inherit;
-}
-
-</style>
-
-<script type="application/javascript">
-
-function init_posts_list() {
-
-  function load_image(img) {
-    var src = $(img).attr('data-src');
-    if (src) {
-      $(img).attr('src', src);
-      $(img).load(function() {
-        img.removeAttribute('data-src');
-      });
-    }
-  }
-
-  function set_posts_visible(posts, visible) {
-    if (visible) {
-
-      // show bottom border by default
-      $(posts).removeClass('post-preview-last');
-
-      // apply limits if need be
-      var max_posts = 25;
-      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
-      if (apply_limits && posts.length > max_posts) {
-        posts = $(posts).slice(0, max_posts);
-      } else {
-        $('.posts-more a').addClass('hidden');
-      }
-
-      // apply last style
-      $(posts.slice(-1)[0]).addClass('post-preview-last');
-
-      $(posts).removeClass('hidden');
-      $(posts).find('img[data-src]').each(function(i, img) {
-        load_image(img);
-      });
-    } else {
-      $(posts).addClass('hidden');
-    }
-  }
-
-  function apply_hash_filter() {
-
-    // clear active state
-    $('.categories .active').removeClass('active');
-
-    // mark all posts invisible to start
-    set_posts_visible($('.posts-list').children('a'), false);
-
-    // if we have a hash filter
-    if (window.location.hash) {
-
-      // mark posts that match the category visible
-      var page_category = window.location.hash.replace("#", "");
-      var posts = $('.post-metadata').map(function(idx, script) {
-        var metadata = $.parseJSON($(script).html());
-        var post = null;
-        $.each(metadata.categories, function(idx, category) {
-          category = category.replace(/ /g,"_");
-          if (category == page_category) {
-            post = $(script).parent().get();
-            return false;
-          }
-        });
-        return post;
-      });
-      set_posts_visible(posts, true);
-
-      // mark the hash active
-      $('.categories li>a[href="' + window.location.hash + '"]').addClass('active');
-
-    } else {
-
-      // no hash filter, make all posts visible (subject to max display)
-      set_posts_visible($('.posts-list').children(), true);
-
-    }
-  }
-
-  // more articles
-  function apply_post_limits(apply) {
-    if (apply) {
-      $('.posts-container').addClass('posts-apply-limit');
-      $('.posts-more a').removeClass('hidden');
-    } else {
-      $('.posts-container').removeClass('posts-apply-limit');
-      $('.posts-more a').addClass('hidden');
-    }
-  }
-
-  // hash filter handling
-  apply_hash_filter();
-  $(window).on('hashchange',function() {
-    apply_post_limits(true);
-    apply_hash_filter();
-  });
-
-  // more articles link
-  $('.posts-more a').click(function(e) {
-    e.preventDefault();
-    apply_post_limits(false);
-    apply_hash_filter();
-    return false;
-  });
-
-}
-
-</script>
-
-
-
-<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
-<div class="posts-list">
-<h1 class="posts-list-caption">Posts</h1>
-<a href="posts/circleci-ssh/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["devops"]}</script>
-<div class="metadata">
-<div class="publishedDate">Feb. 4, 2020</div>
-</div>
-<div class="thumbnail"></div>
-<div class="description">
-<h2>Automate commits to GitHub from a CircleCI job</h2>
-<p>Automatically update your documentation or other repository content by
-authenticating CircleCI to push commits directly to GitHub</p>
-</div>
-</a>
-<a href="posts/debug-circleci/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops","debugging"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 18, 2019</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Debug your R package on CircleCI via Docker or SSH</h2>
-<p>If your CircleCI build is failing, you can interactively debug it locally or
-remotely.</p>
-</div>
-</a>
-<a href="posts/circleci-for-r-2/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 17, 2019</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>CircleCI for R: Workflows, caches, and more</h2>
-<p>Enhance your continuous integration tests on CircleCI</p>
-</div>
-</a>
-<a href="posts/debug-appveyor/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops","debugging"]}</script>
-<div class="metadata">
-<div class="publishedDate">April 4, 2019</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Debug your R package on AppVeyor via Remote Desktop</h2>
-<p>If you can't replicate the error locally, you can access an AppVeyor server
-via Remote Desktop to interactively debug your R package.</p>
-</div>
-</a>
-<a href="posts/debug-travis/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops","debugging"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 26, 2019</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Debug your R package on Travis CI via SSH</h2>
-<p>If you can't replicate the error locally, you can SSH into a Travis server to
-interactively debug your R package.</p>
-</div>
-</a>
-<a href="posts/circleci-for-r-1/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 25, 2019</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>CircleCI for R: Motivation and basic setup</h2>
-<p>If you like using Docker, you should try out CircleCI for testing your
-R packages and projects.</p>
-</div>
-</a>
-</div>
-<div class="posts-sidebar">
-<div class="sidebar-section categories">
-<h3>Categories</h3>
-<ul>
-<li>
-<a href="#debugging">debugging</a>
-<span class="category-count">(3)</span>
-</li>
-<li>
-<a href="#devops">devops</a>
-<span class="category-count">(6)</span>
-</li>
-<li>
-<a href="#Software_Development_with_R">Software Development with R</a>
-<span class="category-count">(5)</span>
-</li>
-</ul>
-</div>
-</div>
-<div class="posts-more">
-<a href="#">More articles &raquo;</a>
-</div>
-</div>
-<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>Posts</h1>
-
+<h1>Automate commits to GitHub from a CircleCI job</h1>
+<p>Automatically update your documentation or other repository content by authenticating CircleCI to push commits directly to GitHub</p>
 </div>
 
+<div class="d-byline">
+  John Blischak <a href="https://jdblischak.com" class="uri">https://jdblischak.com</a> 
+  
+<br/>02-04-2020
+</div>
 
 <div class="d-article">
-
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#initial-setup">Initial setup</a></li>
+<li><a href="#overview-and-terminology">Overview and terminology</a></li>
+<li><a href="#generate-one-off-ssh-keys">Generate one-off SSH keys</a></li>
+<li><a href="#add-the-public-key-to-github">Add the public key to GitHub</a></li>
+<li><a href="#add-the-private-key-to-circleci">Add the private key to CircleCI</a></li>
+<li><a href="#add-the-fingerprint-to-configuration-file">Add the fingerprint to configuration file</a></li>
+<li><a href="#push-to-github">Push to GitHub</a></li>
+<li><a href="#delete-the-local-ssh-key-files">Delete the local SSH key files</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#links-to-further-documentation">Links to further documentation</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<p>Continuous integration (CI) is traditionally used for testing software and also optionally deploying the code to be executed on a different server. However, I sometimes want to be able to have the CI job commit changes back to the Git repository that initially triggered the CI build. For example, if I have automated a data analysis, I want the latest version of the report to be committed back the repository. Another example is committing the latest version of the documentation (e.g. to the gh-pages branch of a GitHub repository).</p>
+<p>As I mentioned in my <a href="../circleci-for-r-1/">first post on using CircleCI</a>, I have found that configuring CircleCI to commit back to a Git repository to be easier compared to other CI platforms. Below I detail the steps required.</p>
+<h2 id="initial-setup">Initial setup</h2>
+<p>This post assumes you already have already done the following:</p>
+<ol type="1">
+<li>Created a GitHub repository</li>
+<li>Activated CI builds for the repository on CircleCI</li>
+</ol>
+<p>If you haven’t done this, see the CircleCI documentation <a href="https://circleci.com/docs/2.0/getting-started/">Getting Started</a>.</p>
+<h2 id="overview-and-terminology">Overview and terminology</h2>
+<p>The overall goal is to automatically save some artifact generated by a CI job (e.g. report, plot, documentation).<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> To accomplish this, the main challenge is authenticating the CI server to be able to commit to your repository on your behalf.</p>
+<p>There are various options for authentication. One would be to use a Personal Access Token (PAT), either for your own account or a bot account. However, I dislike this option because it is not possible to limit the scope of a PAT to a single repository. In other words, if a PAT with write permissions is exposed, it gives write access to every repository owned by that account. Thus a preferred option is to use SSH keys for authentication.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>Frustratingly, the documentation can get confusing because GitHub and CircleCI use different terminology when discussing SSH keys. For me it was helpful to always think in terms of “read” versus “write” access.</p>
+<p>When you activate CircleCI to build a GitHub repository, it automatically adds a key to the GitHub repository. In fact, you probably received an email from GitHub with the title “A new public key was added to &lt;account&gt;/&lt;repository&gt;” alerting you to the fact that this happened. You can navigate to view the key on GitHub by going to Settings -&gt; Deploy Keys. Note that this key is named “CircleCI”, and that it is “Read-only”. This means that CircleCI currently only has permission to read from the repository. If you add a <code>git push</code> to your CI job, it will fail with an authentication error. In the CircleCI documentation, they refer to this key as a “deploy key”, which is confusing since GitHub labels all repository-specific keys as “deploy keys”.</p>
+<p>Thus you need to generate a key that has write access and register it with GitHub. CircleCI refers to such a key as a “user key”. While you could use the SSH key associated with your GitHub user account (assuming you have one), I strongly advise against this. This would be even worse than using a PAT, because at least a PAT can be limited to certain scopes (e.g. only public repositories). If your user SSH key is exposed, an attacker would have access to all of your public and private repositories. Instead, below I’ll show you how to create a one-off SSH key that you will only use with one repository.</p>
+<p>The table below summarizes the terminology used by GitHub and CircleCI for various types of SSH keys.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Permissions</th>
+<th>GitHub</th>
+<th>CircleCI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Read</td>
+<td>Read-only</td>
+<td>Deploy key</td>
+</tr>
+<tr class="even">
+<td>Read, Write</td>
+<td>Read/write</td>
+<td>User key</td>
+</tr>
+</tbody>
+</table>
+<h2 id="generate-one-off-ssh-keys">Generate one-off SSH keys</h2>
+<p>First you need to create some one-off SSH keys that will only be used by CircleCI to authenticate with this one GitHub repository. You can follow the standard instructions from GitHub for <a href="https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generating a new SSH key</a>. However, there is one main difference. You will immediately delete the key from your local computer afterwards, thus you want to make sure you don’t break your current setup. If you already have SSH keys on your machine, they are likely in the default location: <code>~/.ssh/</code>. You can use the flag <code>-f</code> to specify the location of the output key files. Run the commands below to generate new SSH keys.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> When asked for a passphrase, press enter twice to not add a passphrase to the key.</p>
+<pre><code>
+mkdir /tmp/ssh-temp/
+ssh-keygen -t rsa -b 4096 -C &quot;CircleCI User Key&quot; -f /tmp/ssh-temp/key</code></pre>
+<p>This created the private key <code>/tmp/ssh-temp/key</code> and the public key <code>/tmp/ssh-temp/key.pub</code>.</p>
+<h2 id="add-the-public-key-to-github">Add the public key to GitHub</h2>
+<p>Next navigate to your repository on GitHub. Click on Settings and then select “Deploy keys” from the menu on the left. You should see that there is already a “Read-only” key named “CircleCI”. Click “Add deploy key”. You can name it whatever you like. I use “CircleCI User Key” to be consistent with the CircleCI documentation. Then copy-paste the contents of the public key <code>/tmp/ssh-temp/key.pub</code> into the Key field. Lastly, check the box “Allow write access” so that CircleCI can push back to GitHub.</p>
+<figure>
+<img src="img/circleci-ssh-1.png" alt="Deploy keys for GitHub repository" /><figcaption>Deploy keys for GitHub repository</figcaption>
+</figure>
+<h2 id="add-the-private-key-to-circleci">Add the private key to CircleCI</h2>
+<p>Next navigate to the project on CircleCI. The URL follows the pattern: <code>https://circleci.com/gh/&lt;account&gt;/&lt;repo&gt;</code>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p>Don’t click on the “Settings” in the menu on the left. That is for user settings. Instead, click on the gear icon in the top right. Then choose “SSH Permissions” and “Add SSH key”. You can put whatever you like in the Hostname field to remind you that this key is for pushing to GitHub. Copy-paste the private key in <code>/tmp/ssh-temp/key</code> into the field “Private Key”. As the name implies, it is really important that you do not expose this key.</p>
+<figure>
+<img src="img/circleci-ssh-2.png" alt="Add private key to CircleCI" /><figcaption>Add private key to CircleCI</figcaption>
+</figure>
+<h2 id="add-the-fingerprint-to-configuration-file">Add the fingerprint to configuration file</h2>
+<p>After adding the private key to CircleCI, you will see it displays a fingerprint for the key. You will need to add this key to the configuration file <code>.circleci/config.yml</code> in your repository using the step <code>add_ssh_keys</code>. Copy-paste the fingerprint into an <code>add_ssh_keys</code> step as shown below:</p>
+<pre><code>
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - &quot;&lt;copy-paste-fingerprint-here&gt;&quot;
+      - run:</code></pre>
+<h2 id="push-to-github">Push to GitHub</h2>
+<p>Now that CircleCI has permission to push to GitHub, you’ll need to add a step to do this. It can look something like below. It configures Git, commits any changes to all tracked files, and then pushes to GitHub. The <code>--allow-empty</code> prevents an error in the case where no files were changed. The <code>[skip ci]</code> prevents the job from running in an infinite loop due to constantly re-triggering the CI build.</p>
+<pre><code>
+      - run:
+          name: Commit to GitHub
+          command: |
+            git config user.email &quot;&lt;insert-the-email-you-use-with-github&gt;&quot;
+            git config user.name &quot;CircleCI Job&quot;
+            git commit --allow-empty -am &quot;Automatic commit from CircleCI [skip ci]&quot;
+            git push origin master</code></pre>
+<p>Now you probably don’t want to always attempt to push to GitHub. For example, when CI builds are triggered by a Pull Request. The updated version below requires a specific CircleCI user account and that it is not a Pull Request. Otherwise it doesn’t attempt to commit.</p>
+<pre><code>
+      - run:
+          name: Commit to GitHub
+          command: |
+            if [[ &quot;${CIRCLE_USERNAME}&quot; = &quot;&lt;account&gt;&quot; &amp;&amp; -z &quot;${CIRCLE_PULL_REQUEST}&quot;]]
+            then
+              echo &quot;Committing to GitHub&quot;
+              git config user.email &quot;&lt;insert-the-email-you-use-with-github&gt;&quot;
+              git config user.name &quot;CircleCI Job&quot;
+              git commit --allow-empty -am &quot;Automatic commit from CircleCI [skip ci]&quot;
+              git push origin master
+            else
+              echo &quot;Not committing to GitHub&quot;
+            fi</code></pre>
+<p>Commit this update to the local configuration file and then push to GitHub. This time the build should result in a new commit to the repository.</p>
+<h2 id="delete-the-local-ssh-key-files">Delete the local SSH key files</h2>
+<p>Once you’ve confirmed everything is working as expected, delete the one-off SSH keys from your local machine:</p>
+<pre><code>
+rm -r /tmp/ssh-temp/</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>Now any time you want CircleCI to automatically update the results of an analysis or documentation files for a GitHub repository, you can follow these steps to setup the authentication.</p>
+<p>Lastly, I’ll note that a powerful combination is to <a href="https://circleci.com/docs/2.0/workflows/#scheduling-a-workflow">schedule the workflow</a> to be run on CircleCI at regular intervals. Then the repository will stay up-to-date without requiring any intervention.</p>
+<h2 id="links-to-further-documentation">Links to further documentation</h2>
+<ul>
+<li>GitHub
+<ul>
+<li><a href="https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key</a></li>
+</ul></li>
+<li>CircleCI
+<ul>
+<li><a href="https://circleci.com/docs/2.0/add-ssh-key/">Adding an SSH Key to CircleCI</a></li>
+<li><a href="https://circleci.com/docs/2.0/gh-bb-integration/">GitHub and Bitbucket Integration</a>
+<ul>
+<li><a href="https://circleci.com/docs/2.0/gh-bb-integration/#deployment-keys-and-user-keys">Deployment Keys and User Keys</a></li>
+</ul></li>
+<li><a href="https://circleci.com/blog/deploying-documentation-to-github-pages-with-continuous-integration/">Deploying documentation to GitHub Pages with continuous integration</a></li>
+</ul></li>
+<li>My previous posts on CircleCI
+<ul>
+<li><a href="../circleci-for-r-1/">CircleCI for R: Motivation and basic setup</a></li>
+<li><a href="../circleci-for-r-2/">CircleCI for R: Workflows, caches, and more</a></li>
+</ul></li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Version control purists will object to saving generated content in a version control repository. And sure, if you are a part of a team working on a large enterprise codebase, you would be wise to save generated content on a separate server for sharing with others. But for individuals or small teams with fewer resources, saving generated content in the original Git repository is a practical choice with plenty of benefits: keep everything in one place, serve HTML files with GitHub Pages, record history of changes, etc.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>This assumes you will follow my directions below to create one-off keys only to be used for this task. If you were to use the keys that you use to authenticate with GitHub, e.g. when you run <code>git push</code>, this would of course give an attacker access to all of your GitHub repositories.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>The comment passed to <code>-C</code> can be whatever you like. It’s purpose is to remind you what the key is for.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>For convenience, I recommend the Firefox addon <a href="https://addons.mozilla.org/en-US/firefox/addon/open-circleci-workflows/">Open CircleCI Workflows</a>. Whenever you have a GitHub repository open in your browser, it inserts a button with the CircleCI logo into the address bar. Clicking on this button takes you directly to the project on CircleCI.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1766,21 +1116,9 @@ R packages and projects.</p>
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom">
-<h3 id="updates-and-corrections">Corrections</h3>
-<p>If you see mistakes or want to suggest changes, please <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/new">create an issue</a> on the source repository.</p>
-<h3 id="reuse">Reuse</h3>
-<p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/jdblischak/blog.jdblischak.com">https://github.com/jdblischak/blog.jdblischak.com</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
-</div>
+<div class="appendix-bottom"></div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
-<div class="distill-site-nav distill-site-footer">
-<p>
-  &#169; 2019
-  <a href="https://jdblischak.com"> John Blischak</a>,
-  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY</a>
-</p>
-</div>
 <!--/radix_placeholder_navigation_after_body-->
 
 </body>

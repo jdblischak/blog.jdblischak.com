@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/circleci-ssh/",
+    "title": "Automate commits to GitHub from a CircleCI job",
+    "description": "Automatically update your documentation or other repository content by\nauthenticating CircleCI to push commits directly to GitHub",
+    "author": [
+      {
+        "name": "John Blischak",
+        "url": "https://jdblischak.com"
+      }
+    ],
+    "date": "2020-02-04",
+    "categories": [
+      "devops"
+    ],
+    "preview": {},
+    "last_modified": "2020-02-04T13:36:13-05:00"
+  },
+  {
     "path": "posts/debug-circleci/",
     "title": "Debug your R package on CircleCI via Docker or SSH",
     "description": "If your CircleCI build is failing, you can interactively debug it locally or\nremotely.",
@@ -16,7 +33,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2019-05-20T09:41:47-04:00"
+    "last_modified": "2020-02-03T11:56:41-05:00"
   },
   {
     "path": "posts/circleci-for-r-2/",
@@ -34,7 +51,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2019-05-17T11:16:35-04:00"
+    "last_modified": "2020-02-03T15:32:28-05:00"
   },
   {
     "path": "posts/debug-appveyor/",
@@ -90,6 +107,6 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2019-03-25T12:17:05-04:00"
+    "last_modified": "2020-02-03T15:32:27-05:00"
   }
 ]

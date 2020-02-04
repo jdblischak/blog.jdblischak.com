@@ -10,15 +10,19 @@
   </url>
   <url>
     <loc>https://blog.jdblischak.com/README.html</loc>
-    <lastmod>2019-05-17T13:29:29-04:00</lastmod>
+    <lastmod>2020-02-03T11:47:00-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.jdblischak.com/posts/circleci-ssh/</loc>
+    <lastmod>2020-02-04T13:36:13-05:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/debug-circleci/</loc>
-    <lastmod>2019-05-20T09:41:47-04:00</lastmod>
+    <lastmod>2020-02-03T11:56:41-05:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/circleci-for-r-2/</loc>
-    <lastmod>2019-05-17T11:16:35-04:00</lastmod>
+    <lastmod>2020-02-03T15:32:28-05:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/debug-appveyor/</loc>
@@ -30,6 +34,6 @@
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/circleci-for-r-1/</loc>
-    <lastmod>2019-03-25T12:17:05-04:00</lastmod>
+    <lastmod>2020-02-03T15:32:27-05:00</lastmod>
   </url>
 </urlset>

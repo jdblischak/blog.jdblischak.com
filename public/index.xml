@@ -7,7 +7,16 @@
     <description>My tech blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 18 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 04 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Automate commits to GitHub from a CircleCI job</title>
+      <dc:creator>John Blischak</dc:creator>
+      <link>https://blog.jdblischak.com/posts/circleci-ssh</link>
+      <description>Automatically update your documentation or other repository content by
+authenticating CircleCI to push commits directly to GitHub</description>
+      <guid>https://blog.jdblischak.com/posts/circleci-ssh</guid>
+      <pubDate>Tue, 04 Feb 2020 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Debug your R package on CircleCI via Docker or SSH</title>
       <dc:creator>John Blischak</dc:creator>
