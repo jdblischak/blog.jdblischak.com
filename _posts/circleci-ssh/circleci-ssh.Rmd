@@ -252,7 +252,7 @@ to your account.
 
     If you want to create a user key, you can automate this even more using the
     R package [ropenscilabs/circle][circle] developed by [Patrick
-    Schratz][pat-s]. It requires some initial setup: 1) generate a CircleCI PAT
+    Schratz][pat-s]. It requires some initial setup: 1) generate a CircleCI API key
     and save it in `~/.Renviron` as `R_CIRCLE`, and 2) generate a GitHub PAT
     and save it in `~/.Renviron` as `GITHUB_PAT`. Then the user key can be
     created with the function `use_circle_deploy()`.
