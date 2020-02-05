@@ -50,48 +50,28 @@ everything in one place, serve HTML files with GitHub Pages, record history of
 changes, etc.] To accomplish this, the main challenge is authenticating the CI
 server to be able to commit to your repository on your behalf.
 
-There are various options for authentication. One would be to use a Personal
-Access Token (PAT), either for your own account or a bot account. However, I
-dislike this option because it is not possible to limit the scope of a PAT to a
-single repository. In other words, if a PAT with write permissions is exposed,
-it gives write access to every repository owned by that account. Thus a
-preferred option is to use SSH keys for authentication.^[This assumes you will
-follow my directions below to create one-off keys only to be used for this task.
-If you were to use the keys that you use to authenticate with GitHub, e.g. when
-you run `git push`, this would of course give an attacker access to all of your
-GitHub repositories.]
+In this post, I will detail how to setup an SSH deploy key with write access to
+your repository. I recommend this method because it is straight-forward and
+secure. If your private key gets exposed (e.g. accidentially printing it in a CI
+log), an attacker would only gain access to that one repository. In a later
+section, I briefly explain [alternative authentication
+options](#alternative-authentication-options).
 
-Frustratingly, the documentation can get confusing because GitHub and CircleCI
-use different terminology when discussing SSH keys. For me it was helpful to
-always think in terms of "read" versus "write" access.
+You already have one deploy key setup for your repository. When you activate
+CircleCI to build a GitHub repository, it automatically adds a key to the GitHub
+repository. In fact, you probably received an email from GitHub with the title
+"A new public key was added to &lt;account&gt;/&lt;repository&gt;" alerting you
+to the fact that this happened. You can navigate to view the key on GitHub by
+going to Settings -> Deploy Keys. Note that this key is named "CircleCI".
+Importantly, it is "Read-only". This means that CircleCI currently only has
+permission to read from the repository. If you add a `git push` to your CI job,
+it will fail with an authentication error.
 
-When you activate CircleCI to build a GitHub repository, it automatically adds a
-key to the GitHub repository. In fact, you probably received an email from
-GitHub with the title "A new public key was added to
-&lt;account&gt;/&lt;repository&gt;" alerting you to the fact that this happened.
-You can navigate to view the key on GitHub by going to Settings -> Deploy Keys.
-Note that this key is named "CircleCI", and that it is "Read-only". This means
-that CircleCI currently only has permission to read from the repository. If you
-add a `git push` to your CI job, it will fail with an authentication error. In
-the CircleCI documentation, they refer to this key as a "deploy key", which is
-confusing since GitHub labels all repository-specific keys as "deploy keys".
-
-Thus you need to generate a key that has write access and register it with
-GitHub. CircleCI refers to such a key as a "user key". While you could use the
-SSH key associated with your GitHub user account (assuming you have one), I
-strongly advise against this. This would be even worse than using a PAT, because
-at least a PAT can be limited to certain scopes (e.g. only public repositories).
-If your user SSH key is exposed, an attacker would have access to all of your
-public and private repositories. Instead, below I'll show you how to create a
-one-off SSH key that you will only use with one repository.
-
-The table below summarizes the terminology used by GitHub and CircleCI for
-various types of SSH keys.
-
-Permissions | GitHub     | CircleCI
------------ | ---------- | ----------
-Read        | Read-only  | Deploy key
-Read, Write | Read/write | User key
+Thus you need to generate a new pair of SSH keys. You will add the public key to
+your GitHub repository as a deploy key with write access. Next you will
+add the private key to the corresponding project on CircleCI. Lastly, you
+will update the CircleCI configuration file so that it pushes to GitHub. Each
+of these steps is explained below.
 
 ## Generate one-off SSH keys
 
@@ -101,11 +81,14 @@ standard instructions from GitHub for [generating a new SSH
 key][github-ssh-key]. However, there is one main difference. You will
 immediately delete the key from your local computer afterwards, thus you want to
 make sure you don't break your current setup. If you already have SSH keys on
-your machine, they are likely in the default location: `~/.ssh/`. You can use
-the flag `-f` to specify the location of the output key files. Run the commands
-below to generate new SSH keys.^[The comment passed to `-C` can be whatever you
-like. It's purpose is to remind you what the key is for.] When asked for a
-passphrase, press enter twice to not add a passphrase to the key.
+your machine, they are likely in the default location: `~/.ssh/`. ^[**WARNING:
+Do not be tempted to use your existing SSH keys.** If an SSH key linked to your
+GitHub account is exposed, an attacker would have access to all of your public
+and private repositories.] You can use the flag `-f` to specify the location of
+the output key files. Run the commands below to generate new SSH keys.^[The
+comment passed to `-C` can be whatever you like. It's purpose is to remind you
+what the key is for.] When asked for a passphrase, press enter twice to not add
+a passphrase to the key.
 
 ```
 mkdir /tmp/ssh-temp/
@@ -115,17 +98,33 @@ ssh-keygen -t rsa -b 4096 -C "CircleCI User Key" -f /tmp/ssh-temp/key
 This created the private key `/tmp/ssh-temp/key` and the public key
 `/tmp/ssh-temp/key.pub`.
 
+In order for the key to work, it must be in [PEM format][pem]. Confirm this by
+running the code below. The first line of the private key field must be
+`-----BEGIN RSA PRIVATE KEY-----`.
+
+```
+head -n 1 /tmp/ssh-temp/key
+```
+
+If your version of `ssh-keygen` didn't produce that line verbatim, delete the
+keys and re-run the command with the additional flag `-m PEM`.
+
+[pem]: https://discuss.circleci.com/t/adding-ssh-keys-fails/7747/24
+
 ## Add the public key to GitHub
 
 Next navigate to your repository on GitHub. Click on Settings and then select
 "Deploy keys" from the menu on the left. You should see that there is already a
 "Read-only" key named "CircleCI". Click "Add deploy key". You can name it
-whatever you like. I use "CircleCI User Key" to be consistent with the CircleCI
-documentation. Then copy-paste the contents of the public key
-`/tmp/ssh-temp/key.pub` into the Key field. Lastly, check the box "Allow write
-access" so that CircleCI can push back to GitHub.
+whatever you like.^[In the screenshot below, you can see that I named it
+"CircleCI User Key". This is because at the time I was confused by the CircleCI
+documentation. It is a deploy key since it is associated with a single
+repository. A user key is one that is assoiciated with a user account.] Then
+copy-paste the contents of the public key `/tmp/ssh-temp/key.pub` into the Key
+field. Lastly, check the box "Allow write access" so that CircleCI can push back
+to GitHub.
 
-![Deploy keys for GitHub repository](img/circleci-ssh-1.png)
+![Deploy keys for GitHub repository. The top one is the default Read-only deploy key added automatically by CircleCI. The bottom one is the new Read/write deploy key.](img/circleci-ssh-1.png)
 
 ## Add the private key to CircleCI
 
@@ -225,6 +224,41 @@ workflow][circleci-schedule] to be run on CircleCI at regular intervals. Then
 the repository will stay up-to-date without requiring any intervention.
 
 [circleci-schedule]: https://circleci.com/docs/2.0/workflows/#scheduling-a-workflow
+
+## Alternative authentication options
+
+There are alternative options for authentication:
+
+* **GitHub Personal Access Token (PAT)**: You could generate a GitHub PAT,
+either for your own account or a bot account, with the required scope to write
+to your repository (`public_repo` for a public repository, `repo` for a private
+repository). You would then define this as an environment variable in your
+CircleCI build (e.g. `GITHUB_PAT`), which would authenticate you to push to
+your repository using the following URL pattern:
+`https://workflowr:$GITHUB_PAT@github.com/<account>/<repo>.git`. I dislike this
+option because it is not possible to limit the scope of a PAT to a single
+repository. In other words, if a PAT with write permissions is exposed, it gives
+write access to every repository owned by that account.
+
+* **SSH user key**: CircleCI has a convenient option to register a user key.
+In the CircleCI project settings page, choose "Checkout SSH keys" and then
+"Authorize with GitHub". This will add a public key to your GitHub account,
+and CircleCI keeps the private key. Now your CI build will be able to access
+all of your public and private repositories on GitHub. I recommend this option
+if your CI build needs write access to multiple repositories (or read access to
+multiple private repositories). If you only need write access to the one
+repository, it is more secure to use a deploy key since it has limited access
+to your account.
+
+    If you want to create a user key, you can automate this even more using the
+    R package [ropenscilabs/circle][circle] developed by [Patrick
+    Schratz][pat-s]. It requires some initial setup: 1) generate a CircleCI PAT
+    and save it in `~/.Renviron` as `R_CIRCLE`, and 2) generate a GitHub PAT
+    and save it in `~/.Renviron` as `GITHUB_PAT`. Then the user key can be
+    created with the function `use_circle_deploy()`.
+
+[circle]: https://github.com/ropenscilabs/circle
+[pat-s]: https://twitter.com/pjs_228
 
 ## Links to further documentation
 
