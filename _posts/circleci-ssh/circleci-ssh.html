@@ -1075,7 +1075,10 @@ rm -r /tmp/ssh-temp/</code></pre>
 <li><a href="https://circleci.com/docs/2.0/add-ssh-key/">Adding an SSH Key to CircleCI</a></li>
 <li><a href="https://circleci.com/docs/2.0/gh-bb-integration/">GitHub and Bitbucket Integration</a>
 <ul>
-<li><a href="https://circleci.com/docs/2.0/gh-bb-integration/#deployment-keys-and-user-keys">Deployment Keys and User Keys</a></li>
+<li><a href="https://circleci.com/docs/2.0/gh-bb-integration/#deployment-keys-and-user-keys">Deployment Keys and User Keys</a>
+<ul>
+<li><a href="https://github.com/circleci/circleci-docs/pull/4116">My Pull Request to update this section</a></li>
+</ul></li>
 </ul></li>
 <li><a href="https://circleci.com/blog/deploying-documentation-to-github-pages-with-continuous-integration/">Deploying documentation to GitHub Pages with continuous integration</a></li>
 </ul></li>
@@ -1091,7 +1094,7 @@ rm -r /tmp/ssh-temp/</code></pre>
 <li id="fn1" role="doc-endnote"><p>Version control purists will object to saving generated content in a version control repository. And sure, if you are a part of a team working on a large enterprise codebase, you would be wise to save generated content on a separate server for sharing with others. But for individuals or small teams with fewer resources, saving generated content in the original Git repository is a practical choice with plenty of benefits: keep everything in one place, serve HTML files with GitHub Pages, record history of changes, etc.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2" role="doc-endnote"><p><strong>WARNING: Do not be tempted to use your existing SSH keys.</strong> If an SSH key linked to your GitHub account is exposed, an attacker would have access to all of your public and private repositories.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3" role="doc-endnote"><p>The comment passed to <code>-C</code> can be whatever you like. It’s purpose is to remind you what the key is for.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4" role="doc-endnote"><p>In the screenshot below, you can see that I named it “CircleCI User Key”. This is because at the time I was confused by the CircleCI documentation. It is a deploy key since it is associated with a single repository. A user key is one that is assoiciated with a user account.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>In the screenshot below, you can see that I named it “CircleCI User Key”. This is because at the time I was confused by the CircleCI documentation (which I have since <a href="https://github.com/circleci/circleci-docs/pull/4116">fixed</a>). It is a deploy key since it is associated with a single repository. A user key is one that is assoiciated with a user account.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5" role="doc-endnote"><p>For convenience, I recommend the Firefox addon <a href="https://addons.mozilla.org/en-US/firefox/addon/open-circleci-workflows/">Open CircleCI Workflows</a>. Whenever you have a GitHub repository open in your browser, it inserts a button with the CircleCI logo into the address bar. Clicking on this button takes you directly to the project on CircleCI.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>

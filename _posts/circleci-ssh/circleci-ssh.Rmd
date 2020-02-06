@@ -118,11 +118,11 @@ Next navigate to your repository on GitHub. Click on Settings and then select
 "Read-only" key named "CircleCI". Click "Add deploy key". You can name it
 whatever you like.^[In the screenshot below, you can see that I named it
 "CircleCI User Key". This is because at the time I was confused by the CircleCI
-documentation. It is a deploy key since it is associated with a single
-repository. A user key is one that is assoiciated with a user account.] Then
-copy-paste the contents of the public key `/tmp/ssh-temp/key.pub` into the Key
-field. Lastly, check the box "Allow write access" so that CircleCI can push back
-to GitHub.
+documentation (which I have since [fixed][circleci-pr]). It is a deploy key
+since it is associated with a single repository. A user key is one that is
+assoiciated with a user account.] Then copy-paste the contents of the public key
+`/tmp/ssh-temp/key.pub` into the Key field. Lastly, check the box "Allow write
+access" so that CircleCI can push back to GitHub.
 
 ![Deploy keys for GitHub repository. The top one is the default Read-only deploy key added automatically by CircleCI. The bottom one is the new Read/write deploy key.](img/circleci-ssh-1.png)
 
@@ -268,6 +268,7 @@ to your account.
     * [Adding an SSH Key to CircleCI][circleci-add-ssh]
     * [GitHub and Bitbucket Integration][circleci-github]
         * [Deployment Keys and User Keys][circleci-deploy-keys]
+            * [My Pull Request to update this section][circleci-pr]
     * [Deploying documentation to GitHub Pages with continuous integration][circleci-gh-pages]
 * My previous posts on CircleCI
     * [CircleCI for R: Motivation and basic setup][circleci-for-r-1]
@@ -279,5 +280,6 @@ to your account.
 [circleci-for-r-2]: ../circleci-for-r-2/
 [circleci-gh-pages]: https://circleci.com/blog/deploying-documentation-to-github-pages-with-continuous-integration/
 [circleci-github]: https://circleci.com/docs/2.0/gh-bb-integration/
+[circleci-pr]: https://github.com/circleci/circleci-docs/pull/4116
 [circleci-start]: https://circleci.com/docs/2.0/getting-started/
 [github-ssh-key]: https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
