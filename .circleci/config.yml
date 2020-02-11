@@ -12,6 +12,7 @@ jobs:
           name: Installation (APT)
           command: |
             apt-get update
+            apt-get upgrade --yes
             apt-get install --yes \
               git \
               r-cran-bookdown \
@@ -37,6 +38,7 @@ jobs:
               echo "Committing and pushing to GitHub"
               git config --global user.email "jdblischak@gmail.com"
               git config --global user.name "CircleCI Job"
+              git checkout master
               git commit -a --allow-empty -m "Blog built from ${CIRCLE_SHA1} on `date --rfc-3339=s` [skip ci]"
               git push origin master
             else
