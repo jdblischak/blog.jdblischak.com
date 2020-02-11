@@ -92,7 +92,7 @@ a passphrase to the key.
 
 ```
 mkdir /tmp/ssh-temp/
-ssh-keygen -t rsa -b 4096 -C "CircleCI User Key" -f /tmp/ssh-temp/key
+ssh-keygen -t rsa -b 4096 -C "CircleCI Deploy Key with Write Access" -f /tmp/ssh-temp/key
 ```
 
 This created the private key `/tmp/ssh-temp/key` and the public key
@@ -164,7 +164,8 @@ Copy-paste the fingerprint into an `add_ssh_keys` step as shown below:
 ## Push to GitHub
 
 Now that CircleCI has permission to push to GitHub, you'll need to add a step to
-do this. It can look something like below. It configures Git, commits any
+do this. It can look something like below. It configures Git, checks out the
+master branch,^[By default it is in detached HEAD state.] commits any
 changes to all tracked files, and then pushes to GitHub. The `--allow-empty`
 prevents an error in the case where no files were changed. The `[skip ci]`
 prevents the job from running in an infinite loop due to constantly
@@ -176,6 +177,7 @@ re-triggering the CI build.
           command: |
             git config user.email "<insert-the-email-you-use-with-github>"
             git config user.name "CircleCI Job"
+            git checkout master
             git commit --allow-empty -am "Automatic commit from CircleCI [skip ci]"
             git push origin master
 ```
@@ -194,6 +196,7 @@ Otherwise it doesn't attempt to commit.
               echo "Committing to GitHub"
               git config user.email "<insert-the-email-you-use-with-github>"
               git config user.name "CircleCI Job"
+              git checkout master
               git commit --allow-empty -am "Automatic commit from CircleCI [skip ci]"
               git push origin master
             else
@@ -203,6 +206,24 @@ Otherwise it doesn't attempt to commit.
 
 Commit this update to the local configuration file and then push to GitHub. This
 time the build should result in a new commit to the repository.
+
+If you receive an error due to a message such as the one below:
+
+```
+The authenticity of host 'github.com (192.30.253.113)' can't be established.
+RSA key fingerprint is SHA256:<fingerprint>.
+Are you sure you want to continue connecting (yes/no)?
+```
+
+You can bypass it by [manually adding GitHub to the list of known SSH
+hosts][ssh-known-hosts] prior to running `git push`:^[This can be a [security
+concern][ssh-security]. If you're concerned, e.g. you are pushing sensitive data
+to a private repository, you can confirm the fingerprint in the CircleCI build
+log matches the fingerprint published in [GitHub's SSH help page][ssh-github].]
+
+```
+ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+```
 
 ## Delete the local SSH key files
 
@@ -270,6 +291,7 @@ to your account.
         * [Deployment Keys and User Keys][circleci-deploy-keys]
             * [My Pull Request to update this section][circleci-pr]
     * [Deploying documentation to GitHub Pages with continuous integration][circleci-gh-pages]
+    * [How to push a commit back to the same repository as part of the CircleCI job][circleci-push-back]
 * My previous posts on CircleCI
     * [CircleCI for R: Motivation and basic setup][circleci-for-r-1]
     * [CircleCI for R: Workflows, caches, and more][circleci-for-r-2]
@@ -281,5 +303,9 @@ to your account.
 [circleci-gh-pages]: https://circleci.com/blog/deploying-documentation-to-github-pages-with-continuous-integration/
 [circleci-github]: https://circleci.com/docs/2.0/gh-bb-integration/
 [circleci-pr]: https://github.com/circleci/circleci-docs/pull/4116
+[circleci-push-back]: https://support.circleci.com/hc/en-us/articles/360018860473-How-to-push-a-commit-back-to-the-same-repository-as-part-of-the-CircleCI-job
 [circleci-start]: https://circleci.com/docs/2.0/getting-started/
 [github-ssh-key]: https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+[ssh-known-hosts]: https://stackoverflow.com/a/32387182
+[ssh-security]: https://serverfault.com/a/971922
+[ssh-github]: https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection

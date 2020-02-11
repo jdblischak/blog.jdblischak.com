@@ -49,6 +49,7 @@ jobs:
               git config --global user.email "jdblischak@gmail.com"
               git config --global user.name "CircleCI Job"
               git checkout master
+              git add _posts/ public/
               git commit -a --allow-empty -m "Blog built from ${CIRCLE_SHA1} on `date --rfc-3339=s` [skip ci]"
               ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               git push origin master

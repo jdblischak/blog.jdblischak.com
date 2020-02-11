@@ -19,6 +19,7 @@ for (r in rmd[outdated]) {
 }
 
 if (sum(outdated) > 0) {
+  cat("Rebuilding site\n")
   render_site(input = "index.Rmd", encoding = "UTF-8")
 }
 
