@@ -21,9 +21,19 @@ jobs:
               r-cran-rstudioapi \
               r-cran-xml2
       - run:
-          name: Installation (CRAN)
+          name: Install pandoc 2+ (required for distill pkg)
           command: |
-            Rscript -e 'install.packages("distill")'
+            ver=2.7
+            url="https://github.com/jgm/pandoc/releases/download/${ver}/pandoc-${ver}-1-amd64.deb"
+            wget -P /tmp $url
+            dpkg -i /tmp/pandoc-${ver}-1-amd64.deb
+            pandoc -v
+      - run:
+          name: Installation (CRAN)
+          command: Rscript -e 'install.packages("distill")'
+      - run:
+          name: Session information
+          command: Rscript -e 'sessionInfo()'
       - run:
           name: Build site
           command: Rscript build.R
