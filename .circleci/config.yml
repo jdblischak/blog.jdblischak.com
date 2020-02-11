@@ -5,7 +5,7 @@ jobs:
       only:
         - master
     docker:
-      - image: rocker/r-apt:bionic
+      - image: rocker/r-ubuntu:18.04
     steps:
       - checkout
       - run:
@@ -40,6 +40,7 @@ jobs:
               git config --global user.name "CircleCI Job"
               git checkout master
               git commit -a --allow-empty -m "Blog built from ${CIRCLE_SHA1} on `date --rfc-3339=s` [skip ci]"
+              ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               git push origin master
             else
               echo "The changes were not committed"
