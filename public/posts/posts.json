@@ -14,7 +14,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-02-06T17:30:59-05:00"
+    "last_modified": "2020-02-11T20:27:43+00:00"
   },
   {
     "path": "posts/debug-circleci/",
@@ -33,7 +33,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-02-04T13:45:11-05:00"
+    "last_modified": "2020-02-11T20:25:59+00:00"
   },
   {
     "path": "posts/circleci-for-r-2/",
@@ -51,7 +51,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-02-03T15:32:28-05:00"
+    "last_modified": "2020-02-11T20:25:59+00:00"
   },
   {
     "path": "posts/debug-appveyor/",
@@ -70,7 +70,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2019-04-05T12:32:40-04:00"
+    "last_modified": "2020-02-11T20:25:59+00:00"
   },
   {
     "path": "posts/debug-travis/",
@@ -89,7 +89,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2019-03-26T12:25:09-04:00"
+    "last_modified": "2020-02-11T20:25:59+00:00"
   },
   {
     "path": "posts/circleci-for-r-1/",
@@ -107,6 +107,6 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-02-03T15:32:27-05:00"
+    "last_modified": "2020-02-11T20:25:59+00:00"
   }
 ]
