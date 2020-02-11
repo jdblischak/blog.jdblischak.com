@@ -26,5 +26,21 @@ jobs:
       - run:
           name: Build site
           command: Rscript build.R
+      - add_ssh_keys:
+          fingerprints:
+            - "95:bb:ad:17:bc:a1:29:08:e2:0c:e5:2a:26:f9:39:e2"
+      - run:
+          name: Commit and push changes
+          command: |
+            if [[ "${CI}" = "true" && "${CIRCLECI}" = "true" && "${CIRCLE_USERNAME}" = "jdblischak" && -z "${CIRCLE_PULL_REQUEST}" ]]
+            then
+              echo "Committing and pushing to GitHub"
+              git config --global user.email "jdblischak@gmail.com"
+              git config --global user.name "CircleCI Job"
+              git commit -a --allow-empty -m "Blog built from ${CIRCLE_SHA1} on `date --rfc-3339=s` [skip ci]"
+              git push origin master
+            else
+              echo "The changes were not committed"
+            fi
       - store_artifacts:
           path: public/
