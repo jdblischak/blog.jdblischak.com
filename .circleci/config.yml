@@ -17,6 +17,7 @@ jobs:
               git \
               r-cran-bookdown \
               r-cran-fs \
+              r-cran-git2r \
               r-cran-rmarkdown \
               r-cran-rstudioapi \
               r-cran-xml2
@@ -36,7 +37,7 @@ jobs:
           command: Rscript -e 'sessionInfo()'
       - run:
           name: Build site
-          command: Rscript build.R
+          command: Rscript build-ci.R
       - add_ssh_keys:
           fingerprints:
             - "95:bb:ad:17:bc:a1:29:08:e2:0c:e5:2a:26:f9:39:e2"
