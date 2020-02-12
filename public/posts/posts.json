@@ -14,7 +14,7 @@
       "conference"
     ],
     "preview": "posts/rstudioconf2020/img/rstudioconf2020.jpg",
-    "last_modified": "2020-02-12T18:27:15+00:00"
+    "last_modified": "2020-02-12T19:18:01+00:00"
   },
   {
     "path": "posts/circleci-ssh/",
@@ -31,7 +31,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-02-12T18:25:36+00:00"
+    "last_modified": "2020-02-12T19:16:22+00:00"
   },
   {
     "path": "posts/debug-circleci/",
@@ -50,7 +50,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-02-12T18:25:36+00:00"
+    "last_modified": "2020-02-12T19:16:22+00:00"
   },
   {
     "path": "posts/circleci-for-r-2/",
@@ -68,7 +68,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-02-12T18:25:36+00:00"
+    "last_modified": "2020-02-12T19:16:22+00:00"
   },
   {
     "path": "posts/debug-appveyor/",
@@ -87,7 +87,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-02-12T18:25:36+00:00"
+    "last_modified": "2020-02-12T19:16:22+00:00"
   },
   {
     "path": "posts/debug-travis/",
@@ -106,7 +106,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-02-12T18:25:36+00:00"
+    "last_modified": "2020-02-12T19:16:22+00:00"
   },
   {
     "path": "posts/circleci-for-r-1/",
@@ -124,6 +124,6 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-02-12T18:25:36+00:00"
+    "last_modified": "2020-02-12T19:16:22+00:00"
   }
 ]
