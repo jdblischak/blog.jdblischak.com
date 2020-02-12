@@ -44,14 +44,20 @@ jobs:
       - run:
           name: Commit and push changes
           command: |
-            if [[ "${CI}" = "true" && "${CIRCLECI}" = "true" && "${CIRCLE_USERNAME}" = "jdblischak" && -z "${CIRCLE_PULL_REQUEST}" ]]
+            last_committer=`git log -n 1 --format='%cn'`
+            if [[ "${CI}" = "true" &&
+                  "${CIRCLECI}" = "true" &&
+                  "${CIRCLE_USERNAME}" = "jdblischak" &&
+                  -z "${CIRCLE_PULL_REQUEST}" &&
+                  ${last_committer} != "CircleCI Job"
+               ]]
             then
               echo "Committing and pushing to GitHub"
               git config --global user.email "jdblischak@gmail.com"
               git config --global user.name "CircleCI Job"
               git checkout master
               git add _posts/ public/
-              git commit -a --allow-empty -m "Blog built from ${CIRCLE_SHA1} on `date --rfc-3339=s` [skip ci]"
+              git commit -a --allow-empty -m "Blog built from ${CIRCLE_SHA1} on `date --rfc-3339=s`"
               ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               git push origin master
             else
