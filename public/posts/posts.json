@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/rstudioconf2020/",
+    "title": "Some themes from rstudio::conf 2020",
+    "description": "There were a lot of great talks at rstudio::conf. In this post I highlight a\nfew of the themes that emerged for me.",
+    "author": [
+      {
+        "name": "John Blischak",
+        "url": "https://jdblischak.com"
+      }
+    ],
+    "date": "2020-02-12",
+    "categories": [
+      "conference"
+    ],
+    "preview": "posts/rstudioconf2020/img/rstudioconf2020.jpg",
+    "last_modified": "2020-02-12T18:27:15+00:00"
+  },
+  {
     "path": "posts/circleci-ssh/",
     "title": "Automate commits to GitHub from a CircleCI job",
     "description": "Automatically update your documentation or other repository content by\nauthenticating CircleCI to push commits directly to GitHub",
@@ -14,7 +31,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-02-11T20:27:43+00:00"
+    "last_modified": "2020-02-12T18:25:36+00:00"
   },
   {
     "path": "posts/debug-circleci/",
@@ -33,7 +50,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-02-11T20:25:59+00:00"
+    "last_modified": "2020-02-12T18:25:36+00:00"
   },
   {
     "path": "posts/circleci-for-r-2/",
@@ -51,7 +68,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-02-11T20:25:59+00:00"
+    "last_modified": "2020-02-12T18:25:36+00:00"
   },
   {
     "path": "posts/debug-appveyor/",
@@ -70,7 +87,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-02-11T20:25:59+00:00"
+    "last_modified": "2020-02-12T18:25:36+00:00"
   },
   {
     "path": "posts/debug-travis/",
@@ -89,7 +106,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-02-11T20:25:59+00:00"
+    "last_modified": "2020-02-12T18:25:36+00:00"
   },
   {
     "path": "posts/circleci-for-r-1/",
@@ -107,6 +124,6 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-02-11T20:25:59+00:00"
+    "last_modified": "2020-02-12T18:25:36+00:00"
   }
 ]
