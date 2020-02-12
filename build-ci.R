@@ -41,6 +41,24 @@ for (i in seq_along(rmd)) {
   if (rmd_last_commit_time > html_last_commit_time) {
     outdated[i] <- TRUE
   }
+
+  image_dir <- path(path_dir(rmd[i]), "img")
+  if (dir_exists(image_dir)) {
+    images <- dir_ls(path = image_dir)
+  } else {
+    images <- character()
+  }
+  for (image in images) {
+    image_commits <- commits(r, path = image)
+    if (length(image_commits) == 0) {
+      outdated[i] <- TRUE
+      next
+    }
+    image_last_commit_time <- as.POSIXct(image_commits[[1]]$author$when)
+    if (image_last_commit_time > rmd_last_commit_time) {
+      outdated[i] <- TRUE
+    }
+  }
 }
 
 for (r in rmd[outdated]) {
