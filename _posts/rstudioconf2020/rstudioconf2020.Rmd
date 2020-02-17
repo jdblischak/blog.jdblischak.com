@@ -22,17 +22,15 @@ of the latest developments for R and RStudio. Below I highlight some of the main
 themes from my conference experience and point to some representative talks for
 each one.
 
-**Disclaimer #1:** I've only included talks that I saw in person. Due to space
+**Disclaimer:** I've only included talks that I saw in person. Due to space
 and time constraints, I wasn't able to attend every talk I wanted to (there were
 4 parallel tracks!). Also, I've tried to focus on talks that can be grouped into
 larger themes. In other words, below is a very small subset of the many great
-talks!
-
-**Disclaimer #2:** The talks have not been officially released yet. I'll update
-this post with links to the videos once they are available. For now I've linked
-to relevant tweets, slides, and blog posts. Check out the GitHub repository
+talks! For more resources, see the [videos hosted by
+RStudio](https://resources.rstudio.com/rstudio-conf-2020) as well as the GitHub
+repository
 [RStudioConf2020Slides](https://github.com/EmilHvitfeldt/RStudioConf2020Slides)
-by [Emil Hvitfeldt](https://twitter.com/Emil_Hvitfeldt) for more resources.
+by [Emil Hvitfeldt](https://twitter.com/Emil_Hvitfeldt).
 
 ![My badge and hex stickers from rstudio::conf 2020.](img/rstudioconf2020.jpg)
 
@@ -45,6 +43,7 @@ be more resources available for R users to directly deploy their applications.
 
 * [Alex Gold](https://twitter.com/alexkgold) -
 Deploying End-To-End Data Science with Shiny, Plumber, and Pins
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/deploying-end-to-end-data-science-with-shiny-plumber-and-pins-alex-gold)
     * [GitHub](https://github.com/akgold/rsconf2020-deployment)
     * [Blog post](https://rviews.rstudio.com/2019/10/17/deploying-data-with-pins/)
 
@@ -52,6 +51,7 @@ Deploying End-To-End Data Science with Shiny, Plumber, and Pins
 
 * [Heather](https://twitter.com/heatherklus) and [Jacueline](https://twitter.com/skyetetra) Nolis -
 We're hitting R a million times a day so we made a talk about it
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/we-re-hitting-r-a-million-times-a-day-so-we-made-a-talk-about-it-heather-nolis-dr-jacqueline-nolis)
     * [Slides](https://putrinprod.com/talks/rstudioconf2020.pdf) (PDF)
     * [Put R in prod](https://putrinprod.com/)
 
@@ -72,11 +72,13 @@ One R Markdown Document, Fourteen Demos
     * Yihui nicely demonstrated the versatility of the R Markdown format and its
     many potential outputs, including the newer
     [rolldown](https://github.com/yihui/rolldown) package
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/one-r-markdown-document-fourteen-demosyihui-xie)
     * [Blog post](https://yihui.org/en/2020/02/rstudio-conf-2020/)
 
 
 * [Emily Riederer](https://twitter.com/EmilyRiederer) -
 RMarkdown Driven Development (RDD)
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/rmarkdown-driven-development-emily-riederer)
     * [Original blog post on RDD](https://emilyriederer.netlify.com/post/rmarkdown-driven-development/)
     * [Latest blog post on RDD](https://emilyriederer.netlify.com/post/rmddd-tech-appendix/)
 
@@ -93,12 +95,14 @@ Parallel computing with R using foreach, future, and other packages
     * I highly recommend this dynamic talk by Bryan. In a single talk he was
     able to explain highly technical topics, keep the audience laughing, and
     mourn the loss of a friend.
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/parallel-computing-with-r-using-foreach-future-and-other-packages-bryan-lewis)
     * [GitHub](https://github.com/bwlewis/writing_foreach_adapters)
 
 <blockquote class="twitter-tweet" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">From Bryan Lewis at <a href="https://twitter.com/hashtag/rstudioconf2020?src=hash&amp;ref_src=twsrc%5Etfw">#rstudioconf2020</a>: A deep dive into the foreach package to parallelize your <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> code<a href="https://t.co/Q8WBvGwbRp">https://t.co/Q8WBvGwbRp</a></p>&mdash; John Blischak (@jdblischak) <a href="https://twitter.com/jdblischak/status/1222686628981821440?ref_src=twsrc%5Etfw">January 30, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 * [Henrik Bengtsson](https://twitter.com/henrikbengtsson) -
 Future: Simple Async, Paralell & Distributed Processing in R - What's Next?
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/future-simple-async-parallel-amp-distributed-processing-in-r-whats-next-henrik-bengtsson)
     * [Slides](https://docs.google.com/presentation/d/1Wn5S91UGIOrc4IyXoV074ij5vGF8I0Km0tCfintyIa4/present?includes_info_params=1&eisi=CM2mhIXwsecCFQyuJgodBQAJ8A#slide=id.p)
     * [Blog post](https://www.jottr.org/2020/02/01/future-rstudioconf2020-slides/)
 
@@ -113,12 +117,15 @@ talks on strategies for programming with the tidyverse.
 
 * [Dewey Dunnington](https://twitter.com/paleolimbot) -
 Best practices for programming with ggplot2
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/best-practices-for-programming-with-ggplot2-dewey-dunnington)
     * [Vignette (dev) - Using ggplot2 in packages](https://ggplot2.tidyverse.org/dev/articles/ggplot2-in-packages.html)
     * [GitHub](https://github.com/paleolimbot/rstudioconf2020)
 
 <blockquote class="twitter-tweet" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">If you&#39;re using ggplot2 in your package(s), check out this guide from <a href="https://twitter.com/paleolimbot?ref_src=twsrc%5Etfw">@paleolimbot</a>:<a href="https://t.co/XFAYq96xIX">https://t.co/XFAYq96xIX</a><a href="https://twitter.com/hashtag/rstudioconf2020?src=hash&amp;ref_src=twsrc%5Etfw">#rstudioconf2020</a> <a href="https://t.co/nvn0Olilta">https://t.co/nvn0Olilta</a></p>&mdash; John Blischak (@jdblischak) <a href="https://twitter.com/jdblischak/status/1222992529332654081?ref_src=twsrc%5Etfw">January 30, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 * [Lionel Henry](https://twitter.com/_lionelhenry) - Advances in tidyeval
+(Interactivity and Programming in the Tidyverse)
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/interactivity-and-programming-in-the-tidyverse-lionel-henry)
     * [Slides](https://speakerdeck.com/lionelhenry/interactivity-and-programming-in-the-tidyverse)
     * [Blog post](https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/)
 
@@ -132,6 +139,7 @@ Lastly, here are a few more talks I saw that I recommend.
 Object of type 'closure' is not subsettable
     * Jenny's talks are always high-quality, and learning R's debugging tools
     will help keep you sane when you have to hunt down a difficult bug
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/object-of-type-closure-is-not-subsettable-jenny-bryan)
     * [GitHub](https://github.com/jennybc/debugging)
 
 <blockquote class="twitter-tweet" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">&quot;object of type &#39;closure&#39; is not subsettable&quot;<br>👆 is a talk I gave at <a href="https://twitter.com/hashtag/rstudioconf?src=hash&amp;ref_src=twsrc%5Etfw">#rstudioconf</a> on getting unstuck and debugging in <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a><br>Slides and other resources are here: <a href="https://t.co/9sOPBHUxRa">https://t.co/9sOPBHUxRa</a> <a href="https://t.co/jzwSNpy1P2">pic.twitter.com/jzwSNpy1P2</a></p>&mdash; Jenny Bryan (@JennyBryan) <a href="https://twitter.com/JennyBryan/status/1223023812859445249?ref_src=twsrc%5Etfw">January 30, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -141,6 +149,7 @@ How to win an AI Hackathon, without using AI
     * Colin gave an entertaining talk with an important message: understanding
     the problem to be solved and the data available can be more valuable than a
     fancy statistical model
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/how-to-win-an-ai-hackathon-without-using-ai-colin-gillespie)
 
 * [Maria Ortiz Mancera](https://twitter.com/TeresaOM) -
 Mexican electoral quick count night with R
@@ -155,6 +164,7 @@ Mexican electoral quick count night with R
     have to perform this important work analyzing live data (which no doubt has
     to be cleaned!) without the ability to check online resources like
     StackOverflow. Very impressive!
-   * [GitHub](https://github.com/tereom/quickcountmx)
+    * [Video](https://resources.rstudio.com/rstudio-conf-2020/lightning-talk-maria-ortiz-mancera)
+    * [GitHub](https://github.com/tereom/quickcountmx)
 
 <blockquote class="twitter-tweet" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">Really interesting talk from <a href="https://twitter.com/TeresaOM?ref_src=twsrc%5Etfw">@TeresaOM</a> on predicting Mexican election results from initial polling data. They&#39;re in a &quot;bunker&quot; with no internet access, so no StackOverflow!<a href="https://twitter.com/hashtag/rstudioconf2020?src=hash&amp;ref_src=twsrc%5Etfw">#rstudioconf2020</a><a href="https://t.co/8Im6k6zusu">https://t.co/8Im6k6zusu</a></p>&mdash; John Blischak (@jdblischak) <a href="https://twitter.com/jdblischak/status/1223021112117743618?ref_src=twsrc%5Etfw">January 30, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
