@@ -49,7 +49,7 @@
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["debug-appveyor_files/bowser-1.9.3/bowser.min.js","debug-appveyor_files/distill-2.2.21/template.v2.js","debug-appveyor_files/jquery-1.11.3/jquery.min.js","debug-appveyor_files/webcomponents-2.0.0/webcomponents.js","img/rdp-1.png","img/rdp-2.png","img/rdp-3.png","img/rdp-4.png","img/rdp-5.png","img/rdp-6.png"]}
+  {"type":"character","attributes":{},"value":["img/rdp-1.png","img/rdp-2.png","img/rdp-3.png","img/rdp-4.png","img/rdp-5.png","img/rdp-6.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -942,7 +942,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Debug your R package on AppVeyor via Remote Desktop","description":"If you can't replicate the error locally, you can access an AppVeyor server\nvia Remote Desktop to interactively debug your R package.","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2019-04-04T00:00:00.000-04:00","citationText":"Blischak, 2019"}
+{"title":"Debug your R package on AppVeyor via Remote Desktop","description":"If you can't replicate the error locally, you can access an AppVeyor server\nvia Remote Desktop to interactively debug your R package.","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2019-04-04T00:00:00.000+00:00","citationText":"Blischak, 2019"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -953,7 +953,7 @@
 
 <div class="d-title">
 <h1>Debug your R package on AppVeyor via Remote Desktop</h1>
-<p>If you can’t replicate the error locally, you can access an AppVeyor server via Remote Desktop to interactively debug your R package.</p>
+<p><p>If you can’t replicate the error locally, you can access an AppVeyor server via Remote Desktop to interactively debug your R package.</p></p>
 </div>
 
 <div class="d-byline">
@@ -990,13 +990,13 @@ d-article > p > img {
 </style>
 </div>
 <p>The continuous integration service <a href="https://www.appveyor.com/">AppVeyor</a> is great for regularly testing your software on Windows, and it is well-supported for R package developers via the <a href="https://github.com/krlmlr/r-appveyor">r-appveyor</a> project. Run <code>usethis::use_appveyor()</code> to add Windows testing to your R package.</p>
-<p>Even though I have access to a local Windows machine, there have still been times when I couldn’t replicate an AppVeyor error. The cause of hard-to-replicate bugs could be due to differences in the installed software versions (e.g. pandoc, which was the source of my most recent AppVeyor bug) or differences between the desktop and server versions of Windows. The good news is that it is possible to <a href="https://www.appveyor.com/docs/how-to/rdp-to-build-worker/">interactively debug</a> an AppVeyor build using <a href="https://en.wikipedia.org/wiki/Remote_Desktop_Services#Remote_Desktop_Connection">Remote Desktop</a><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> In this post, I provide step-by-step instructions on how to setup and debug your R package build on AppVeyor using Remote Desktop.</p>
+<p>Even though I have access to a local Windows machine, there have still been times when I couldn’t replicate an AppVeyor error. The cause of hard-to-replicate bugs could be due to differences in the installed software versions (e.g. pandoc, which was the source of my most recent AppVeyor bug) or differences between the desktop and server versions of Windows. The good news is that it is possible to <a href="https://www.appveyor.com/docs/how-to/rdp-to-build-worker/">interactively debug</a> an AppVeyor build using <a href="https://en.wikipedia.org/wiki/Remote_Desktop_Services#Remote_Desktop_Connection">Remote Desktop</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In this post, I provide step-by-step instructions on how to setup and debug your R package build on AppVeyor using Remote Desktop.</p>
 <h2 id="install-remote-desktop">Install Remote Desktop</h2>
 <p><strong>Windows:</strong> If you are using a Windows machine, you already have Remote Desktop installed. You can either type “Remote Desktop” into the search bar or navigate to Programs -&gt; Windows Accessories -&gt; Remote Desktop Connection.</p>
 <p><strong>macOS:</strong> Follow the instructions in <a href="https://docs.microsoft.com/en-us/windows-server/remote/remote-desktop-services/clients/remote-desktop-mac">Get started with Remote Desktop on Mac</a> to install <a href="https://itunes.apple.com/us/app/microsoft-remote-desktop/id1295203466?mt=12">Microsoft Remote Desktop 10</a> from the Mac App Store. Note that this requires macOS 10.11 or later.</p>
-<p><strong>Linux:</strong> Use your distribution’s package manager to install <a href="http://www.xrdp.org/">xrdp</a>, an open source implementation of Remote Desktop. For example, on Debian/Ubuntu, run <code>apt install xrdp</code>.</p>
+<p><strong>Linux:</strong> Use your distribution’s package manager to install <a href="https://remmina.org/">Remmina</a>, an open source implementation of Remote Desktop.</p>
 <aside>
-<p>I’ve only ever tested this on Windows. If you configure Remote Desktop on macOS or Linux and have tips to share, please open an <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/new">Issue</a> and I’ll update the post.</p>
+<p>I’ve only ever tested this on Windows and Ubuntu. If you configure Remote Desktop on macOS or another Linux distribution and have tips to share, please open an <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/new">Issue</a> and I’ll update the post.</p>
 </aside>
 <h2 id="configure-to-debug-on-failure">Configure to debug on failure</h2>
 <p>To have AppVeyor open a connection for you to login and debug your build, add the following line to the <code>on_failure</code> section of <code>appveyor.yml</code>:</p>
@@ -1010,10 +1010,10 @@ on_failure:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString(&#39;https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1&#39;))</code></pre>
 <p>These commands zip the <code>*.Rcheck/</code> directory, upload it as a build artifact for you to download, and then pause for debugging.</p>
 <h2 id="set-a-password">Set a password</h2>
-<p>Before you commit and push the update to <code>appveyor.yml</code>, it is highly recommended that you first set a password. If you don’t set a password, the default behavior is to print an automatically generated password to the build log. If you have any secrets that are used during your build (e.g. deploy SSH keys, access tokens, etc.), anyone that sees the build log would be able to access this information.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> Your secrets would be vulnerable every time your build failed for up to an hour (since that is the time limit for open source builds on AppVeyor).</p>
+<p>Before you commit and push the update to <code>appveyor.yml</code>, it is highly recommended that you first set a password. If you don’t set a password, the default behavior is to print an automatically generated password to the build log. If you have any secrets that are used during your build (e.g. deploy SSH keys, access tokens, etc.), anyone that sees the build log would be able to access this information.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Your secrets would be vulnerable every time your build failed for up to an hour (since that is the time limit for open source builds on AppVeyor).</p>
 <p>To set a password using the AppVeyor user interface, click on your project, then go to Settings -&gt; Environment -&gt; Add variable. Name the environment variable <code>APPVEYOR_RDP_PASSWORD</code>. Make sure your password meets the strict minimal requirements that Windows Server enforces for all passwords (see the <a href="https://www.appveyor.com/docs/how-to/rdp-to-build-worker/">AppVeyor documentation</a>).</p>
 <h2 id="login-to-appveyor-server-via-remote-desktop">Login to AppVeyor server via Remote Desktop</h2>
-<p>Once you push the update and your package build fails,<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> AppVeyor will print the connection details in the build log. It should look something like the following:</p>
+<p>Once you push the update and your package build fails,<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> AppVeyor will print the connection details in the build log. It should look something like the following:</p>
 <pre><code>
 $blockRdp = $true; iex ((new-object net.webclient).DownloadString(&#39;https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1&#39;))
 Remote Desktop connection details:
@@ -1080,15 +1080,15 @@ d-----         4/2/2019   8:22 PM                tests
 -a----         4/2/2019   8:22 PM             32 travis-tool.sh.cmd</code></pre>
 <h2 id="setup-for-r-debugging">Setup for R debugging</h2>
 <p>Unfortunately you cannot immediately start debugging. First you have to setup the necessary environment variables to be able to access the R executable and packages that were installed via the steps in <code>appveyor.yml</code>.</p>
-<p>R is installed at <code>C:\R</code>. Add it to your path by running<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>:</p>
+<p>R is installed at <code>C:\R</code>. Add it to your path by running<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>:</p>
 <pre><code>
 $env:Path = &quot;C:\R\bin;&quot; + $env:Path</code></pre>
 <p>You should now be able to run <code>R.exe</code> to start the R console or <code>Rscript.exe</code>. If this isn’t working, run <code>$env:Path</code> to confirm that <code>C:\R\bin</code> was added to the beginning and <code>ls C:\R\bin</code> to confirm that R has been installed.</p>
 <p>The R packages were installed in <code>C:\Rlibrary</code>. Set this as your R user library with:</p>
 <pre><code>
 $env:R_LIBS_USER = &quot;C:\Rlibrary&quot;</code></pre>
-<p>And confirm that <code>Rscript.exe -e &quot;.libPaths()&quot;</code> returns <code>[1] &quot;C:/RLibrary&quot;  &quot;C:/R/library&quot;</code>.</p>
-<p>Now you can start debugging! Run <code>R.exe</code> to open the R console.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> You can install R packages with <code>install.packages()</code> as you normally would. You can build and test the package using devtools functions (e.g. <code>install()</code>, <code>build()</code>, <code>test()</code> or <code>check()</code>) or using <code>R.exe</code> directly:</p>
+<p>And confirm that <code>Rscript.exe -e ".libPaths()"</code> returns <code>[1] "C:/RLibrary"  "C:/R/library"</code>.</p>
+<p>Now you can start debugging! Run <code>R.exe</code> to open the R console.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> You can install R packages with <code>install.packages()</code> as you normally would. You can build and test the package using devtools functions (e.g. <code>install()</code>, <code>build()</code>, <code>test()</code> or <code>check()</code>) or using <code>R.exe</code> directly:</p>
 <pre><code>
 R.exe CMD build .
 R.exe CMD check *tar.gz </code></pre>
@@ -1096,9 +1096,9 @@ R.exe CMD check *tar.gz </code></pre>
 <pre><code>
 options(editor = &quot;C:/Program Files (x86)/Notepad++/notepad++.exe&quot;)</code></pre>
 <p><strong>Update:</strong> And if you need some more serious debugging tools, you can install RStudio (thanks to <a href="https://twitter.com/jimhester_/status/1114130092442181633">Jim Hester</a> for the tip!). You can open Internet Explorer, download the latest version of RStudio Desktop for Windows at <a href="https://www.rstudio.com/products/rstudio/download" class="uri">https://www.rstudio.com/products/rstudio/download</a>, and run the installer.</p>
-<p>And if you find yourself doing this often, you can automate this using the following PowerShell script:<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
+<p>And if you find yourself doing this often, you can automate this using the following PowerShell script:<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 <pre><code>
-Invoke-WebRequest https://download1.rstudio.org/RStudio-1.1.463.exe -OutFile rstudio.exe
+Invoke-WebRequest https://download1.rstudio.org/desktop/windows/RStudio-1.2.5033.exe -OutFile rstudio.exe
 Start-Process -FilePath .\rstudio.exe -ArgumentList &quot;/S /v/qn&quot; -Wait
 Start-Process &#39;C:\Program Files\RStudio\bin\rstudio.exe&#39;</code></pre>
 <p>I figured out how to install RStudio with PowerShell from this <a href="https://github.com/tomaztk/Install_setup_R_using_Powershell/blob/master/04_PowerShell/InstallR_RStudio.ps1#L44">script</a> from Tomaž Kaštrun. To learn more about automating installation steps with PowerShell, check out his blog post <a href="https://tomaztsql.wordpress.com/2019/02/18/installing-r-using-powershell/">Installing R using Powershell</a>.</p>
@@ -1149,15 +1149,15 @@ cache:
 <p>Alternatively, you can <a href="https://github.com/krlmlr/r-appveyor/issues/98#issuecomment-395058164">delete the cache manually in the JavaScript console via the AppVeyor API</a>, but this is a much more involved process, so I recommend using the strategy above instead.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Interactively debugging an AppVeyor build is an involved process, but it may be the only way to finally determine the problem, especially if you can’t replicate the bug on your local Windows machine or if you don’t have easy access to one. For more information, see the official AppVeyor documentation on <a href="https://www.appveyor.com/docs/how-to/rdp-to-build-worker/">Accessing Windows build worker via Remote Desktop</a>. And to practice debugging, check out my repository <a href="https://github.com/jdblischak/debugAppveyor">debugAppveyor</a>. Happy debugging!</p>
-<section class="footnotes">
+<section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1"><p>I’ll refer to this software as Remote Desktop throughout this post. It used to be called <a href="https://en.wikipedia.org/wiki/Remote_Desktop_Protocol">Remote Desktop Protocol</a>, so the AppVeyor documentation refers to it as RDP. However, Microsoft now calls it Remote Desktop Connection.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>This is similar to how interactive debugging works on Travis CI. Anyone that sees the build log can access the server. The main difference is that a debug build has to be manually triggered via the Travis API, so you at least know every time your secrets are vulnerable. See my <a href="../debug-travis/index.html">previous post</a> for details.<a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p>If you don’t currently have an R package that is failing on AppVeyor (lucky you!), you can try out the steps below by forking my repository <a href="https://github.com/jdblischak/debugAppveyor">debugAppveyor</a>. It already has <code>appveyor.yml</code> setup for debugging and a failing test, so you just have to activate AppVeyor for your forked repository, add a password, and then trigger a new build.<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>The easiest method to paste into the PowerShell terminal is to right click. Alternatively, you can click on the icon in the top left of the window to open the menu, and then select Edit -&gt; Paste<a href="#fnref4" class="footnote-back">↩</a></p></li>
-<li id="fn5"><p>Entering only <code>R</code> will re-execute the most recent command.<a href="#fnref5" class="footnote-back">↩</a></p></li>
-<li id="fn6"><p>This will always install version 1.1.463, so you may want to update this. Unfortunately it is non-trivial to <a href="https://stackoverflow.com/q/46023031/2483477">determine the download URL of the latest RStudio release</a>.<a href="#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn1" role="doc-endnote"><p>I’ll refer to this software as Remote Desktop throughout this post. It used to be called <a href="https://en.wikipedia.org/wiki/Remote_Desktop_Protocol">Remote Desktop Protocol</a>, so the AppVeyor documentation refers to it as RDP. However, Microsoft now calls it Remote Desktop Connection.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn2" role="doc-endnote"><p>This is similar to how interactive debugging works on Travis CI. Anyone that sees the build log can access the server. The main difference is that a debug build has to be manually triggered via the Travis API, so you at least know every time your secrets are vulnerable. See my <a href="../debug-travis/index.html">previous post</a> for details.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn3" role="doc-endnote"><p>If you don’t currently have an R package that is failing on AppVeyor (lucky you!), you can try out the steps below by forking my repository <a href="https://github.com/jdblischak/debugAppveyor">debugAppveyor</a>. It already has <code>appveyor.yml</code> setup for debugging and a failing test, so you just have to activate AppVeyor for your forked repository, add a password, and then trigger a new build.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn4" role="doc-endnote"><p>The easiest method to paste into the PowerShell terminal is to right click. Alternatively, you can click on the icon in the top left of the window to open the menu, and then select Edit -&gt; Paste<a href="#fnref4" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn5" role="doc-endnote"><p>Entering only <code>R</code> will re-execute the most recent command.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn6" role="doc-endnote"><p>This will always install version 1.2.5033, so you may want to update this. Unfortunately it is non-trivial to <a href="https://stackoverflow.com/q/46023031/2483477">determine the download URL of the latest RStudio release</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩</a></p></li>
 </ol>
 </section>
 <!--radix_placeholder_article_footer-->
