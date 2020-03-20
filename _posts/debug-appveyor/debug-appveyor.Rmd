@@ -61,15 +61,14 @@ Mac App Store. Note that this requires macOS 10.11 or later.
 [ms-docs-rd-mac]: https://docs.microsoft.com/en-us/windows-server/remote/remote-desktop-services/clients/remote-desktop-mac
 [rd-mac]: https://itunes.apple.com/us/app/microsoft-remote-desktop/id1295203466?mt=12
 
-**Linux:** Use your distribution's package manager to install [xrdp][], an open
-source implementation of Remote Desktop. For example, on Debian/Ubuntu, run `apt
-install xrdp`.
+**Linux:** Use your distribution's package manager to install [Remmina][], an open
+source implementation of Remote Desktop.
 
-[xrdp]: http://www.xrdp.org/
+[remmina]: https://remmina.org/
 
 <aside>
-I've only ever tested this on Windows. If you configure Remote Desktop on macOS
-or Linux and have tips to share, please open an [Issue][issue-new] and I'll
+I've only ever tested this on Windows and Ubuntu. If you configure Remote Desktop on macOS
+or another Linux distribution and have tips to share, please open an [Issue][issue-new] and I'll
 update the post.
 
 [issue-new]: https://github.com/jdblischak/blog.jdblischak.com/issues/new
