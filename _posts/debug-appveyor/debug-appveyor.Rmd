@@ -282,12 +282,12 @@ Internet Explorer, download the latest version of RStudio Desktop for Windows at
 https://www.rstudio.com/products/rstudio/download, and run the installer.
 
 And if you find yourself doing this often, you can automate this using the
-following PowerShell script:^[This will always install version 1.1.463, so you
+following PowerShell script:^[This will always install version 1.2.5033, so you
 may want to update this. Unfortunately it is non-trivial to [determine the
 download URL of the latest RStudio release][so-rstudio-latest].]
 
 ```
-Invoke-WebRequest https://download1.rstudio.org/RStudio-1.1.463.exe -OutFile rstudio.exe
+Invoke-WebRequest https://download1.rstudio.org/desktop/windows/RStudio-1.2.5033.exe -OutFile rstudio.exe
 Start-Process -FilePath .\rstudio.exe -ArgumentList "/S /v/qn" -Wait
 Start-Process 'C:\Program Files\RStudio\bin\rstudio.exe'
 ```
