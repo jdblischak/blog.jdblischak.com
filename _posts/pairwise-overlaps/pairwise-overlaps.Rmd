@@ -1,0 +1,434 @@
+---
+title: "How to efficiently calculate pairwise overlaps of many sets"
+description: |
+  An example of progressively optimizing the speed of a function
+author:
+  - name: John Blischak
+    url: https://jdblischak.com
+date: 03-23-2020
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+categories:
+  - Software Development with R
+draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+For one of my projects, I needed to calculate the pairwise overlaps of many
+sets, and my initial brute force approach was unbearably slow. And even after
+making some of the more obvious optimizations, it was still quite slow.
+Fortunately I got a good tip from [Nir
+Graham](https://community.rstudio.com/u/nirgrahamuk/) when I posted on RStudio
+Community. Below I explain the problem in more detail, and then demonstrate how
+I progressively optimized the function for increased speed.^[Note that I didn't
+take these exact steps. Real life is a lot messier. I purposefully chose to
+break the process down into the steps below for didactic purposes.]
+
+The final solution is still brute force, just faster. If you know of a clever
+algorithm for finding pairwise overlaps^[For example, this [SO
+answer](https://stackoverflow.com/a/27370005) suggests a pseudo-mergesort might
+be a potential solution, but doesn't provide an implementation.], please do get
+in touch.
+
+## The combinatorial explosion of pairwise overlaps
+
+First, why do I need to do this? I suspect there are many use cases for
+computing pairwise overlaps, but in my specific case I wanted to compare the
+similarity of biological annotation terms after having performed a [gene set
+enrichment
+anlaysis](https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis). For those
+unfamiliar with ["omics"](https://en.wikipedia.org/wiki/Omics)-style analyses,
+the results are usually a list of biological features with varying levels of
+statistical signficance (e.g. which proteins change in relative abundance
+between control versus treated cells). To help interpretation, the list of
+results is compared to curated databases of annotation terms such as [Gene
+Ontology categories](https://en.wikipedia.org/wiki/Gene_ontology) or [KEGG
+pathways](https://en.wikipedia.org/wiki/KEGG). While they are usually more
+sophisticated, conceptually you can imagine a [chi-squared
+test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test) of a
+contingency table comparing the features in the results list with the features
+in the annotation category:
+
+Test | Feature in results | Feature *not* in results
+------------- | ------------- | -------------
+**Feature in annotation**  | x | y
+**Feature *not* in annotation**  | z | w
+
+If a given annotation category contains more of the results than would be expected
+by chance, then this category is said to be "enriched".
+
+A major shortcoming of such annotation databases is that the categories are
+often contain many of the same features, and thus the results can be very
+redundant. For example, how different are the categories [cellular response to
+stress](https://www.ebi.ac.uk/QuickGO/term/GO:0033554) and [response to
+stress](https://www.ebi.ac.uk/QuickGO/term/GO:0006950)? Thus it would be nice to
+have a metric of how related the categories are when interpeting the enrichment
+results.
+
+Specifically I'd like to calculate three measurements:
+
+1. The number of overlapping features
+1. The [overlap coefficient](https://en.wikipedia.org/wiki/Overlap_coefficient):
+$\frac{| X \cap Y |}{min(|X|, |Y|)}$
+1. The [Jaccard index](https://en.wikipedia.org/wiki/Jaccard_index):
+$\frac{| X \cap Y |}{| X \cup Y |}$
+
+This will be especially useful for a network visualization of the enrichment
+results:
+
+```{r network-viz, echo=FALSE}
+nodes <- data.frame(
+  name = c("one", "two", "three", "four", "five"),
+  significance = c(0.1, 0.25, 0.15, 0.001, 0.003),
+  stringsAsFactors = FALSE
+)
+edges <- data.frame(
+  from = c("one", "one", "two", "four"),
+  to  = c("two", "three", "three", "five"),
+  jaccard = c(0.4, 0.45, 0.48, 0.9),
+  stringsAsFactors = FALSE
+)
+network <- igraph::graph_from_data_frame(d = edges, directed = FALSE,
+                                         vertices = nodes)
+# plot(network)
+library(tidygraph)
+library(ggraph)
+
+graph <- as_tbl_graph(network, directed = FALSE)
+
+# plot using ggraph
+ggraph(graph, layout = 'kk') +
+  geom_edge_fan(aes(width = jaccard), show.legend = FALSE) +
+  geom_node_point(aes(color = significance), size = 5, show.legend = FALSE) +
+  geom_node_text(aes(label = name), nudge_x = 0.2) +
+  scale_edge_width_continuous(range = c(0, 1))
+```
+
+The essential problem that this post deals with is the fact that as the number
+of sets increases, the number of pairwise overlaps to be calculated explodes.
+100 sets require `r format(choose(100, 2), big.mark = ",")` pairwise overlaps,
+but 1000 sets require `r format(choose(1000, 2), big.mark = ",")`. To be more
+precise, this is a [combinatorial
+relationship](https://en.wikipedia.org/wiki/Combination), in which the number of
+pairwise overlaps is determined by the number of unique combinations of size 2
+of the $n$ sets:
+
+$$ \binom{n}{2} = \frac {n!} {2!(n-2)!} $$
+In R, we'll use the function `choose()` to perform this calculation.
+
+Below is a visualization of the combinatorial explosion in the number of
+pairwise overlaps:
+
+```{r combinatorial-explosion, echo=FALSE}
+suppressPackageStartupMessages(library(ggplot2))
+d <- data.frame(x = seq(1, 2500, by = 50),
+                y = choose(n = seq(1, 2500, by = 50), k = 2))
+ggplot(d) +
+  aes(x = x, y = y) +
+  geom_point() +
+  labs(x = "Number of sets", y = "Number of\npairwise overlaps",
+       title = "Combinatorial explosion") +
+  scale_y_continuous(labels = scales::label_comma()) +
+  theme_classic() +
+  theme(axis.title.y = element_text(angle = 0, vjust = 0.5))
+```
+
+In my application, I have multiple biological annotations that have thousands of
+sets to compare. Thus I need the overlap calculations to be quick since they'll
+be performed millions of times.
+
+## Simulating sets
+
+To benchmark my implementations, I created the function `simulate_sets()` to
+create a list with a given number of elements containing character vectors.
+
+```{r simulate-sets}
+simulate_sets <- function(n_sets) {
+  universe <- c(letters, LETTERS)
+  sets <- replicate(n_sets,
+                    sample(universe, size = rpois(1, lambda = 15)),
+                    simplify = FALSE)
+  names(sets) <- paste0("set", seq(n_sets))
+  return(sets)
+}
+```
+
+The elements in the sets consist of lowercase and uppercase letters. Here's what
+the output looks like:
+
+```{r simulate-sets-ex}
+set.seed(12345)
+simulate_sets(n_sets = 5)
+```
+
+## First pass implementation
+
+```{r}
+calc_pairwise_overlaps <- function(sets) {
+
+  vec_name1 <- character()
+  vec_name2 <- character()
+  vec_num_shared <- integer()
+  vec_overlap <- numeric()
+  vec_jaccard <- numeric()
+
+  for (name1 in names(sets)) {
+    set1 <- sets[[name1]]
+    for (name2 in names(sets)) {
+      set2 <- sets[[name2]]
+      set_intersection <- intersect(set1, set2)
+      num_shared <- length(set_intersection)
+      overlap <- num_shared / min(length(set1), length(set2))
+      jaccard <- num_shared / length(union(set1, set2))
+
+      vec_name1 <- c(vec_name1, name1)
+      vec_name2 <- c(vec_name2, name2)
+      vec_num_shared <- c(vec_num_shared, num_shared)
+      vec_overlap <- c(vec_overlap, overlap)
+      vec_jaccard <- c(vec_jaccard, jaccard)
+    }
+  }
+
+  result <- data.frame(name1 = vec_name1,
+                       name2 = vec_name2,
+                       num_shared = vec_num_shared,
+                       overlap = vec_overlap,
+                       jaccard = vec_overlap,
+                       stringsAsFactors = FALSE)
+  return(result)
+}
+```
+
+```{r}
+system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 100)))
+```
+
+## Combinations and indexing
+
+```{r}
+calc_pairwise_overlaps <- function(sets) {
+
+  n_sets <- length(sets)
+  set_names <- names(sets)
+
+  vec_name1 <- character()
+  vec_name2 <- character()
+  vec_num_shared <- integer()
+  vec_overlap <- numeric()
+  vec_jaccard <- numeric()
+
+  for (i in seq_len(n_sets - 1)) {
+    name1 <- set_names[i]
+    set1 <- sets[[i]]
+    for (j in seq(i + 1, n_sets)) {
+      name2 <- set_names[j]
+      set2 <- sets[[j]]
+      set_intersection <- intersect(set1, set2)
+      num_shared <- length(set_intersection)
+      overlap <- num_shared / min(length(set1), length(set2))
+      jaccard <- num_shared / length(union(set1, set2))
+
+      vec_name1 <- c(vec_name1, name1)
+      vec_name2 <- c(vec_name2, name2)
+      vec_num_shared <- c(vec_num_shared, num_shared)
+      vec_overlap <- c(vec_overlap, overlap)
+      vec_jaccard <- c(vec_jaccard, jaccard)
+    }
+  }
+
+  result <- data.frame(name1 = vec_name1,
+                       name2 = vec_name2,
+                       num_shared = vec_num_shared,
+                       overlap = vec_overlap,
+                       jaccard = vec_overlap,
+                       stringsAsFactors = FALSE)
+  return(result)
+}
+```
+
+Note: requires user to want that order of sets
+
+Time more than halved
+
+```{r}
+system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 100)))
+```
+
+But still not willing to run 1000
+
+## Preallocation
+
+```{r}
+calc_pairwise_overlaps <- function(sets) {
+
+  n_sets <- length(sets)
+  set_names <- names(sets)
+  n_overlaps <- choose(n = n_sets, k = 2)
+
+  vec_name1 <- character(length = n_overlaps)
+  vec_name2 <- character(length = n_overlaps)
+  vec_num_shared <- integer(length = n_overlaps)
+  vec_overlap <- numeric(length = n_overlaps)
+  vec_jaccard <- numeric(length = n_overlaps)
+  overlaps_index <- 1
+
+  for (i in seq_len(n_sets - 1)) {
+    name1 <- set_names[i]
+    set1 <- sets[[i]]
+    for (j in seq(i + 1, n_sets)) {
+      name2 <- set_names[j]
+      set2 <- sets[[j]]
+      set_intersection <- intersect(set1, set2)
+      num_shared <- length(set_intersection)
+      overlap <- num_shared / min(length(set1), length(set2))
+      jaccard <- num_shared / length(union(set1, set2))
+
+      vec_name1[overlaps_index] <- name1
+      vec_name2[overlaps_index] <- name2
+      vec_num_shared[overlaps_index] <- num_shared
+      vec_overlap[overlaps_index] <- overlap
+      vec_jaccard[overlaps_index] <- jaccard
+
+      overlaps_index <- overlaps_index + 1
+    }
+  }
+
+  result <- data.frame(name1 = vec_name1,
+                       name2 = vec_name2,
+                       num_shared = vec_num_shared,
+                       overlap = vec_overlap,
+                       jaccard = vec_overlap,
+                       stringsAsFactors = FALSE)
+  return(result)
+}
+```
+
+Almost instantaneous
+
+```{r}
+system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 100)))
+```
+
+And can even handle 1000 sets
+
+```{r}
+system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 1000)))
+```
+
+## Check sets once instead of every overlap
+
+`intersect()`, `union()`
+
+```{r}
+intersect
+union
+```
+
+`unique()`.
+
+```{r}
+methods(unique)
+```
+
+```{r}
+unique.default
+```
+
+
+```{r}
+calc_pairwise_overlaps <- function(sets) {
+  # Ensure that all sets are unique character vectors
+  sets_are_vectors <- vapply(sets, is.vector, logical(1))
+  if (any(!sets_are_vectors)) {
+    stop("Sets must be vectors")
+  }
+  sets_are_atomic <- vapply(sets, is.atomic, logical(1))
+  if (any(!sets_are_atomic)) {
+    stop("Sets must be atomic vectors, i.e. not lists")
+  }
+  sets <- lapply(sets, as.character)
+  is_unique <- function(x) length(unique(x)) == length(x)
+  sets_are_unique <- vapply(sets, is_unique, logical(1))
+  if (any(!sets_are_unique)) {
+    stop("Sets must be unique, i.e. no duplicated elements")
+  }
+
+  n_sets <- length(sets)
+  set_names <- names(sets)
+  n_overlaps <- choose(n = n_sets, k = 2)
+
+  vec_name1 <- character(length = n_overlaps)
+  vec_name2 <- character(length = n_overlaps)
+  vec_num_shared <- integer(length = n_overlaps)
+  vec_overlap <- numeric(length = n_overlaps)
+  vec_jaccard <- numeric(length = n_overlaps)
+  overlaps_index <- 1
+
+  for (i in seq_len(n_sets - 1)) {
+    name1 <- set_names[i]
+    set1 <- sets[[i]]
+    for (j in seq(i + 1, n_sets)) {
+      name2 <- set_names[j]
+      set2 <- sets[[j]]
+
+      set_intersect <- set1[match(set2, set1, 0L)]
+      set_union <- .Internal(unique(c(set1, set2), incomparables = FALSE,
+                                    fromLast = FALSE, nmax = NA))
+      num_shared <- length(set_intersect)
+      overlap <- num_shared / min(length(set1), length(set2))
+      jaccard <- num_shared / length(set_union)
+
+      vec_name1[overlaps_index] <- name1
+      vec_name2[overlaps_index] <- name2
+      vec_num_shared[overlaps_index] <- num_shared
+      vec_overlap[overlaps_index] <- overlap
+      vec_jaccard[overlaps_index] <- jaccard
+
+      overlaps_index <- overlaps_index + 1
+    }
+  }
+
+  result <- data.frame(name1 = vec_name1,
+                       name2 = vec_name2,
+                       num_shared = vec_num_shared,
+                       overlap = vec_overlap,
+                       jaccard = vec_overlap,
+                       stringsAsFactors = FALSE)
+  return(result)
+}
+```
+
+Almost instantaneous
+
+```{r}
+system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 100)))
+```
+
+And can even handle 1000 sets
+
+```{r}
+system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 1000)))
+```
+
+## Conclusions
+
+<details>
+  <summary>
+    Session information:
+  </summary>
+
+```{r session-information}
+sessionInfo()
+```
+
+</details>
+
+
+
+https://stackoverflow.com/questions/27369373/pairwise-set-intersection-in-python
+https://community.rstudio.com/t/how-to-efficiently-calculate-pairwise-overlaps-of-many-sets/56750

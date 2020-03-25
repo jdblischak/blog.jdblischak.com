@@ -17,9 +17,12 @@ jobs:
               git \
               r-cran-bookdown \
               r-cran-fs \
+              r-cran-ggplot2 \
+              r-cran-ggraph \
               r-cran-git2r \
               r-cran-rmarkdown \
               r-cran-rstudioapi \
+              r-cran-scales \
               r-cran-xml2
       - run:
           name: Install pandoc 2+ (required for distill pkg)
