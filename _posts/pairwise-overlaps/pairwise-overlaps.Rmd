@@ -62,7 +62,7 @@ Test | Feature in results | Feature *not* in results
 If a given annotation category contains more of the results than would be expected
 by chance, then this category is said to be "enriched".
 
-A major shortcoming of such annotation databases is that the categories are
+A major hurdle for interpreting enrichment results is that the annotation categories
 often contain many of the same features, and thus the results can be very
 redundant. For example, how different are the categories [cellular response to
 stress](https://www.ebi.ac.uk/QuickGO/term/GO:0033554) and [response to
@@ -79,7 +79,11 @@ $\frac{| X \cap Y |}{min(|X|, |Y|)}$
 $\frac{| X \cap Y |}{| X \cup Y |}$
 
 This will be especially useful for a network visualization of the enrichment
-results:
+results, where the color of the nodes could correspond to the statistical
+significance, and the thickness of the eges could correspond to the Jaccard
+index. For example, the hypothetical results below demonstrate that there are
+two main sources of enrichment, even though five categories are statistically
+significant:
 
 ```{r network-viz, echo=FALSE}
 nodes <- data.frame(
@@ -96,8 +100,9 @@ edges <- data.frame(
 network <- igraph::graph_from_data_frame(d = edges, directed = FALSE,
                                          vertices = nodes)
 # plot(network)
-library(tidygraph)
 library(ggraph)
+library(tidygraph)
+
 
 graph <- as_tbl_graph(network, directed = FALSE)
 
@@ -163,10 +168,16 @@ the output looks like:
 
 ```{r simulate-sets-ex}
 set.seed(12345)
-simulate_sets(n_sets = 5)
+(sets_5 <- simulate_sets(n_sets = 5))
+sets_100 <- simulate_sets(n_sets = 100)
+sets_1000 <- simulate_sets(n_sets = 1000)
 ```
 
 ## First pass implementation
+
+For my first pass, I use a nested for loop to iterate over the names of the
+lists. The main advantages of this approach is that it was quick to write and it
+is straightforward to read the code.
 
 ```{r}
 calc_pairwise_overlaps <- function(sets) {
@@ -204,11 +215,26 @@ calc_pairwise_overlaps <- function(sets) {
 }
 ```
 
+There are of course lots of things to be improved, as we'll see below, but if
+you have 100 sets or fewer, it probably wouldn't be worth the effort to optimize
+it further.
+
 ```{r}
-system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 100)))
+head(calc_pairwise_overlaps(sets_100))
+system.time(calc_pairwise_overlaps(sets_100))
 ```
 
 ## Combinations and indexing
+
+One big issue with the strategy above is that each pairwise combination is
+performed twice. In other words, we calculated the overlap statistics for each
+permutation of the sets, when we really only need to calculate each combination.
+The second issue I'll address in this iteration is how to fetch each set. Above
+I obtained each set by name, `sets[[name1]]`, which requires searching over the
+names of the list to find a match. While convenient, this gets slower as the
+list grows. Thus instead of looping over the names of the list, it is better to
+use an index variable to track the position in the list. This allows the sets
+to be quickly obtained via their position in the list.
 
 ```{r}
 calc_pairwise_overlaps <- function(sets) {
@@ -251,17 +277,25 @@ calc_pairwise_overlaps <- function(sets) {
 }
 ```
 
-Note: requires user to want that order of sets
-
-Time more than halved
+With these two improvements, the computation time more than halved for a list of
+100 sets. However, it is still quite slow when running 1000 sets.
 
 ```{r}
-system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 100)))
+system.time(calc_pairwise_overlaps(sets_100))
 ```
 
-But still not willing to run 1000
+And these improvements are essentially the advice from the [StackOverflow answer](https://stackoverflow.com/a/27369862) on the same topic.
 
 ## Preallocation
+
+The next issue I'll address is a common cause of slow R code: growing objects
+during each iteration of a loop, e.g. `vec_overlap <- c(vec_overlap, overlap)`.
+This may be convenient, but it is extremely slow. The solution is to preallocate
+the vectors to their final length, and then add new data by index.
+
+In this case, the final length will be the total number of combinations, which
+I calculate using the function `choose()`. Furthermore, I add a new index
+variable, `overlaps_index`, to keep track of the combinations.
 
 ```{r}
 calc_pairwise_overlaps <- function(sets) {
@@ -308,28 +342,53 @@ calc_pairwise_overlaps <- function(sets) {
 }
 ```
 
-Almost instantaneous
+With the preallocation, the overlaps of 100 sets is almost instantaneous:
 
 ```{r}
-system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 100)))
+system.time(calc_pairwise_overlaps(sets_100))
 ```
 
-And can even handle 1000 sets
+And it can even handle 1000 sets in a reasonable amount of time:
 
 ```{r}
 system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 1000)))
 ```
 
+But I had thousands of sets to compare, and this was still slow.
+
 ## Check sets once instead of every overlap
 
-`intersect()`, `union()`
+After making the above changes, I was stumped as to how to further increase its
+speed, so I [posted on RStudio
+Community](https://community.rstudio.com/t/how-to-efficiently-calculate-pairwise-overlaps-of-many-sets/56750)
+for ideas. And I was lucky to get the advice from [Nir
+Graham](https://community.rstudio.com/u/nirgrahamuk/) to speed up R's set
+functions like `intersect()` by checking the inputs once instead of during every
+overlap calculation.
+
+The function `intersect()` converts its inputs to vectors with `as.vector()`
+and also removes duplicates by calling `unique()`.
 
 ```{r}
 intersect
-union
 ```
 
-`unique()`.
+Since these calculations are performed during each pairwise overlap, they are
+extremely redundant. It is faster to confirm all the input sets are unique
+vectors at the very beginning of the function, since then the code no longer
+needs to check during each iteration of the loop.
+
+It's a similar situation with `union()`. It also converts its inputs to vectors
+with `as.vector()`. However, it does require the call to `unique()` to properly
+find the union of the two sets.
+
+```{r}
+intersect
+```
+
+But even `unique()` itself can be sped up. Since there is no specific `unique()`
+method for character vectors (i.e. `unique.character()`), character vectors are
+processed with `unique.default()`.
 
 ```{r}
 methods(unique)
@@ -339,6 +398,17 @@ methods(unique)
 unique.default
 ```
 
+And the majority of `unique.default()` is code to handle various types of input
+like factors, times, or dates. Since I will ensure the input will always be
+character vectors, the only required line of `unique.default()` is the one below:
+
+```{r eval=FALSE}
+z <- .Internal(unique(x, incomparables, fromLast, nmax))
+```
+
+So in this final optimized function, the input sets are first confirmed to be
+unique character vectors at the very beginning of the function, and then this
+assumption is never tested unnecessarily again.
 
 ```{r}
 calc_pairwise_overlaps <- function(sets) {
@@ -403,23 +473,31 @@ calc_pairwise_overlaps <- function(sets) {
 }
 ```
 
-Almost instantaneous
+Again, 100 sets is calculated almost instantaneously.
 
 ```{r}
-system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 100)))
+system.time(calc_pairwise_overlaps(sets_100))
 ```
 
-And can even handle 1000 sets
+And even 1000 sets is finished processing in only a few seconds:
 
 ```{r}
-system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 1000)))
+system.time(calc_pairwise_overlaps(sets_1000))
 ```
 
 ## Conclusions
 
+In this post, I demonstrated how to iteratively increase the speed of a slow
+function. The biggest lesson I learned from this experience is that it is
+possible to increase the speed of base R functions since they may be designed to
+handle multiple different types of inputs.
+
+If you see any ways that this function could be further optimized, please do let
+me know!
+
 <details>
   <summary>
-    Session information:
+    <strong>Session information:</strong>
   </summary>
 
 ```{r session-information}
@@ -427,8 +505,3 @@ sessionInfo()
 ```
 
 </details>
-
-
-
-https://stackoverflow.com/questions/27369373/pairwise-set-intersection-in-python
-https://community.rstudio.com/t/how-to-efficiently-calculate-pairwise-overlaps-of-many-sets/56750
