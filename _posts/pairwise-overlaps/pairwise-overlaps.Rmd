@@ -102,15 +102,15 @@ network <- igraph::graph_from_data_frame(d = edges, directed = FALSE,
 library(ggraph)
 library(tidygraph)
 
-
 graph <- as_tbl_graph(network, directed = FALSE)
 
 # plot using ggraph
-ggraph(graph, layout = 'kk') +
+ggraph(graph, layout = "kk") +
   geom_edge_fan(aes(width = jaccard), show.legend = FALSE) +
   geom_node_point(aes(color = significance), size = 5, show.legend = FALSE) +
-  geom_node_text(aes(label = name), nudge_x = 0.2) +
-  scale_edge_width_continuous(range = c(0, 1))
+  geom_node_text(aes(label = name), nudge_y = 0.2) +
+  scale_edge_width_continuous(range = c(0.25, 2)) +
+  theme_graph()
 ```
 
 The essential problem that this post deals with is the fact that as the number
@@ -128,7 +128,7 @@ In R, I'll use the function `choose()` to perform this calculation.
 Below is a visualization of the combinatorial explosion in the number of
 pairwise overlaps:
 
-```{r combinatorial-explosion, echo=FALSE}
+```{r combinatorial-explosion, echo=FALSE, preview=TRUE}
 suppressPackageStartupMessages(library(ggplot2))
 d <- data.frame(x = seq(1, 2500, by = 50),
                 y = choose(n = seq(1, 2500, by = 50), k = 2))
