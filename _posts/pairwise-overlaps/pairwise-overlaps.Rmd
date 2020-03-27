@@ -12,7 +12,6 @@ output:
     toc: true
 categories:
   - Software Development with R
-draft: true
 ---
 
 ```{r setup, include=FALSE}
@@ -22,12 +21,12 @@ knitr::opts_chunk$set(echo = TRUE)
 For one of my projects, I needed to calculate the pairwise overlaps of many
 sets, and my initial brute force approach was unbearably slow. And even after
 making some of the more obvious optimizations, it was still quite slow.
-Fortunately I got a good tip from [Nir
-Graham](https://community.rstudio.com/u/nirgrahamuk/) when I posted on RStudio
-Community. Below I explain the problem in more detail, and then demonstrate how
-I progressively optimized the function for increased speed.^[Note that I didn't
-take these exact steps. Real life is a lot messier. I purposefully chose to
-break the process down into the steps below for didactic purposes.]
+Fortunately I got a good tip from [Nir Graham][nirgrahamuk] when I [posted on
+RStudio Community][rs-community-post]. Below I explain the problem in more
+detail, and then demonstrate how I progressively optimized the function for
+increased speed.^[Note that I didn't take these exact steps. Real life is a lot
+messier. I purposefully chose to break the process down into the steps below for
+didactic purposes.]
 
 The final solution is still brute force, just faster. If you know of a clever
 algorithm for finding pairwise overlaps^[For example, this [SO
@@ -52,7 +51,7 @@ pathways](https://en.wikipedia.org/wiki/KEGG). While they are usually more
 sophisticated, conceptually you can imagine a [chi-squared
 test](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test) of a
 contingency table comparing the features in the results list with the features
-in the annotation category:
+in each annotation category:
 
 Test | Feature in results | Feature *not* in results
 ------------- | ------------- | -------------
@@ -124,7 +123,7 @@ pairwise overlaps is determined by the number of unique combinations of size 2
 of the $n$ sets:
 
 $$ \binom{n}{2} = \frac {n!} {2!(n-2)!} $$
-In R, we'll use the function `choose()` to perform this calculation.
+In R, I'll use the function `choose()` to perform this calculation.
 
 Below is a visualization of the combinatorial explosion in the number of
 pairwise overlaps:
@@ -177,7 +176,19 @@ sets_1000 <- simulate_sets(n_sets = 1000)
 
 For my first pass, I use a nested for loop to iterate over the names of the
 lists. The main advantages of this approach is that it was quick to write and it
-is straightforward to read the code.
+is straightforward to read the code. The essential part of this strategy is
+contained in the snippet below:
+
+```{r eval=FALSE}
+for (name1 in names(sets)) {
+  set1 <- sets[[name1]]
+  for (name2 in names(sets)) {
+    set2 <- sets[[name2]]
+  }
+}
+```
+
+Here's the entire function:
 
 ```{r}
 calc_pairwise_overlaps <- function(sets) {
@@ -215,7 +226,7 @@ calc_pairwise_overlaps <- function(sets) {
 }
 ```
 
-There are of course lots of things to be improved, as we'll see below, but if
+There are of course lots of things to be improved, as you'll see below, but if
 you have 100 sets or fewer, it probably wouldn't be worth the effort to optimize
 it further.
 
@@ -227,14 +238,34 @@ system.time(calc_pairwise_overlaps(sets_100))
 ## Combinations and indexing
 
 One big issue with the strategy above is that each pairwise combination is
-performed twice. In other words, we calculated the overlap statistics for each
-permutation of the sets, when we really only need to calculate each combination.
+performed twice. In other words, I calculated the overlap statistics for each
+permutation of the sets, when I really only need to calculate each combination.
 The second issue I'll address in this iteration is how to fetch each set. Above
 I obtained each set by name, `sets[[name1]]`, which requires searching over the
 names of the list to find a match. While convenient, this gets slower as the
 list grows. Thus instead of looping over the names of the list, it is better to
 use an index variable to track the position in the list. This allows the sets
 to be quickly obtained via their position in the list.
+
+The essential part of this update is in the snippet below. The index variables
+`i` and `j` are used to obtain the name of the sets and their contents in each
+iteration. Furthermore, `j` is always greater than `i`, to avoid comparing a set
+to itself or repeating any previous combinations.
+
+```{r eval=FALSE}
+n_sets <- length(sets)
+set_names <- names(sets)
+for (i in seq_len(n_sets - 1)) {
+  name1 <- set_names[i]
+  set1 <- sets[[i]]
+  for (j in seq(i + 1, n_sets)) {
+    name2 <- set_names[j]
+    set2 <- sets[[j]]
+  }
+}
+```
+
+Here's the updated function:
 
 ```{r}
 calc_pairwise_overlaps <- function(sets) {
@@ -284,7 +315,7 @@ With these two improvements, the computation time more than halved for a list of
 system.time(calc_pairwise_overlaps(sets_100))
 ```
 
-And these improvements are essentially the advice from the [StackOverflow answer](https://stackoverflow.com/a/27369862) on the same topic.
+And these improvements are essentially the advice from this [StackOverflow answer](https://stackoverflow.com/a/27369862) on the same topic.
 
 ## Preallocation
 
@@ -295,7 +326,30 @@ the vectors to their final length, and then add new data by index.
 
 In this case, the final length will be the total number of combinations, which
 I calculate using the function `choose()`. Furthermore, I add a new index
-variable, `overlaps_index`, to keep track of the combinations.
+variable, `overlaps_index`, to keep track of the combinations. The essential
+code to preallocate the vectors is in the code snippet below:
+
+```{r eval=FALSE}
+# preallocate the vectors
+n_overlaps <- choose(n = n_sets, k = 2)
+vec_name1 <- character(length = n_overlaps)
+vec_name2 <- character(length = n_overlaps)
+vec_num_shared <- integer(length = n_overlaps)
+vec_overlap <- numeric(length = n_overlaps)
+vec_jaccard <- numeric(length = n_overlaps)
+overlaps_index <- 1
+
+# During each iteration, use the index to assign the latest value to the output
+# vectors
+vec_name1[overlaps_index] <- name1
+vec_name2[overlaps_index] <- name2
+vec_num_shared[overlaps_index] <- num_shared
+vec_overlap[overlaps_index] <- overlap
+vec_jaccard[overlaps_index] <- jaccard
+overlaps_index <- overlaps_index + 1
+```
+
+And here's the updated function:
 
 ```{r}
 calc_pairwise_overlaps <- function(sets) {
@@ -359,10 +413,8 @@ But I had thousands of sets to compare, and this was still slow.
 ## Check sets once instead of every overlap
 
 After making the above changes, I was stumped as to how to further increase its
-speed, so I [posted on RStudio
-Community](https://community.rstudio.com/t/how-to-efficiently-calculate-pairwise-overlaps-of-many-sets/56750)
-for ideas. And I was lucky to get the advice from [Nir
-Graham](https://community.rstudio.com/u/nirgrahamuk/) to speed up R's set
+speed, so I [posted on RStudio Community][rs-community-post] for ideas. And I
+was lucky to get the advice from [Nir Graham][nirgrahamuk] to speed up R's set
 functions like `intersect()` by checking the inputs once instead of during every
 overlap calculation.
 
@@ -376,14 +428,19 @@ intersect
 Since these calculations are performed during each pairwise overlap, they are
 extremely redundant. It is faster to confirm all the input sets are unique
 vectors at the very beginning of the function, since then the code no longer
-needs to check during each iteration of the loop.
+needs to check during each iteration of the loop. When valid input can be
+assumed, `intersect()` reduces to:
+
+```{r eval=FALSE}
+y[match(x, y, 0L)]
+```
 
 It's a similar situation with `union()`. It also converts its inputs to vectors
 with `as.vector()`. However, it does require the call to `unique()` to properly
 find the union of the two sets.
 
 ```{r}
-intersect
+union
 ```
 
 But even `unique()` itself can be sped up. Since there is no specific `unique()`
@@ -392,9 +449,6 @@ processed with `unique.default()`.
 
 ```{r}
 methods(unique)
-```
-
-```{r}
 unique.default
 ```
 
@@ -497,7 +551,7 @@ me know!
 
 <details>
   <summary>
-    <strong>Session information:</strong>
+    <strong>Click here to view the R session information:</strong>
   </summary>
 
 ```{r session-information}
@@ -505,3 +559,6 @@ sessionInfo()
 ```
 
 </details>
+
+[nirgrahamuk]: https://community.rstudio.com/u/nirgrahamuk/
+[rs-community-post]: https://community.rstudio.com/t/how-to-efficiently-calculate-pairwise-overlaps-of-many-sets/56750
