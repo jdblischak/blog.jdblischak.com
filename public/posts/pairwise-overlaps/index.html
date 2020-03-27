@@ -36,7 +36,7 @@
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="An example of progressively optimizing the speed of a function"/>
 <meta property="og:url" content="https://blog.jdblischak.com/posts/pairwise-overlaps/"/>
-<meta property="og:image" content="https://blog.jdblischak.com/posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/network-viz-1.png"/>
+<meta property="og:image" content="https://blog.jdblischak.com/posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png"/>
 <meta property="og:image:width" content="1248"/>
 <meta property="og:image:height" content="768"/>
 <meta property="og:locale" content="en_US"/>
@@ -47,7 +47,7 @@
 <meta property="twitter:title" content="John Blischak&#39;s blog: How to efficiently calculate pairwise overlaps of many sets"/>
 <meta property="twitter:description" content="An example of progressively optimizing the speed of a function"/>
 <meta property="twitter:url" content="https://blog.jdblischak.com/posts/pairwise-overlaps/"/>
-<meta property="twitter:image" content="https://blog.jdblischak.com/posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/network-viz-1.png"/>
+<meta property="twitter:image" content="https://blog.jdblischak.com/posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png"/>
 <meta property="twitter:image:width" content="1248"/>
 <meta property="twitter:image:height" content="768"/>
 <meta property="twitter:creator" content="@jdblischak"/>
@@ -1412,7 +1412,7 @@ code {
 <p><span class="math display">\[ \binom{n}{2} = \frac {n!} {2!(n-2)!} \]</span> In R, I’ll use the function <code>choose()</code> to perform this calculation.</p>
 <p>Below is a visualization of the combinatorial explosion in the number of pairwise overlaps:</p>
 <div class="layout-chunk" data-layout="l-body">
-<p><img src="pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png" width="624" /></p>
+<p><img src="pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png" width="624" data-distill-preview=1 /></p>
 </div>
 <p>In my application, I have multiple biological annotations that have thousands of sets to compare. Thus I need the overlap calculations to be quick since they’ll be performed millions of times.</p>
 <h2 id="simulating-sets">Simulating sets</h2>
@@ -1519,7 +1519,7 @@ head(calc_pairwise_overlaps(sets_100))</code></pre>
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.911   0.015   0.927 </code></pre>
+  0.948   0.012   0.962 </code></pre>
 </div>
 <h2 id="combinations-and-indexing">Combinations and indexing</h2>
 <p>One big issue with the strategy above is that each pairwise combination is performed twice. In other words, I calculated the overlap statistics for each permutation of the sets, when I really only need to calculate each combination. The second issue I’ll address in this iteration is how to fetch each set. Above I obtained each set by name, <code>sets[[name1]]</code>, which requires searching over the names of the list to find a match. While convenient, this gets slower as the list grows. Thus instead of looping over the names of the list, it is better to use an index variable to track the position in the list. This allows the sets to be quickly obtained via their position in the list.</p>
@@ -1585,7 +1585,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.272   0.016   0.288 </code></pre>
+  0.296   0.008   0.304 </code></pre>
 </div>
 <p>And these improvements are essentially the advice from this <a href="https://stackoverflow.com/a/27369862">StackOverflow answer</a> on the same topic.</p>
 <h2 id="preallocation">Preallocation</h2>
@@ -1663,7 +1663,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.086   0.001   0.087 </code></pre>
+  0.088   0.000   0.089 </code></pre>
 </div>
 <p>And it can even handle 1000 sets in a reasonable amount of time:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1671,7 +1671,7 @@ system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 1000)))</code></pre>
 <pre><code>
    user  system elapsed 
-  7.086   0.004   7.090 </code></pre>
+  7.324   0.008   7.333 </code></pre>
 </div>
 <p>But I had thousands of sets to compare, and this was still slow.</p>
 <h2 id="check-sets-once-instead-of-every-overlap">Check sets once instead of every overlap</h2>
@@ -1686,7 +1686,7 @@ function (x, y)
     y &lt;- as.vector(y)
     unique(y[match(as.vector(x), y, 0L)])
 }
-&lt;bytecode: 0x55bcd865a000&gt;
+&lt;bytecode: 0x563e7d57c660&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>Since these calculations are performed during each pairwise overlap, they are extremely redundant. It is faster to confirm all the input sets are unique vectors at the very beginning of the function, since then the code no longer needs to check during each iteration of the loop. When valid input can be assumed, <code>intersect()</code> reduces to:</p>
@@ -1701,7 +1701,7 @@ union</code></pre>
 <pre><code>
 function (x, y) 
 unique(c(as.vector(x), as.vector(y)))
-&lt;bytecode: 0x55bcd72ff6c8&gt;
+&lt;bytecode: 0x563e7c21a6c8&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>But even <code>unique()</code> itself can be sped up. Since there is no specific <code>unique()</code> method for character vectors (i.e. <code>unique.character()</code>), character vectors are processed with <code>unique.default()</code>.</p>
@@ -1735,7 +1735,7 @@ function (x, incomparables = FALSE, fromLast = FALSE, nmax = NA,
         structure(z, class = class(x))
     else z
 }
-&lt;bytecode: 0x55bcd6c8fe58&gt;
+&lt;bytecode: 0x563e7bbaae58&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>And the majority of <code>unique.default()</code> is code to handle various types of input like factors, times, or dates. Since I will ensure the input will always be character vectors, the only required line of <code>unique.default()</code> is the one below:</p>
@@ -1813,7 +1813,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.048   0.000   0.047 </code></pre>
+  0.048   0.000   0.048 </code></pre>
 </div>
 <p>And even 1000 sets is finished processing in only a few seconds:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1821,7 +1821,7 @@ system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 system.time(calc_pairwise_overlaps(sets_1000))</code></pre>
 <pre><code>
    user  system elapsed 
-  2.422   0.007   2.430 </code></pre>
+  3.037   0.008   3.044 </code></pre>
 </div>
 <h2 id="conclusions">Conclusions</h2>
 <p>In this post, I demonstrated how to iteratively increase the speed of a slow function. The biggest lesson I learned from this experience is that it is possible to increase the speed of base R functions since they may be designed to handle multiple different types of inputs.</p>
