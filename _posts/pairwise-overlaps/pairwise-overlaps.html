@@ -25,8 +25,8 @@
   
   
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2020-03-23"/>
-  <meta property="article:created" itemprop="dateCreated" content="2020-03-23"/>
+  <meta property="article:published" itemprop="datePublished" content="2020-03-27"/>
+  <meta property="article:created" itemprop="dateCreated" content="2020-03-27"/>
   <meta name="article:author" content="John Blischak"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
@@ -44,7 +44,7 @@
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories"]}},"value":[{"type":"character","attributes":{},"value":["How to efficiently calculate pairwise overlaps of many sets"]},{"type":"character","attributes":{},"value":["An example of progressively optimizing the speed of a function\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["03-23-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["Software Development with R"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories"]}},"value":[{"type":"character","attributes":{},"value":["How to efficiently calculate pairwise overlaps of many sets"]},{"type":"character","attributes":{},"value":["An example of progressively optimizing the speed of a function\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["03-27-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["Software Development with R"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -942,7 +942,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"How to efficiently calculate pairwise overlaps of many sets","description":"An example of progressively optimizing the speed of a function","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-03-23T00:00:00.000+00:00","citationText":"Blischak, 2020"}
+{"title":"How to efficiently calculate pairwise overlaps of many sets","description":"An example of progressively optimizing the speed of a function","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-03-27T00:00:00.000+00:00","citationText":"Blischak, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -959,7 +959,7 @@
 <div class="d-byline">
   John Blischak <a href="https://jdblischak.com" class="uri">https://jdblischak.com</a> 
   
-<br/>03-23-2020
+<br/>03-27-2020
 </div>
 
 <div class="d-article">
@@ -1124,7 +1124,7 @@ head(calc_pairwise_overlaps(sets_100))</code></pre>
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.923   0.000   0.923 </code></pre>
+  0.911   0.015   0.927 </code></pre>
 </div>
 <h2 id="combinations-and-indexing">Combinations and indexing</h2>
 <p>One big issue with the strategy above is that each pairwise combination is performed twice. In other words, I calculated the overlap statistics for each permutation of the sets, when I really only need to calculate each combination. The second issue I’ll address in this iteration is how to fetch each set. Above I obtained each set by name, <code>sets[[name1]]</code>, which requires searching over the names of the list to find a match. While convenient, this gets slower as the list grows. Thus instead of looping over the names of the list, it is better to use an index variable to track the position in the list. This allows the sets to be quickly obtained via their position in the list.</p>
@@ -1190,7 +1190,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.320   0.004   0.324 </code></pre>
+  0.272   0.016   0.288 </code></pre>
 </div>
 <p>And these improvements are essentially the advice from this <a href="https://stackoverflow.com/a/27369862">StackOverflow answer</a> on the same topic.</p>
 <h2 id="preallocation">Preallocation</h2>
@@ -1268,7 +1268,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.087   0.000   0.087 </code></pre>
+  0.086   0.001   0.087 </code></pre>
 </div>
 <p>And it can even handle 1000 sets in a reasonable amount of time:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1276,7 +1276,7 @@ system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 1000)))</code></pre>
 <pre><code>
    user  system elapsed 
-  7.212   0.004   7.217 </code></pre>
+  7.086   0.004   7.090 </code></pre>
 </div>
 <p>But I had thousands of sets to compare, and this was still slow.</p>
 <h2 id="check-sets-once-instead-of-every-overlap">Check sets once instead of every overlap</h2>
@@ -1291,7 +1291,7 @@ function (x, y)
     y &lt;- as.vector(y)
     unique(y[match(as.vector(x), y, 0L)])
 }
-&lt;bytecode: 0x557af7fe4028&gt;
+&lt;bytecode: 0x55bcd865a000&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>Since these calculations are performed during each pairwise overlap, they are extremely redundant. It is faster to confirm all the input sets are unique vectors at the very beginning of the function, since then the code no longer needs to check during each iteration of the loop. When valid input can be assumed, <code>intersect()</code> reduces to:</p>
@@ -1306,7 +1306,7 @@ union</code></pre>
 <pre><code>
 function (x, y) 
 unique(c(as.vector(x), as.vector(y)))
-&lt;bytecode: 0x557af7dffa48&gt;
+&lt;bytecode: 0x55bcd72ff6c8&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>But even <code>unique()</code> itself can be sped up. Since there is no specific <code>unique()</code> method for character vectors (i.e. <code>unique.character()</code>), character vectors are processed with <code>unique.default()</code>.</p>
@@ -1340,7 +1340,7 @@ function (x, incomparables = FALSE, fromLast = FALSE, nmax = NA,
         structure(z, class = class(x))
     else z
 }
-&lt;bytecode: 0x557af778ce58&gt;
+&lt;bytecode: 0x55bcd6c8fe58&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>And the majority of <code>unique.default()</code> is code to handle various types of input like factors, times, or dates. Since I will ensure the input will always be character vectors, the only required line of <code>unique.default()</code> is the one below:</p>
@@ -1418,7 +1418,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.048   0.000   0.048 </code></pre>
+  0.048   0.000   0.047 </code></pre>
 </div>
 <p>And even 1000 sets is finished processing in only a few seconds:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1426,7 +1426,7 @@ system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 system.time(calc_pairwise_overlaps(sets_1000))</code></pre>
 <pre><code>
    user  system elapsed 
-  2.444   0.004   2.447 </code></pre>
+  2.422   0.007   2.430 </code></pre>
 </div>
 <h2 id="conclusions">Conclusions</h2>
 <p>In this post, I demonstrated how to iteratively increase the speed of a slow function. The biggest lesson I learned from this experience is that it is possible to increase the speed of base R functions since they may be designed to handle multiple different types of inputs.</p>
