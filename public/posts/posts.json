@@ -1,5 +1,24 @@
 [
   {
+    "path": "posts/pairwise-overlaps/",
+    "title": "How to efficiently calculate pairwise overlaps of many sets",
+    "description": "An example of progressively optimizing the speed of a function",
+    "author": [
+      {
+        "name": "John Blischak",
+        "url": "https://jdblischak.com"
+      }
+    ],
+    "date": "2020-03-23",
+    "categories": [
+      "Software Development with R"
+    ],
+    "preview": "posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/network-viz-1.png",
+    "last_modified": "2020-03-27T15:41:03+00:00",
+    "preview_width": 1248,
+    "preview_height": 768
+  },
+  {
     "path": "posts/rstudioconf2020/",
     "title": "Some themes from rstudio::conf 2020",
     "description": "There were a lot of great talks at rstudio::conf. In this post I highlight a\nfew of the themes that emerged for me.",
@@ -14,7 +33,7 @@
       "conference"
     ],
     "preview": "posts/rstudioconf2020/img/rstudioconf2020.jpg",
-    "last_modified": "2020-03-20T01:31:34+00:00"
+    "last_modified": "2020-03-27T15:38:47+00:00"
   },
   {
     "path": "posts/circleci-ssh/",
@@ -31,7 +50,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-03-20T01:31:34+00:00"
+    "last_modified": "2020-03-27T15:38:47+00:00"
   },
   {
     "path": "posts/debug-circleci/",
@@ -50,7 +69,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-03-20T01:31:34+00:00"
+    "last_modified": "2020-03-27T15:38:47+00:00"
   },
   {
     "path": "posts/circleci-for-r-2/",
@@ -68,7 +87,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-03-20T01:31:34+00:00"
+    "last_modified": "2020-03-27T15:38:47+00:00"
   },
   {
     "path": "posts/debug-appveyor/",
@@ -87,7 +106,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-03-20T01:32:58+00:00"
+    "last_modified": "2020-03-27T15:38:47+00:00"
   },
   {
     "path": "posts/debug-travis/",
@@ -106,7 +125,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-03-20T01:31:34+00:00"
+    "last_modified": "2020-03-27T15:38:47+00:00"
   },
   {
     "path": "posts/circleci-for-r-1/",
@@ -124,6 +143,6 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-03-20T01:31:34+00:00"
+    "last_modified": "2020-03-27T15:38:47+00:00"
   }
 ]

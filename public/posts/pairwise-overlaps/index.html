@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+<title>John Blischak's blog: How to efficiently calculate pairwise overlaps of many sets</title>
+
+<meta property="description" itemprop="description" content="An example of progressively optimizing the speed of a function"/>
+
+<link rel="canonical" href="https://blog.jdblischak.com/posts/pairwise-overlaps/"/>
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2020-03-23"/>
+<meta property="article:created" itemprop="dateCreated" content="2020-03-23"/>
+<meta name="article:author" content="John Blischak"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="John Blischak&#39;s blog: How to efficiently calculate pairwise overlaps of many sets"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="An example of progressively optimizing the speed of a function"/>
+<meta property="og:url" content="https://blog.jdblischak.com/posts/pairwise-overlaps/"/>
+<meta property="og:image" content="https://blog.jdblischak.com/posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/network-viz-1.png"/>
+<meta property="og:image:width" content="1248"/>
+<meta property="og:image:height" content="768"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="John Blischak&#39;s blog"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:title" content="John Blischak&#39;s blog: How to efficiently calculate pairwise overlaps of many sets"/>
+<meta property="twitter:description" content="An example of progressively optimizing the speed of a function"/>
+<meta property="twitter:url" content="https://blog.jdblischak.com/posts/pairwise-overlaps/"/>
+<meta property="twitter:image" content="https://blog.jdblischak.com/posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/network-viz-1.png"/>
+<meta property="twitter:image:width" content="1248"/>
+<meta property="twitter:image:height" content="768"/>
+<meta property="twitter:creator" content="@jdblischak"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="John Blischak&#39;s blog: How to efficiently calculate pairwise overlaps of many sets"/>
+<meta name="citation_fulltext_html_url" content="https://blog.jdblischak.com/posts/pairwise-overlaps/"/>
+<meta name="citation_fulltext_world_readable" content=""/>
+<meta name="citation_online_date" content="2020/03/23"/>
+<meta name="citation_publication_date" content="2020/03/23"/>
+<meta name="citation_author" content="John Blischak"/>
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","date","output","categories","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["How to efficiently calculate pairwise overlaps of many sets"]},{"type":"character","attributes":{},"value":["An example of progressively optimizing the speed of a function"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["03-23-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["Software Development with R"]},{"type":"character","attributes":{},"value":["https://blog.jdblischak.com/posts/pairwise-overlaps/"]},{"type":"character","attributes":{},"value":["https://blog.jdblischak.com/posts/pairwise-overlaps/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png","pairwise-overlaps_files/figure-html5/network-viz-1.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #455a64;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative;}
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+</style>
+
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for table of contents */
+
+.d-toc {
+  color: rgba(0,0,0,0.8);
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+.d-toc-header {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 1.3em;
+}
+
+.d-toc a {
+  border-bottom: none;
+}
+
+.d-toc ul {
+  padding-left: 0;
+}
+
+.d-toc li>ul {
+  padding-top: 0.8em;
+  padding-left: 16px;
+  margin-bottom: 0.6em;
+}
+
+.d-toc ul,
+.d-toc li {
+  list-style-type: none;
+}
+
+.d-toc li {
+  margin-bottom: 0.9em;
+}
+
+.d-toc-separator {
+  margin-top: 20px;
+  margin-bottom: 2em;
+}
+
+.d-article-with-toc {
+  border-top: none;
+  padding-top: 0;
+}
+
+
+
+/* Tweak code blocks (note that this CSS is repeated above in an injection
+   into the d-code shadow dom) */
+
+d-code {
+  overflow-x: auto !important;
+}
+
+pre.d-code code.d-code {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+pre.text-output {
+
+  font-size: 12px;
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+@media(min-width: 768px) {
+
+d-code {
+  overflow-x: visible !important;
+}
+
+pre.d-code code.d-code  {
+    padding-left: 18px;
+    font-size: 14px;
+}
+pre.text-output {
+  font-size: 14px;
+}
+}
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // create d-bibliography
+  var bibliography = $('<d-bibliography></d-bibliography>');
+  $('#distill-bibliography').wrap(bibliography);
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace citations with <d-cite>
+  $('.citation').each(function(i, val) {
+    appendix = true;
+    var cites = $(this).attr('data-cites').split(" ");
+    var dt_cite = $('<d-cite></d-cite>');
+    dt_cite.attr('key', cites.join());
+    $(this).replaceWith(dt_cite);
+  });
+  // remove refs
+  $('#refs').remove();
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-toc a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // replace code blocks with d-code
+  $('pre>code').each(function(i, val) {
+    var code = $(this);
+    var pre = code.parent();
+    var clz = "";
+    var language = pre.attr('class');
+    if (language) {
+      // map unknown languages to "clike" (without this they just dissapear)
+      if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                               "javascript", "js", "julia", "lua", "markdown",
+                               "markup", "mathml", "python", "svg", "xml"]) == -1)
+        language = "clike";
+      language = ' language="' + language + '"';
+      var dt_code = $('<d-code block' + language + clz + '></d-code>');
+      dt_code.text(code.text());
+      pre.replaceWith(dt_code);
+    } else {
+      code.addClass('text-output').unwrap().changeElementType('pre');
+    }
+  });
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('d-code, pre.text-output, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // table of contents
+    if (have_authors) // adjust border if we are in authors
+      $('.d-toc').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+    $('d-code').each(function(i, val) {
+      var style = document.createElement('style');
+      style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                        '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+      if (this.shadowRoot)
+        this.shadowRoot.appendChild(style);
+    });
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-toc-header').remove();
+  $('.d-toc').remove();
+  $('.d-toc-separator').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<style type="text/css">
+/*
+Custom themes for blog.jdblischak.com
+
+https://rstudio.github.io/distill/website.html#theming
+*/
+
+.distill-site-nav {
+  background-color: #543a54;
+}
+
+.distill-site-footer a {
+  text-decoration: underline;
+}
+
+/*
+This is the same color (#f5f5f5; white smoke) used in standard R Markdown code
+chunks.
+*/
+code {
+  background-color: RGB(245, 245, 245);
+}
+
+</style>
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"How to efficiently calculate pairwise overlaps of many sets","description":"An example of progressively optimizing the speed of a function","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-03-23T00:00:00.000+00:00","citationText":"Blischak, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">John Blischak's blog</a>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
+<a href="../../index.xml">
+<i class="fa fa-rss"></i>
+</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>How to efficiently calculate pairwise overlaps of many sets</h1>
+<p><p>An example of progressively optimizing the speed of a function</p></p>
+</div>
+
+<div class="d-byline">
+  John Blischak <a href="https://jdblischak.com" class="uri">https://jdblischak.com</a> 
+  
+<br/>03-23-2020
+</div>
+
+<div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#the-combinatorial-explosion-of-pairwise-overlaps">The combinatorial explosion of pairwise overlaps</a></li>
+<li><a href="#simulating-sets">Simulating sets</a></li>
+<li><a href="#first-pass-implementation">First pass implementation</a></li>
+<li><a href="#combinations-and-indexing">Combinations and indexing</a></li>
+<li><a href="#preallocation">Preallocation</a></li>
+<li><a href="#check-sets-once-instead-of-every-overlap">Check sets once instead of every overlap</a></li>
+<li><a href="#conclusions">Conclusions</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<p>For one of my projects, I needed to calculate the pairwise overlaps of many sets, and my initial brute force approach was unbearably slow. And even after making some of the more obvious optimizations, it was still quite slow. Fortunately I got a good tip from <a href="https://community.rstudio.com/u/nirgrahamuk/">Nir Graham</a> when I <a href="https://community.rstudio.com/t/how-to-efficiently-calculate-pairwise-overlaps-of-many-sets/56750">posted on RStudio Community</a>. Below I explain the problem in more detail, and then demonstrate how I progressively optimized the function for increased speed.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>The final solution is still brute force, just faster. If you know of a clever algorithm for finding pairwise overlaps<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, please do get in touch.</p>
+<h2 id="the-combinatorial-explosion-of-pairwise-overlaps">The combinatorial explosion of pairwise overlaps</h2>
+<p>First, why do I need to do this? I suspect there are many use cases for computing pairwise overlaps, but in my specific case I wanted to compare the similarity of biological annotation terms after having performed a <a href="https://en.wikipedia.org/wiki/Gene_set_enrichment_analysis">gene set enrichment anlaysis</a>. For those unfamiliar with <a href="https://en.wikipedia.org/wiki/Omics">“omics”</a>-style analyses, the results are usually a list of biological features with varying levels of statistical signficance (e.g. which proteins change in relative abundance between control versus treated cells). To help interpretation, the list of results is compared to curated databases of annotation terms such as <a href="https://en.wikipedia.org/wiki/Gene_ontology">Gene Ontology categories</a> or <a href="https://en.wikipedia.org/wiki/KEGG">KEGG pathways</a>. While they are usually more sophisticated, conceptually you can imagine a <a href="https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test">chi-squared test</a> of a contingency table comparing the features in the results list with the features in each annotation category:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Feature in results</th>
+<th>Feature <em>not</em> in results</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Feature in annotation</strong></td>
+<td>x</td>
+<td>y</td>
+</tr>
+<tr class="even">
+<td><strong>Feature <em>not</em> in annotation</strong></td>
+<td>z</td>
+<td>w</td>
+</tr>
+</tbody>
+</table>
+<p>If a given annotation category contains more of the results than would be expected by chance, then this category is said to be “enriched”.</p>
+<p>A major hurdle for interpreting enrichment results is that the annotation categories often contain many of the same features, and thus the results can be very redundant. For example, how different are the categories <a href="https://www.ebi.ac.uk/QuickGO/term/GO:0033554">cellular response to stress</a> and <a href="https://www.ebi.ac.uk/QuickGO/term/GO:0006950">response to stress</a>? Thus it would be nice to have a metric of how related the categories are when interpeting the enrichment results.</p>
+<p>Specifically I’d like to calculate three measurements:</p>
+<ol type="1">
+<li>The number of overlapping features</li>
+<li>The <a href="https://en.wikipedia.org/wiki/Overlap_coefficient">overlap coefficient</a>: <span class="math inline">\(\frac{| X \cap Y |}{min(|X|, |Y|)}\)</span></li>
+<li>The <a href="https://en.wikipedia.org/wiki/Jaccard_index">Jaccard index</a>: <span class="math inline">\(\frac{| X \cap Y |}{| X \cup Y |}\)</span></li>
+</ol>
+<p>This will be especially useful for a network visualization of the enrichment results, where the color of the nodes could correspond to the statistical significance, and the thickness of the eges could correspond to the Jaccard index. For example, the hypothetical results below demonstrate that there are two main sources of enrichment, even though five categories are statistically significant:</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="pairwise-overlaps_files/figure-html5/network-viz-1.png" width="624" /></p>
+</div>
+<p>The essential problem that this post deals with is the fact that as the number of sets increases, the number of pairwise overlaps to be calculated explodes. 100 sets require 4,950 pairwise overlaps, but 1000 sets require 499,500. To be more precise, this is a <a href="https://en.wikipedia.org/wiki/Combination">combinatorial relationship</a>, in which the number of pairwise overlaps is determined by the number of unique combinations of size 2 of the <span class="math inline">\(n\)</span> sets:</p>
+<p><span class="math display">\[ \binom{n}{2} = \frac {n!} {2!(n-2)!} \]</span> In R, I’ll use the function <code>choose()</code> to perform this calculation.</p>
+<p>Below is a visualization of the combinatorial explosion in the number of pairwise overlaps:</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png" width="624" /></p>
+</div>
+<p>In my application, I have multiple biological annotations that have thousands of sets to compare. Thus I need the overlap calculations to be quick since they’ll be performed millions of times.</p>
+<h2 id="simulating-sets">Simulating sets</h2>
+<p>To benchmark my implementations, I created the function <code>simulate_sets()</code> to create a list with a given number of elements containing character vectors.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+simulate_sets &lt;- function(n_sets) {
+  universe &lt;- c(letters, LETTERS)
+  sets &lt;- replicate(n_sets,
+                    sample(universe, size = rpois(1, lambda = 15)),
+                    simplify = FALSE)
+  names(sets) &lt;- paste0(&quot;set&quot;, seq(n_sets))
+  return(sets)
+}</code></pre>
+</div>
+<p>The elements in the sets consist of lowercase and uppercase letters. Here’s what the output looks like:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(12345)
+(sets_5 &lt;- simulate_sets(n_sets = 5))</code></pre>
+<pre><code>
+$set1
+ [1] &quot;p&quot; &quot;z&quot; &quot;B&quot; &quot;x&quot; &quot;C&quot; &quot;k&quot; &quot;F&quot; &quot;W&quot; &quot;b&quot; &quot;v&quot; &quot;U&quot; &quot;L&quot; &quot;M&quot; &quot;D&quot; &quot;j&quot; &quot;q&quot;
+[17] &quot;T&quot;
+
+$set2
+ [1] &quot;L&quot; &quot;D&quot; &quot;a&quot; &quot;l&quot; &quot;t&quot; &quot;h&quot; &quot;W&quot; &quot;c&quot; &quot;i&quot; &quot;n&quot; &quot;m&quot; &quot;V&quot; &quot;p&quot; &quot;N&quot;
+
+$set3
+ [1] &quot;H&quot; &quot;O&quot; &quot;F&quot; &quot;y&quot; &quot;J&quot; &quot;N&quot; &quot;k&quot; &quot;L&quot; &quot;i&quot; &quot;e&quot; &quot;o&quot; &quot;s&quot; &quot;q&quot; &quot;U&quot; &quot;K&quot; &quot;c&quot;
+[17] &quot;Y&quot; &quot;m&quot;
+
+$set4
+ [1] &quot;W&quot; &quot;j&quot; &quot;Q&quot; &quot;A&quot; &quot;H&quot; &quot;R&quot; &quot;I&quot; &quot;S&quot; &quot;v&quot; &quot;P&quot; &quot;w&quot; &quot;E&quot; &quot;z&quot; &quot;g&quot; &quot;o&quot; &quot;K&quot;
+[17] &quot;X&quot; &quot;l&quot; &quot;N&quot; &quot;x&quot; &quot;c&quot;
+
+$set5
+ [1] &quot;d&quot; &quot;k&quot; &quot;W&quot; &quot;c&quot; &quot;j&quot; &quot;o&quot; &quot;g&quot; &quot;P&quot; &quot;z&quot; &quot;Z&quot; &quot;B&quot; &quot;Q&quot; &quot;F&quot; &quot;r&quot; &quot;a&quot; &quot;S&quot;</code></pre>
+<pre class="r"><code>
+sets_100 &lt;- simulate_sets(n_sets = 100)
+sets_1000 &lt;- simulate_sets(n_sets = 1000)</code></pre>
+</div>
+<h2 id="first-pass-implementation">First pass implementation</h2>
+<p>For my first pass, I use a nested for loop to iterate over the names of the lists. The main advantages of this approach is that it was quick to write and it is straightforward to read the code. The essential part of this strategy is contained in the snippet below:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+for (name1 in names(sets)) {
+  set1 &lt;- sets[[name1]]
+  for (name2 in names(sets)) {
+    set2 &lt;- sets[[name2]]
+  }
+}</code></pre>
+</div>
+<p>Here’s the entire function:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+calc_pairwise_overlaps &lt;- function(sets) {
+
+  vec_name1 &lt;- character()
+  vec_name2 &lt;- character()
+  vec_num_shared &lt;- integer()
+  vec_overlap &lt;- numeric()
+  vec_jaccard &lt;- numeric()
+
+  for (name1 in names(sets)) {
+    set1 &lt;- sets[[name1]]
+    for (name2 in names(sets)) {
+      set2 &lt;- sets[[name2]]
+      set_intersection &lt;- intersect(set1, set2)
+      num_shared &lt;- length(set_intersection)
+      overlap &lt;- num_shared / min(length(set1), length(set2))
+      jaccard &lt;- num_shared / length(union(set1, set2))
+
+      vec_name1 &lt;- c(vec_name1, name1)
+      vec_name2 &lt;- c(vec_name2, name2)
+      vec_num_shared &lt;- c(vec_num_shared, num_shared)
+      vec_overlap &lt;- c(vec_overlap, overlap)
+      vec_jaccard &lt;- c(vec_jaccard, jaccard)
+    }
+  }
+
+  result &lt;- data.frame(name1 = vec_name1,
+                       name2 = vec_name2,
+                       num_shared = vec_num_shared,
+                       overlap = vec_overlap,
+                       jaccard = vec_overlap,
+                       stringsAsFactors = FALSE)
+  return(result)
+}</code></pre>
+</div>
+<p>There are of course lots of things to be improved, as you’ll see below, but if you have 100 sets or fewer, it probably wouldn’t be worth the effort to optimize it further.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+head(calc_pairwise_overlaps(sets_100))</code></pre>
+<pre><code>
+  name1 name2 num_shared   overlap   jaccard
+1  set1  set1         21 1.0000000 1.0000000
+2  set1  set2          5 0.2777778 0.2777778
+3  set1  set3          8 0.4210526 0.4210526
+4  set1  set4          9 0.4500000 0.4500000
+5  set1  set5          7 0.6363636 0.6363636
+6  set1  set6          6 0.4000000 0.4000000</code></pre>
+<pre class="r"><code>
+system.time(calc_pairwise_overlaps(sets_100))</code></pre>
+<pre><code>
+   user  system elapsed 
+  0.923   0.000   0.923 </code></pre>
+</div>
+<h2 id="combinations-and-indexing">Combinations and indexing</h2>
+<p>One big issue with the strategy above is that each pairwise combination is performed twice. In other words, I calculated the overlap statistics for each permutation of the sets, when I really only need to calculate each combination. The second issue I’ll address in this iteration is how to fetch each set. Above I obtained each set by name, <code>sets[[name1]]</code>, which requires searching over the names of the list to find a match. While convenient, this gets slower as the list grows. Thus instead of looping over the names of the list, it is better to use an index variable to track the position in the list. This allows the sets to be quickly obtained via their position in the list.</p>
+<p>The essential part of this update is in the snippet below. The index variables <code>i</code> and <code>j</code> are used to obtain the name of the sets and their contents in each iteration. Furthermore, <code>j</code> is always greater than <code>i</code>, to avoid comparing a set to itself or repeating any previous combinations.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+n_sets &lt;- length(sets)
+set_names &lt;- names(sets)
+for (i in seq_len(n_sets - 1)) {
+  name1 &lt;- set_names[i]
+  set1 &lt;- sets[[i]]
+  for (j in seq(i + 1, n_sets)) {
+    name2 &lt;- set_names[j]
+    set2 &lt;- sets[[j]]
+  }
+}</code></pre>
+</div>
+<p>Here’s the updated function:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+calc_pairwise_overlaps &lt;- function(sets) {
+
+  n_sets &lt;- length(sets)
+  set_names &lt;- names(sets)
+
+  vec_name1 &lt;- character()
+  vec_name2 &lt;- character()
+  vec_num_shared &lt;- integer()
+  vec_overlap &lt;- numeric()
+  vec_jaccard &lt;- numeric()
+
+  for (i in seq_len(n_sets - 1)) {
+    name1 &lt;- set_names[i]
+    set1 &lt;- sets[[i]]
+    for (j in seq(i + 1, n_sets)) {
+      name2 &lt;- set_names[j]
+      set2 &lt;- sets[[j]]
+      set_intersection &lt;- intersect(set1, set2)
+      num_shared &lt;- length(set_intersection)
+      overlap &lt;- num_shared / min(length(set1), length(set2))
+      jaccard &lt;- num_shared / length(union(set1, set2))
+
+      vec_name1 &lt;- c(vec_name1, name1)
+      vec_name2 &lt;- c(vec_name2, name2)
+      vec_num_shared &lt;- c(vec_num_shared, num_shared)
+      vec_overlap &lt;- c(vec_overlap, overlap)
+      vec_jaccard &lt;- c(vec_jaccard, jaccard)
+    }
+  }
+
+  result &lt;- data.frame(name1 = vec_name1,
+                       name2 = vec_name2,
+                       num_shared = vec_num_shared,
+                       overlap = vec_overlap,
+                       jaccard = vec_overlap,
+                       stringsAsFactors = FALSE)
+  return(result)
+}</code></pre>
+</div>
+<p>With these two improvements, the computation time more than halved for a list of 100 sets. However, it is still quite slow when running 1000 sets.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+system.time(calc_pairwise_overlaps(sets_100))</code></pre>
+<pre><code>
+   user  system elapsed 
+  0.320   0.004   0.324 </code></pre>
+</div>
+<p>And these improvements are essentially the advice from this <a href="https://stackoverflow.com/a/27369862">StackOverflow answer</a> on the same topic.</p>
+<h2 id="preallocation">Preallocation</h2>
+<p>The next issue I’ll address is a common cause of slow R code: growing objects during each iteration of a loop, e.g. <code>vec_overlap &lt;- c(vec_overlap, overlap)</code>. This may be convenient, but it is extremely slow. The solution is to preallocate the vectors to their final length, and then add new data by index.</p>
+<p>In this case, the final length will be the total number of combinations, which I calculate using the function <code>choose()</code>. Furthermore, I add a new index variable, <code>overlaps_index</code>, to keep track of the combinations. The essential code to preallocate the vectors is in the code snippet below:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# preallocate the vectors
+n_overlaps &lt;- choose(n = n_sets, k = 2)
+vec_name1 &lt;- character(length = n_overlaps)
+vec_name2 &lt;- character(length = n_overlaps)
+vec_num_shared &lt;- integer(length = n_overlaps)
+vec_overlap &lt;- numeric(length = n_overlaps)
+vec_jaccard &lt;- numeric(length = n_overlaps)
+overlaps_index &lt;- 1
+
+# During each iteration, use the index to assign the latest value to the output
+# vectors
+vec_name1[overlaps_index] &lt;- name1
+vec_name2[overlaps_index] &lt;- name2
+vec_num_shared[overlaps_index] &lt;- num_shared
+vec_overlap[overlaps_index] &lt;- overlap
+vec_jaccard[overlaps_index] &lt;- jaccard
+overlaps_index &lt;- overlaps_index + 1</code></pre>
+</div>
+<p>And here’s the updated function:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+calc_pairwise_overlaps &lt;- function(sets) {
+
+  n_sets &lt;- length(sets)
+  set_names &lt;- names(sets)
+  n_overlaps &lt;- choose(n = n_sets, k = 2)
+
+  vec_name1 &lt;- character(length = n_overlaps)
+  vec_name2 &lt;- character(length = n_overlaps)
+  vec_num_shared &lt;- integer(length = n_overlaps)
+  vec_overlap &lt;- numeric(length = n_overlaps)
+  vec_jaccard &lt;- numeric(length = n_overlaps)
+  overlaps_index &lt;- 1
+
+  for (i in seq_len(n_sets - 1)) {
+    name1 &lt;- set_names[i]
+    set1 &lt;- sets[[i]]
+    for (j in seq(i + 1, n_sets)) {
+      name2 &lt;- set_names[j]
+      set2 &lt;- sets[[j]]
+      set_intersection &lt;- intersect(set1, set2)
+      num_shared &lt;- length(set_intersection)
+      overlap &lt;- num_shared / min(length(set1), length(set2))
+      jaccard &lt;- num_shared / length(union(set1, set2))
+
+      vec_name1[overlaps_index] &lt;- name1
+      vec_name2[overlaps_index] &lt;- name2
+      vec_num_shared[overlaps_index] &lt;- num_shared
+      vec_overlap[overlaps_index] &lt;- overlap
+      vec_jaccard[overlaps_index] &lt;- jaccard
+
+      overlaps_index &lt;- overlaps_index + 1
+    }
+  }
+
+  result &lt;- data.frame(name1 = vec_name1,
+                       name2 = vec_name2,
+                       num_shared = vec_num_shared,
+                       overlap = vec_overlap,
+                       jaccard = vec_overlap,
+                       stringsAsFactors = FALSE)
+  return(result)
+}</code></pre>
+</div>
+<p>With the preallocation, the overlaps of 100 sets is almost instantaneous:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+system.time(calc_pairwise_overlaps(sets_100))</code></pre>
+<pre><code>
+   user  system elapsed 
+  0.087   0.000   0.087 </code></pre>
+</div>
+<p>And it can even handle 1000 sets in a reasonable amount of time:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 1000)))</code></pre>
+<pre><code>
+   user  system elapsed 
+  7.212   0.004   7.217 </code></pre>
+</div>
+<p>But I had thousands of sets to compare, and this was still slow.</p>
+<h2 id="check-sets-once-instead-of-every-overlap">Check sets once instead of every overlap</h2>
+<p>After making the above changes, I was stumped as to how to further increase its speed, so I <a href="https://community.rstudio.com/t/how-to-efficiently-calculate-pairwise-overlaps-of-many-sets/56750">posted on RStudio Community</a> for ideas. And I was lucky to get the advice from <a href="https://community.rstudio.com/u/nirgrahamuk/">Nir Graham</a> to speed up R’s set functions like <code>intersect()</code> by checking the inputs once instead of during every overlap calculation.</p>
+<p>The function <code>intersect()</code> converts its inputs to vectors with <code>as.vector()</code> and also removes duplicates by calling <code>unique()</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+intersect</code></pre>
+<pre><code>
+function (x, y) 
+{
+    y &lt;- as.vector(y)
+    unique(y[match(as.vector(x), y, 0L)])
+}
+&lt;bytecode: 0x557af7fe4028&gt;
+&lt;environment: namespace:base&gt;</code></pre>
+</div>
+<p>Since these calculations are performed during each pairwise overlap, they are extremely redundant. It is faster to confirm all the input sets are unique vectors at the very beginning of the function, since then the code no longer needs to check during each iteration of the loop. When valid input can be assumed, <code>intersect()</code> reduces to:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+y[match(x, y, 0L)]</code></pre>
+</div>
+<p>It’s a similar situation with <code>union()</code>. It also converts its inputs to vectors with <code>as.vector()</code>. However, it does require the call to <code>unique()</code> to properly find the union of the two sets.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+union</code></pre>
+<pre><code>
+function (x, y) 
+unique(c(as.vector(x), as.vector(y)))
+&lt;bytecode: 0x557af7dffa48&gt;
+&lt;environment: namespace:base&gt;</code></pre>
+</div>
+<p>But even <code>unique()</code> itself can be sped up. Since there is no specific <code>unique()</code> method for character vectors (i.e. <code>unique.character()</code>), character vectors are processed with <code>unique.default()</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+methods(unique)</code></pre>
+<pre><code>
+ [1] unique.array           unique.bibentry*      
+ [3] unique.data.frame      unique.default        
+ [5] unique.igraph.es*      unique.igraph.vs*     
+ [7] unique.matrix          unique.numeric_version
+ [9] unique.POSIXlt         unique.vctrs_sclr*    
+[11] unique.vctrs_vctr*     unique.warnings       
+see &#39;?methods&#39; for accessing help and source code</code></pre>
+<pre class="r"><code>
+unique.default</code></pre>
+<pre><code>
+function (x, incomparables = FALSE, fromLast = FALSE, nmax = NA, 
+    ...) 
+{
+    if (is.factor(x)) {
+        z &lt;- .Internal(unique(x, incomparables, fromLast, min(length(x), 
+            nlevels(x) + 1L)))
+        return(factor(z, levels = seq_len(nlevels(x)), labels = levels(x), 
+            ordered = is.ordered(x)))
+    }
+    z &lt;- .Internal(unique(x, incomparables, fromLast, nmax))
+    if (inherits(x, &quot;POSIXct&quot;)) 
+        structure(z, class = class(x), tzone = attr(x, &quot;tzone&quot;))
+    else if (inherits(x, &quot;Date&quot;)) 
+        structure(z, class = class(x))
+    else z
+}
+&lt;bytecode: 0x557af778ce58&gt;
+&lt;environment: namespace:base&gt;</code></pre>
+</div>
+<p>And the majority of <code>unique.default()</code> is code to handle various types of input like factors, times, or dates. Since I will ensure the input will always be character vectors, the only required line of <code>unique.default()</code> is the one below:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+z &lt;- .Internal(unique(x, incomparables, fromLast, nmax))</code></pre>
+</div>
+<p>So in this final optimized function, the input sets are first confirmed to be unique character vectors at the very beginning of the function, and then this assumption is never tested unnecessarily again.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+calc_pairwise_overlaps &lt;- function(sets) {
+  # Ensure that all sets are unique character vectors
+  sets_are_vectors &lt;- vapply(sets, is.vector, logical(1))
+  if (any(!sets_are_vectors)) {
+    stop(&quot;Sets must be vectors&quot;)
+  }
+  sets_are_atomic &lt;- vapply(sets, is.atomic, logical(1))
+  if (any(!sets_are_atomic)) {
+    stop(&quot;Sets must be atomic vectors, i.e. not lists&quot;)
+  }
+  sets &lt;- lapply(sets, as.character)
+  is_unique &lt;- function(x) length(unique(x)) == length(x)
+  sets_are_unique &lt;- vapply(sets, is_unique, logical(1))
+  if (any(!sets_are_unique)) {
+    stop(&quot;Sets must be unique, i.e. no duplicated elements&quot;)
+  }
+
+  n_sets &lt;- length(sets)
+  set_names &lt;- names(sets)
+  n_overlaps &lt;- choose(n = n_sets, k = 2)
+
+  vec_name1 &lt;- character(length = n_overlaps)
+  vec_name2 &lt;- character(length = n_overlaps)
+  vec_num_shared &lt;- integer(length = n_overlaps)
+  vec_overlap &lt;- numeric(length = n_overlaps)
+  vec_jaccard &lt;- numeric(length = n_overlaps)
+  overlaps_index &lt;- 1
+
+  for (i in seq_len(n_sets - 1)) {
+    name1 &lt;- set_names[i]
+    set1 &lt;- sets[[i]]
+    for (j in seq(i + 1, n_sets)) {
+      name2 &lt;- set_names[j]
+      set2 &lt;- sets[[j]]
+
+      set_intersect &lt;- set1[match(set2, set1, 0L)]
+      set_union &lt;- .Internal(unique(c(set1, set2), incomparables = FALSE,
+                                    fromLast = FALSE, nmax = NA))
+      num_shared &lt;- length(set_intersect)
+      overlap &lt;- num_shared / min(length(set1), length(set2))
+      jaccard &lt;- num_shared / length(set_union)
+
+      vec_name1[overlaps_index] &lt;- name1
+      vec_name2[overlaps_index] &lt;- name2
+      vec_num_shared[overlaps_index] &lt;- num_shared
+      vec_overlap[overlaps_index] &lt;- overlap
+      vec_jaccard[overlaps_index] &lt;- jaccard
+
+      overlaps_index &lt;- overlaps_index + 1
+    }
+  }
+
+  result &lt;- data.frame(name1 = vec_name1,
+                       name2 = vec_name2,
+                       num_shared = vec_num_shared,
+                       overlap = vec_overlap,
+                       jaccard = vec_overlap,
+                       stringsAsFactors = FALSE)
+  return(result)
+}</code></pre>
+</div>
+<p>Again, 100 sets is calculated almost instantaneously.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+system.time(calc_pairwise_overlaps(sets_100))</code></pre>
+<pre><code>
+   user  system elapsed 
+  0.048   0.000   0.048 </code></pre>
+</div>
+<p>And even 1000 sets is finished processing in only a few seconds:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+system.time(calc_pairwise_overlaps(sets_1000))</code></pre>
+<pre><code>
+   user  system elapsed 
+  2.444   0.004   2.447 </code></pre>
+</div>
+<h2 id="conclusions">Conclusions</h2>
+<p>In this post, I demonstrated how to iteratively increase the speed of a slow function. The biggest lesson I learned from this experience is that it is possible to increase the speed of base R functions since they may be designed to handle multiple different types of inputs.</p>
+<p>If you see any ways that this function could be further optimized, please do let me know!</p>
+<details>
+<p><summary> <strong>Click here to view the R session information:</strong> </summary></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+sessionInfo()</code></pre>
+<pre><code>
+R version 3.6.3 (2020-02-29)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 18.04.4 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods  
+[7] base     
+
+other attached packages:
+[1] tidygraph_1.1.2 ggraph_2.0.2    ggplot2_3.3.0   rstudioapi_0.11
+[5] rmarkdown_2.1   fs_1.3.2        git2r_0.26.1   
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.4         compiler_3.6.3     pillar_1.4.3      
+ [4] viridis_0.5.1      tools_3.6.3        digest_0.6.25     
+ [7] viridisLite_0.3.0  evaluate_0.14      lifecycle_0.2.0   
+[10] tibble_2.1.3       gtable_0.3.0       pkgconfig_2.0.3   
+[13] rlang_0.4.5        igraph_1.2.5       ggrepel_0.8.2     
+[16] distill_0.7        yaml_2.2.1         xfun_0.11         
+[19] gridExtra_2.3      withr_2.1.2        stringr_1.4.0     
+[22] dplyr_0.8.5        knitr_1.28         graphlayouts_0.6.0
+[25] vctrs_0.2.4        grid_3.6.3         tidyselect_1.0.0  
+[28] glue_1.3.2         R6_2.4.1           polyclip_1.10-0   
+[31] farver_2.0.1       tweenr_1.0.1       tidyr_1.0.2       
+[34] purrr_0.3.3        magrittr_1.5       MASS_7.3-51.5     
+[37] scales_1.1.0       htmltools_0.4.0    assertthat_0.2.1  
+[40] ggforce_0.3.1      colorspace_1.4-1   labeling_0.3      
+[43] stringi_1.4.6      munsell_0.5.0      crayon_1.3.4      </code></pre>
+</div>
+</details>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Note that I didn’t take these exact steps. Real life is a lot messier. I purposefully chose to break the process down into the steps below for didactic purposes.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn2" role="doc-endnote"><p>For example, this <a href="https://stackoverflow.com/a/27370005">SO answer</a> suggests a pseudo-mergesort might be a potential solution, but doesn’t provide an implementation.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩</a></p></li>
+</ol>
+</section>
+<!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=How%20to%20efficiently%20calculate%20pairwise%20overlaps%20of%20many%20sets&amp;url=https%3A%2F%2Fblog.jdblischak.com%2Fposts%2Fpairwise-overlaps%2F">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </span>
+  </p>
+</div>
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="updates-and-corrections">Corrections</h3>
+  <p>If you see mistakes or want to suggest changes, please <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/new">create an issue</a> on the source repository.</p>
+  <h3 id="reuse">Reuse</h3>
+  <p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/jdblischak/blog.jdblischak.com">https://github.com/jdblischak/blog.jdblischak.com</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">Blischak (2020, March 23). John Blischak's blog: How to efficiently calculate pairwise overlaps of many sets. Retrieved from https://blog.jdblischak.com/posts/pairwise-overlaps/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{blischak2020how,
+  author = {Blischak, John},
+  title = {John Blischak's blog: How to efficiently calculate pairwise overlaps of many sets},
+  url = {https://blog.jdblischak.com/posts/pairwise-overlaps/},
+  year = {2020}
+}</pre>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <p>
+  © 2019
+  <a href="https://jdblischak.com"> John Blischak</a>,
+  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY</a>
+</p>
+</div>
+<!--/radix_placeholder_navigation_after_body-->
+
+
+</body>
+
+</html>
