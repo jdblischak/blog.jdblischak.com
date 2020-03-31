@@ -1,5 +1,26 @@
 [
   {
+    "path": "posts/wsl-r/",
+    "title": "R programming in the Windows Subsystem for Linux",
+    "description": "A comprehensive guide to setup an R development environment for Ubuntu running\nin the Windows Subsystem for Linux (WSL)",
+    "author": [
+      {
+        "name": "John Blischak",
+        "url": "https://jdblischak.com"
+      }
+    ],
+    "date": "2020-03-31",
+    "categories": [
+      "Software Development with R",
+      "Ubuntu",
+      "Windows"
+    ],
+    "preview": "posts/wsl-r/img/windows-store-ubuntu.png",
+    "last_modified": "2020-03-31T21:56:27+00:00",
+    "preview_width": 947,
+    "preview_height": 888
+  },
+  {
     "path": "posts/pairwise-overlaps/",
     "title": "How to efficiently calculate pairwise overlaps of many sets",
     "description": "An example of progressively optimizing the speed of a function",
@@ -13,10 +34,8 @@
     "categories": [
       "Software Development with R"
     ],
-    "preview": "posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png",
-    "last_modified": "2020-03-27T16:43:45+00:00",
-    "preview_width": 1248,
-    "preview_height": 768
+    "preview": {},
+    "last_modified": "2020-03-31T21:54:27+00:00"
   },
   {
     "path": "posts/rstudioconf2020/",
@@ -33,7 +52,7 @@
       "conference"
     ],
     "preview": "posts/rstudioconf2020/img/rstudioconf2020.jpg",
-    "last_modified": "2020-03-27T16:41:35+00:00"
+    "last_modified": "2020-03-31T21:54:27+00:00"
   },
   {
     "path": "posts/circleci-ssh/",
@@ -50,7 +69,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-03-27T16:41:35+00:00"
+    "last_modified": "2020-03-31T21:54:27+00:00"
   },
   {
     "path": "posts/debug-circleci/",
@@ -69,7 +88,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-03-27T16:41:35+00:00"
+    "last_modified": "2020-03-31T21:54:27+00:00"
   },
   {
     "path": "posts/circleci-for-r-2/",
@@ -87,7 +106,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-03-27T16:41:35+00:00"
+    "last_modified": "2020-03-31T21:54:27+00:00"
   },
   {
     "path": "posts/debug-appveyor/",
@@ -106,7 +125,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-03-27T16:41:35+00:00"
+    "last_modified": "2020-03-31T21:54:27+00:00"
   },
   {
     "path": "posts/debug-travis/",
@@ -125,7 +144,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-03-27T16:41:35+00:00"
+    "last_modified": "2020-03-31T21:54:27+00:00"
   },
   {
     "path": "posts/circleci-for-r-1/",
@@ -143,6 +162,6 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-03-27T16:41:35+00:00"
+    "last_modified": "2020-03-31T21:54:27+00:00"
   }
 ]

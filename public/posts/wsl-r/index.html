@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+<title>John Blischak's blog: R programming in the Windows Subsystem for Linux</title>
+
+<meta property="description" itemprop="description" content="A comprehensive guide to setup an R development environment for Ubuntu running&#10;in the Windows Subsystem for Linux (WSL)"/>
+
+<link rel="canonical" href="https://blog.jdblischak.com/posts/wsl-r/"/>
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2020-03-31"/>
+<meta property="article:created" itemprop="dateCreated" content="2020-03-31"/>
+<meta name="article:author" content="John Blischak"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="John Blischak&#39;s blog: R programming in the Windows Subsystem for Linux"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="A comprehensive guide to setup an R development environment for Ubuntu running&#10;in the Windows Subsystem for Linux (WSL)"/>
+<meta property="og:url" content="https://blog.jdblischak.com/posts/wsl-r/"/>
+<meta property="og:image" content="https://blog.jdblischak.com/posts/wsl-r/img/windows-store-ubuntu.png"/>
+<meta property="og:image:width" content="947"/>
+<meta property="og:image:height" content="888"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="John Blischak&#39;s blog"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:title" content="John Blischak&#39;s blog: R programming in the Windows Subsystem for Linux"/>
+<meta property="twitter:description" content="A comprehensive guide to setup an R development environment for Ubuntu running&#10;in the Windows Subsystem for Linux (WSL)"/>
+<meta property="twitter:url" content="https://blog.jdblischak.com/posts/wsl-r/"/>
+<meta property="twitter:image" content="https://blog.jdblischak.com/posts/wsl-r/img/windows-store-ubuntu.png"/>
+<meta property="twitter:image:width" content="947"/>
+<meta property="twitter:image:height" content="888"/>
+<meta property="twitter:creator" content="@jdblischak"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="John Blischak&#39;s blog: R programming in the Windows Subsystem for Linux"/>
+<meta name="citation_fulltext_html_url" content="https://blog.jdblischak.com/posts/wsl-r/"/>
+<meta name="citation_fulltext_world_readable" content=""/>
+<meta name="citation_online_date" content="2020/03/31"/>
+<meta name="citation_publication_date" content="2020/03/31"/>
+<meta name="citation_author" content="John Blischak"/>
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","date","output","preview","categories","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["R programming in the Windows Subsystem for Linux"]},{"type":"character","attributes":{},"value":["A comprehensive guide to setup an R development environment for Ubuntu running\nin the Windows Subsystem for Linux (WSL)"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["03-31-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","css"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["wsl-r.css"]}]}]},{"type":"character","attributes":{},"value":["img/windows-store-ubuntu.png"]},{"type":"character","attributes":{},"value":["Software Development with R","Ubuntu","Windows"]},{"type":"character","attributes":{},"value":["https://blog.jdblischak.com/posts/wsl-r/"]},{"type":"character","attributes":{},"value":["https://blog.jdblischak.com/posts/wsl-r/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["img/activate-wsl.png","img/remote-wsl-close-connection.png","img/remote-wsl-new-window.png","img/remote-wsl-terminal.png","img/terminal-copy.png","img/terminal-paste.png","img/windows-features.png","img/windows-store-ubuntu.png","img/wsl-initial-config.png","wsl-r.css"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #455a64;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative;}
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+</style>
+
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for table of contents */
+
+.d-toc {
+  color: rgba(0,0,0,0.8);
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+.d-toc-header {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 1.3em;
+}
+
+.d-toc a {
+  border-bottom: none;
+}
+
+.d-toc ul {
+  padding-left: 0;
+}
+
+.d-toc li>ul {
+  padding-top: 0.8em;
+  padding-left: 16px;
+  margin-bottom: 0.6em;
+}
+
+.d-toc ul,
+.d-toc li {
+  list-style-type: none;
+}
+
+.d-toc li {
+  margin-bottom: 0.9em;
+}
+
+.d-toc-separator {
+  margin-top: 20px;
+  margin-bottom: 2em;
+}
+
+.d-article-with-toc {
+  border-top: none;
+  padding-top: 0;
+}
+
+
+
+/* Tweak code blocks (note that this CSS is repeated above in an injection
+   into the d-code shadow dom) */
+
+d-code {
+  overflow-x: auto !important;
+}
+
+pre.d-code code.d-code {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+pre.text-output {
+
+  font-size: 12px;
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+@media(min-width: 768px) {
+
+d-code {
+  overflow-x: visible !important;
+}
+
+pre.d-code code.d-code  {
+    padding-left: 18px;
+    font-size: 14px;
+}
+pre.text-output {
+  font-size: 14px;
+}
+}
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // create d-bibliography
+  var bibliography = $('<d-bibliography></d-bibliography>');
+  $('#distill-bibliography').wrap(bibliography);
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace citations with <d-cite>
+  $('.citation').each(function(i, val) {
+    appendix = true;
+    var cites = $(this).attr('data-cites').split(" ");
+    var dt_cite = $('<d-cite></d-cite>');
+    dt_cite.attr('key', cites.join());
+    $(this).replaceWith(dt_cite);
+  });
+  // remove refs
+  $('#refs').remove();
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-toc a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // replace code blocks with d-code
+  $('pre>code').each(function(i, val) {
+    var code = $(this);
+    var pre = code.parent();
+    var clz = "";
+    var language = pre.attr('class');
+    if (language) {
+      // map unknown languages to "clike" (without this they just dissapear)
+      if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                               "javascript", "js", "julia", "lua", "markdown",
+                               "markup", "mathml", "python", "svg", "xml"]) == -1)
+        language = "clike";
+      language = ' language="' + language + '"';
+      var dt_code = $('<d-code block' + language + clz + '></d-code>');
+      dt_code.text(code.text());
+      pre.replaceWith(dt_code);
+    } else {
+      code.addClass('text-output').unwrap().changeElementType('pre');
+    }
+  });
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('d-code, pre.text-output, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // table of contents
+    if (have_authors) // adjust border if we are in authors
+      $('.d-toc').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+    $('d-code').each(function(i, val) {
+      var style = document.createElement('style');
+      style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                        '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+      if (this.shadowRoot)
+        this.shadowRoot.appendChild(style);
+    });
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-toc-header').remove();
+  $('.d-toc').remove();
+  $('.d-toc-separator').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<style type="text/css">
+/*
+Custom themes for blog.jdblischak.com
+
+https://rstudio.github.io/distill/website.html#theming
+*/
+
+.distill-site-nav {
+  background-color: #543a54;
+}
+
+.distill-site-footer a {
+  text-decoration: underline;
+}
+
+/*
+This is the same color (#f5f5f5; white smoke) used in standard R Markdown code
+chunks.
+*/
+code {
+  background-color: RGB(245, 245, 245);
+}
+
+</style>
+<!--/radix_placeholder_site_in_header-->
+
+  <link rel="stylesheet" href="wsl-r.css" type="text/css"/>
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"R programming in the Windows Subsystem for Linux","description":"A comprehensive guide to setup an R development environment for Ubuntu running\nin the Windows Subsystem for Linux (WSL)","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-03-31T00:00:00.000+00:00","citationText":"Blischak, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">John Blischak's blog</a>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
+<a href="../../index.xml">
+<i class="fa fa-rss"></i>
+</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>R programming in the Windows Subsystem for Linux</h1>
+<p><p>A comprehensive guide to setup an R development environment for Ubuntu running in the Windows Subsystem for Linux (WSL)</p></p>
+</div>
+
+<div class="d-byline">
+  John Blischak <a href="https://jdblischak.com" class="uri">https://jdblischak.com</a> 
+  
+<br/>03-31-2020
+</div>
+
+<div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#install-windows-subsytem-for-linux-from-the-windows-store">Install Windows Subsytem for Linux from the Windows Store</a></li>
+<li><a href="#install-windows-subsytem-for-linux-from-powershell">Install Windows Subsytem for Linux from PowerShell</a></li>
+<li><a href="#install-software-with-apt">Install software with APT</a></li>
+<li><a href="#install-r">Install R</a></li>
+<li><a href="#install-r-packages">Install R packages</a></li>
+<li><a href="#install-bioconductor-packages">Install Bioconductor packages</a></li>
+<li><a href="#install-opencpu-server">Install OpenCPU server</a></li>
+<li><a href="#ssh-keys">SSH keys</a></li>
+<li><a href="#access-windows-filesystem">Access Windows filesystem</a></li>
+<li><a href="#vs-code-remote-extension">VS Code remote extension</a></li>
+<li><a href="#run-bash-terminal-from-rstudio">Run Bash terminal from RStudio</a></li>
+<li><a href="#copy-and-paste-to-and-from-terminal">Copy and paste to and from terminal</a></li>
+<li><a href="#wsl2">WSL2</a></li>
+<li><a href="#conclusions">Conclusions</a></li>
+<li><a href="#other-resources">Other resources</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<h2 id="introduction">Introduction</h2>
+<p>The <a href="https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux">Windows Subsystem for Linux</a> (WSL) is really impressive. It provides a convenient and smooth experience for running Ubuntu (and other Linux distributions) from Windows because the Linux executables are able to run natively on the Windows machine. In the past, I’ve tried running Ubuntu in a <a href="https://en.wikipedia.org/wiki/Virtual_machine">virtual machine</a>, but it was painfully slow, so much so that I never really used it for real work.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> I’ve also dual-booted multiple machines, but I always found reformatting the hard drive to be a nerve-wracking and time-consuming experience. And while I productively used a dual-boot setup for years, I essentially only used Ubuntu during that time. Only in the rare occasion that I had to use Adobe Illustrator would I boot into Windows. Finally with the WSL, using both Windows and Ubuntu is realistic.</p>
+<p>I’ve experimented with the WSL since early 2018 after <a href="https://twitter.com/revodavid">David Smith</a> provided instructions for <a href="https://blog.revolutionanalytics.com/2017/12/r-in-the-windows-subsystem-for-linux.html">installing R in the WSL</a> and <a href="https://twitter.com/opencpu">Jeroen Ooms</a> announced that <a href="https://twitter.com/opencpu/status/941115822705119232">you can host RStudio Server and OpenCPU apps from the WSL</a>. However, the most I’ve used it for real work was for speed benchmarking my R package <a href="https://github.com/jdblischak/workflowr">workflowr</a>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> However, for one of my current freelance jobs, I was provided a Windows laptop. With RStudio and <a href="https://gitforwindows.org/">Git Bash</a>, I’ve been productively developing on Windows for the past couple of months. But it has been noticeably slower. Recently I had some code that was taking minutes to run on Windows, so I tried it on the WSL, and it ran it in seconds. This finally convinced me that I should really switch over to primarily using the WSL.</p>
+<p>In this post, I’ll describe how to install the WSL, configure it for R development, and share other tips and tricks.</p>
+<h2 id="install-windows-subsytem-for-linux-from-the-windows-store">Install Windows Subsytem for Linux from the Windows Store</h2>
+<p>The easiest method for installing the WSL is to use the Windows Store. Follow these steps:</p>
+<ol type="1">
+<li>Confirm that the WSL feature is enabled for Windows.
+<ol type="a">
+<li>Open the Settings app, search for “windows features”, and select “Turn Windows features on or off”. Annoyingly I can’t find a way to navigate to these settings without having to use the search bar. <img src="img/windows-features.png" alt="Search Windows settings for to turn on Windows features." /></li>
+<li>Scroll down and confirm that Windows Subsystem for Linux is enabled. If it wasn’t previously enabled, you’ll need to restart your computer. <img src="img/activate-wsl.png" alt="Enable the feature Windows Subsystem for Linux." /></li>
+</ol></li>
+<li>Open the Microsoft Store app (you open it like any other app), search for “Ubuntu”, and choose the most recent LTS version (currently 18.04). <img src="img/windows-store-ubuntu.png" alt="Ubuntu in the Windows Store." /></li>
+<li>Click on “Install” (or “Get” if you access the Microsoft Store in the browser) and login with your Microsoft Account.</li>
+<li>Open the Ubuntu app. Enter a username and password. As the directions state, this username and password is in <strong>no</strong> way related to your Windows user account. <img src="img/wsl-initial-config.png" alt="Initial WSL user configuration." style="width: 100%" /></li>
+</ol>
+<h2 id="install-windows-subsytem-for-linux-from-powershell">Install Windows Subsytem for Linux from PowerShell</h2>
+<p>On my work laptop, IT blocked the Microsoft Store app. And when I tried the Microsoft Store via the browser, the “Get” link failed (in multiple browsers, so I assume IT somehow also blocked this). If you find yourself in a similar situation, or if you simply don’t want to create a Microsoft Account, you can perform all the steps above from a PowerShell terminal.</p>
+<ol type="1">
+<li><p>Enable the WSL feature and restart your computer (<a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10#install-the-windows-subsystem-for-linux">source</a>).</p>
+<pre><code>
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</code></pre></li>
+<li><p>Download Ubuntu (<a href="https://docs.microsoft.com/en-us/windows/wsl/install-manual#download-using-powershell">source</a>).</p>
+<pre><code>
+Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing</code></pre></li>
+<li><p>Install Ubuntu (<a href="https://docs.microsoft.com/en-us/windows/wsl/install-manual#installing-your-distro">source</a>).</p>
+<pre><code>
+Add-AppxPackage .\Ubuntu.appx</code></pre></li>
+<li><p>Open Ubuntu and configure your username and password, as described above.</p></li>
+</ol>
+<h2 id="install-software-with-apt">Install software with APT</h2>
+<p>You can install software using the package manager <a href="https://en.wikipedia.org/wiki/APT_(software)">APT</a>. The very first thing you should do after installing Ubuntu is to upgrade the software. You’ll need to enter your Ubuntu password to run commands as the root user (<code>sudo</code>).</p>
+<pre><code>
+# Check for latest package versions
+sudo apt update
+# Upgrade currently installed packages
+sudo apt upgrade
+# Install emacs and unzip. Enter &quot;y&quot; to accept
+sudo apt install emacs unzip</code></pre>
+<p>It’s a good habit to regularly update the software by running <code>sudo apt update &amp;&amp; sudo apt upgrade</code>.</p>
+<p>The software versions available from the default sources used by APT eventually become outdated if you don’t regularly upgrade Ubuntu. Ubuntu 18.04 was <a href="https://en.wikipedia.org/wiki/Ubuntu_version_history#1804">released in April 2018</a>, so this is definitely a potential issue. The solution to this is to install more recent versions from <a href="https://launchpad.net/ubuntu/+ppas">Personal Package Archives</a> (PPAs).</p>
+<p>For example, the versions of Git available in the default channels are 2.17.0 and 2.17.1.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<pre><code>
+$ apt list -a git
+Listing... Done
+git/bionic-updates,bionic-security,now 1:2.17.1-1ubuntu0.5 amd64 [installed,automatic]
+git/bionic 1:2.17.0-1ubuntu1 amd64</code></pre>
+<p>Fortunately, the Git developers provide a PPA to <a href="https://git-scm.com/download/linux">install the latest stable upstream version</a>, which can be added using the command below:</p>
+<pre><code>
+sudo add-apt-repository ppa:git-core/ppa</code></pre>
+<p>And now Git 2.26.0 is available for download:</p>
+<pre><code>
+$ apt list -a git
+Listing... Done
+git/bionic 1:2.26.0-1~ppa1~ubuntu18.04.1 amd64 [upgradable from: 1:2.17.1-1ubuntu0.5]
+git/bionic-updates,bionic-security,now 1:2.17.1-1ubuntu0.5 amd64 [installed,upgradable to: 1:2.26.0-1~ppa1~ubuntu18.04.1]
+git/bionic 1:2.17.0-1ubuntu1 amd64</code></pre>
+<p>Running <code>sudo apt upgrade</code> will replace Git 2.17.1 with 2.26.0.</p>
+<h2 id="install-r">Install R</h2>
+<p>R is available for installation with APT, but similar to Git, it is outdated (R 3.4.4 was released in March 2018):</p>
+<pre><code>
+$ apt list r-base
+Listing... Done
+r-base/bionic 3.4.4-1ubuntu1 all</code></pre>
+<p>The official <a href="https://cran.r-project.org/bin/linux/ubuntu/README.html">CRAN Ubuntu installation instructions</a> describe how to manually edit the file <code>/etc/apt/sources.list</code>, which lists the sources for APT to check for available software. However, since I am recommending the use of PPAs, I think it is easier to directly add Michael Rutter’s <a href="https://launchpad.net/~marutter/+archive/ubuntu/rrutter3.5">RRutter v3.5 PPA</a>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> This is the source PPA that is synced to CRAN, so it is identical to the official CRAN source.</p>
+<pre><code>
+sudo add-apt-repository ppa:marutter/rrutter3.5</code></pre>
+<p>Instead of manually editing <code>/etc/apt/sources.list</code>, the command above added the new source in a separate file in the directory <code>/etc/apt/sources.list.d/</code>. Note that the Git PPA is also there. For me, this makes it easier to manage PPAs. You can quickly view which PPAs you are using, and you know which file to edit if you need to update or disable the PPA.</p>
+<pre><code>
+$ ls /etc/apt/sources.list.d/
+git-core-ubuntu-ppa-bionic.list  git-core-ubuntu-ppa-bionic.list.save  marutter-ubuntu-rrutter3_5-bionic.list</code></pre>
+<p>Now R 3.6.3 is available to install:</p>
+<pre><code>
+$ apt list -a r-base
+Listing... Done
+r-base/bionic 3.6.3-1bionic all
+r-base/bionic 3.4.4-1ubuntu1 all</code></pre>
+<p>Before you install R, an optional but advisable step is to <a href="https://cran.r-project.org/bin/linux/ubuntu/README.html#secure-apt">register Michael Rutter’s signing key</a> to ensure the binaries you are installing on your machine are actually the ones he uploaded to his PPA. Note you’ll need to have admin access to your Windows machine for this step.</p>
+<pre><code>
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9</code></pre>
+<p>If you have trouble connecting to the server and you use a VPN, try disconnecting from it. Also, the CRAN instructions have alternative commands to try. The below option worked for me on my work laptop:</p>
+<pre><code>
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | sudo apt-key add -</code></pre>
+<p>Install <code>r-base</code> (which includes <code>r-base-core</code>, <code>r-base-dev</code>, the documentation files, and the set of recommended packages in <code>r-recommended</code>).</p>
+<pre><code>
+sudo apt install r-base</code></pre>
+<h2 id="install-r-packages">Install R packages</h2>
+<p>To install R packages, you could rely on <code>install.packages()</code>. But unlike Windows and macOS, CRAN does not build binaries for any of the Linux distributions. This means that every package is installed from source, so packages like stringi will take minutes to install each time there is a new release. Thus I try as much as possible to rely on the binaries built for Ubuntu.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> There are almost 500 R package binaries available for Ubuntu.</p>
+<pre><code>
+$ apt list r-cran-* 2&gt; /dev/null | wc -l
+496</code></pre>
+<p>Unfortunately the RRutter v3.5 PPA (and its equivalent CRAN sync) added above only includes R itself and the dozen or so recommended packages. The remaining packages will be the version from when R 3.4.4. was released years ago, which isn’t very useful.</p>
+<p>Luckily Michael Rutter maintains a second PPA, <a href="https://launchpad.net/~marutter/+archive/ubuntu/c2d4u3.5">cran2deb4ubuntu_3.5</a>, that builds binaries for all the packages listed in the <a href="https://cran.r-project.org/web/views/">CRAN Task Views</a> (and their package dependencies), and these packages are regularly updated. It’s not immediate, but if you regularly upgrade your APT packages, you’ll have the latest version of any given R package within a few days of its release to CRAN. Add this PPA to access over 4000 R package binaries.</p>
+<pre><code>
+sudo add-apt-repository ppa:marutter/c2d4u3.5
+$ apt list r-cran-* 2&gt; /dev/null | wc -l
+4525</code></pre>
+<p>This allows you to install the entire tidyverse suite of R packages plus their system dependencies in only a few minutes.</p>
+<pre><code>
+sudo apt install r-cran-tidyverse</code></pre>
+<p>If a package you want isn’t available when you try to install <code>r-cran-foo</code> (note that the R package should always be lowercase), then you can install it with <code>install.packages()</code> into a personal library directory.</p>
+<h2 id="install-bioconductor-packages">Install Bioconductor packages</h2>
+<p>There are a decent number of Bioconductor packages available for Ubuntu, but they are all outdated.</p>
+<pre><code>
+$ apt list r-bioc-* 2&gt; /dev/null | wc -l
+84</code></pre>
+<p>Thus I recommend installing <a href="https://cran.r-project.org/package=BiocManager">BiocManager</a> with APT. It’s part of the c2d4u PPA, so it will be kept up-to-date.</p>
+<pre><code>
+sudo apt install r-cran-biocmanager</code></pre>
+<p>And then you can install individual Bioconductor packages as needed from within R:</p>
+<pre><code>
+BiocManager::install(c(&quot;GenomicRanges&quot;, &quot;SummarizedExperiment&quot;))</code></pre>
+<p>This will unfortunately take awhile since the packages are built from source.</p>
+<p>If some packages fail to install, it is likely due to the new <a href="https://developer.r-project.org/Blog/public/2019/02/14/staged-install/index.html">staged install check</a> introduced in R 3.6. I got this <a href="https://github.com/Bioconductor/Biobase/issues/5">error trying to install Biobase</a>, and others have reported WSL-specific issues, e.g. for <a href="https://stackoverflow.com/questions/56241007/non-zero-exit-status-r-3-6-0-biobase">Biobase</a> and <a href="https://stackoverflow.com/questions/56615734/r-package-ps-fails-to-install-because-permission-denied-to-mv-in-final-step-of">ps</a>. A workaround is to disable this check prior to installation by setting an environment variable with <code>Sys.setenv(R_INSTALL_STAGED = FALSE)</code>.</p>
+<h2 id="install-opencpu-server">Install OpenCPU server</h2>
+<p>Unless you’re a devoted emacs or vi user, you probably aren’t overly excited about the prospect of doing all of your R development from a bash shell. You’re in luck! As I mentioned at the beginning of the post, Jeroen Ooms’ amazing <a href="https://www.opencpu.org/download.html">OpenCPU project</a> conveniently provides all the infrastructure to install and serve RStudio Server via the Apache web server.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>As you might have guessed, the first step is to add the OpenCPU PPA. Then you can install OpenCPU server, which also installs the Apache web server, and RStudio Server. Note that you will be prompted about email addresses. Since you are not setting up an email server, you can accept the default settings. Also, you’ll again need to have admin rights to install Apache and RStudio Server.</p>
+<pre><code>
+sudo add-apt-repository -y ppa:opencpu/opencpu-2.1
+sudo apt install opencpu-server
+sudo apt install rstudio-server</code></pre>
+<p>Note that the <a href="https://launchpad.net/~opencpu/+archive/ubuntu/opencpu-2.1">OpenCPU PPA</a> is versioned, i.e. the <code>2.1</code>. Instead of updating the software in one PPA, he creates new ones (thus each PPA is stable long-term). Therefore you might want to check back in the future to see if there is a new PPA available.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<p>Now you should be able to navigate to <a href="http://localhost/rstudio/" class="uri">http://localhost/rstudio/</a> with your browser. This is the RStudio Server you are running in the Ubuntu WSL. Login with your Ubuntu username and password, and then run <code>sessionInfo()</code> to confirm.</p>
+<p>RStudio Server is setup automatically when you first install it. However, the next time you start your machine and open Ubuntu, it won’t be ready to use. Thus I always create a file called <code>start.sh</code> that contains the startup steps from the <a href="https://opencpu.github.io/server-manual/opencpu-server.pdf">OpenCPU Server Manual</a>:</p>
+<pre><code>
+#!/bin/bash
+set -eux
+
+# Enable OpenCPU for Apache
+a2ensite opencpu
+
+# Restart Apache
+apachectl restart
+
+# Start RStudio Server
+rstudio-server start</code></pre>
+<p>You’ll need root access, so execute it with <code>sudo bash start.sh</code>. Then you’ll once again be able to access RStudio Server via your browser at <a href="http://localhost/rstudio/" class="uri">http://localhost/rstudio/</a>. Importantly, the RStudio Server will continue running even if you close the Ubuntu terminal. Thus the only time you need to re-run <code>start.sh</code> is after you shutdown your computer.</p>
+<p>The above instructions work fine on my personal laptop running Windows 10 Home edition. However, I wasn’t able to use port 80 on my work laptop running Windows 10 Pro.</p>
+<pre><code>
+$ sudo bash start.sh
++ a2ensite opencpu
+Site opencpu already enabled
++ apachectl restart
+httpd not running, trying to start
+(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80
+(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80
+no listening sockets available, shutting down
+AH00015: Unable to open logs
+Action &#39;restart&#39; failed.
+The Apache error log may have more information.</code></pre>
+<p>If you also receive the error about not being able to bind to port 80, then follow the instructions in this <a href="https://askubuntu.com/questions/338218/why-am-i-getting-permission-denied-make-sock-could-not-bind-to-address-when/338239#338239">Ask Ubuntu answer</a>. The default port used by Apache is 80, which you can verify by viewing the ports configuration file.</p>
+<pre><code>
+$ cat /etc/apache2/ports.conf
+# If you just change the port or add more ports here, you will likely also
+# have to change the VirtualHost statement in
+# /etc/apache2/sites-enabled/000-default.conf
+
+Listen 80
+
+&lt;IfModule ssl_module&gt;
+        Listen 443
+&lt;/IfModule&gt;
+
+&lt;IfModule mod_gnutls.c&gt;
+        Listen 443
+&lt;/IfModule&gt;
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet</code></pre>
+<p>To get around a blocked port 80, edit that file (<code>sudo nano /etc/apache2/ports.conf</code>) so that Apache listens on any high port, e.g. <code>Listen 8080</code>. After changing the port, you can access RStudio Server in the browser by including the port in the URL, e.g. <a href="http://localhost:8080/rstudio/" class="uri">http://localhost:8080/rstudio/</a>.</p>
+<p>Note that you’ll still probably receive a warning like <code>[core:warn] [pid 62] (92)Protocol not available: AH00076: Failed to enable APR_TCP_DEFER_ACCEPT</code>. You can safely ignore this because its a known issue and it doesn’t affect Apache’s ability to run (<a href="https://github.com/Microsoft/WSL/issues/1953">source</a>).</p>
+<p>Since we are discussing editing ports, it’s a good time to discuss security. With this setup, you are running a web server on your local machine. Now this shouldn’t be a big deal, since if your computer was open to outside network traffic, you’d have way bigger problems (<a href="https://security.stackexchange.com/questions/6798/how-safe-is-it-to-install-xampp-on-my-home-computer-to-test-php-code/6807#comment11479_6807">source</a>). But if you are worried about any potential issue, you can be overly cautious and restrict Apache to only listen to ports on your local machine, i.e. <code>localhost</code> or the equivalent IP address <code>127.0.0.1</code>. In other words, edit <code>/etc/apache2/ports.conf</code>, replacing <code>Listen 8080</code> and <code>Listen 443</code> with <code>Listen 127.0.0.1:8080</code> and <code>Listen 127.0.0.1:443</code> (<a href="https://security.stackexchange.com/a/6807">source</a>).</p>
+<h2 id="ssh-keys">SSH keys</h2>
+<p>To make it easy to clone, push, and pull repositories from online Git hosting services, e.g. GitHub, you’ll want to create SSH keys on the WSL and register them with the service. I recommend the instructions from <a href="https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">GitHub</a>, which I’ve modified below. Note that I added the flag <code>-o</code> to use the newer, more secure OpenSSH format for creating the key.</p>
+<pre><code>
+# Create new SSH keys
+ssh-keygen -o -t rsa -b 4096 -C &quot;Any message you would like to annotate the key&quot;
+# Start the SSH agent
+eval &quot;$(ssh-agent -s)&quot;
+# Add SSH key to SSH agent
+ssh-add ~/.ssh/id_rsa</code></pre>
+<p>Once you’ve created the key pair, you can <a href="https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">copy the public key to GitHub</a> and/or the other services you use.</p>
+<p>Unfortunately the experience with using SSH keys is not as seamless as it is with a standard Ubuntu installation. If you use a passphrase with your SSH key, you will be prompted to enter your passphrase every time. On standard Ubuntu, you only have to enter it the first time you use your key after restarting your computer. I found a workaround for this, but it is hacky, so please let me know if you know of a better solution. First, add the line <code>eval "$(ssh-agent -s)" &gt;/dev/null</code> to <code>~/.bashrc</code> so that the agent is automatically started each time you open a window. <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Second, add the line <code>AddKeysToAgent yes</code> to the file <code>~/.ssh/config</code>. Now you will only have to enter your passphrase once, though you will have to do it for every new window you open.</p>
+<h2 id="access-windows-filesystem">Access Windows filesystem</h2>
+<p>Another nice feature of the WSL is that it is straightforward to access the files on your Windows machine. Unlike a virtual machine or Docker container, you don’t have to take any extra steps to configure this. From Ubuntu, you can access your Windows filesystem mounted at <code>/mnt/c/</code>. For example, a common use case for me is to download a file from the internet to my Windows desktop, and then copy it to the WSL for analysis.</p>
+<pre><code>
+cp /mnt/c/Users/demo/Desktop/file.txt .</code></pre>
+<p>However, transferring files between Ubuntu and Windows has its gotchas, so you’ll want to use this feature sparingly. For example, if you want to access your Git repos from Ubuntu and Windows, I’d recommend cloning them separately to Windows and Ubuntu, i.e. treating them as if they were on separate machines.</p>
+<p>Some guidelines:</p>
+<ul>
+<li><p>File paths are case-sensitive on Ubuntu, but not on Windows. This can create some real headaches. If you are accessing Windows files from Ubuntu via <code>/mnt/c/</code>, the WSL performs some magic so that the names are non-case-sensitive. But you really don’t to rely on that behavior. Also, if you are creating files from Ubuntu on Windows, you can <a href="https://devblogs.microsoft.com/commandline/per-directory-case-sensitivity-and-wsl/">configure the case-sensitivity of the filenames on a per-directory basis</a>. But again, I’d recommend you avoid this complication by naming all your files on both Ubuntu and Windows such that they don’t rely on case to be distinguished.</p></li>
+<li><p>Windows and Linux use different end of line characters to specify a <a href="https://en.wikipedia.org/wiki/Newline">newline</a>. This is the main reason I recommended above that you should keep separate copies of Git repos, otherwise you have <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_resolving-git-line-ending-issues-in-wsl-resulting-in-many-modified-files">configure your Git settings to handle different line endings</a>, otherwise it will constantly look like all of your files have been edited. Confusingly, it may appear that the line endings are fine when copying back and forth because they display ok. I recommend running <code>dos2unix</code> after copying from Windows to Ubuntu, and <code>unix2dos</code> before copying from Ubuntu to Windows (you can install these tools with <code>sudo apt install dos2unix</code>).</p></li>
+<li><p>While you can, with caution, create or modify Windows files directly from Ubuntu, <a href="https://devblogs.microsoft.com/commandline/do-not-change-linux-files-using-windows-apps-and-tools/"><strong>never</strong> create or modify the Ubuntu files located in the AppData directory from Windows</a>. If you need to copy a file between the two, I recommend always doing this from the Ubuntu terminal via <code>/mnt/c/</code>. If you really want to edit Ubuntu files from Windows, you can run <code>explorer.exe .</code> in the Ubuntu terminal to launch Windows File Explorer, or you can access them from PowerShell using the path <code>\\wsl$\{distro name}\</code>, e.g. <code>ls \\wsl$\Ubuntu-18.04\home\demo\</code> (<a href="https://devblogs.microsoft.com/commandline/whats-new-for-wsl-in-windows-10-version-1903/">source</a>).</p></li>
+</ul>
+<h2 id="vs-code-remote-extension">VS Code remote extension</h2>
+<p>Another option for developing your code from the WSL is to use <a href="https://code.visualstudio.com/">Visual Studio Code</a>. You can install the extension for <a href="https://code.visualstudio.com/docs/remote/wsl">remote development in the WSL</a>.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> This extension allows you to open VS Code in Windows, but switch to developing as if you were in the WSL. You can access all your files, and if you open a terminal, it is a bash shell running in the WSL!</p>
+<p>Steps:</p>
+<ol type="1">
+<li>Open VS Code in Windows</li>
+<li>Type <code>Ctrl</code>+<code>Shift</code>+<code>P</code> to open the command palette</li>
+<li>Type <code>wsl</code> and then choose <code>Remote-WSL: New Window</code> (you’ll need admin rights to approve this the first time) <img src="img/remote-wsl-new-window.png" alt="Open a remote connection to the WSL with VS Code." /></li>
+<li>Open a file or folder in the WSL</li>
+<li>Open a new terminal (<code>Ctrl</code>+<code>Shift</code>+<code>`</code>) to run bash commands directly in the WSL <img src="img/remote-wsl-terminal.png" alt="The VS Code terminal runs bash when connected to the WSL." style="width: 100%" /></li>
+<li>To exit from the WSL, open the command palette and choose <code>Remote: Close Remote Connection</code> <img src="img/remote-wsl-close-connection.png" alt="Close the remote connection to the WSL with VS Code." /></li>
+</ol>
+<p>If you have any issues with Git, there is documentation for <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_resolving-git-line-ending-issues-in-wsl-resulting-in-many-modified-files">fixing line ending issues</a> and <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_sharing-git-credentials-between-windows-and-wsl">sharing credentials between Windows and the WSL</a> (but you shouldn’t need to worry about the latter if you created SSH keys above).</p>
+<p>And if you find you really like VS Code, you can configure it for R development. To learn more, check out these blog posts from <a href="https://renkun.me/2019/12/11/writing-r-in-vscode-a-fresh-start/">Kun Ren</a> (one of the co-developers of the <a href="https://github.com/REditorSupport/languageserver">languageserver</a> package), <a href="https://milesmcbain.xyz/alt-r-with-vscode/">Miles McBain</a>, and <a href="https://jozef.io/r300-language-server-setup/">Jozef Hajnala</a>.</p>
+<h2 id="run-bash-terminal-from-rstudio">Run Bash terminal from RStudio</h2>
+<p>If you only want to occasionally test your code on Ubuntu, you can open a terminal running bash in the WSL directly in RStudio.</p>
+<p>Steps:</p>
+<ol type="1">
+<li>Open RStudio in Windows</li>
+<li>Go to <code>Tools</code>-&gt;<code>Global Options...</code>-&gt;<code>Terminal</code></li>
+<li>Change <code>New terminals open with:</code> to <code>Bash (Windows Subsystem for Linux)</code></li>
+<li>Open a new terminal with <code>Alt</code>+<code>Shift</code>+<code>R</code></li>
+<li>Run <code>pwd</code> to confirm the terminal is running in the WSL</li>
+<li>Type <code>R</code> to start the R console in the WSL terminal</li>
+<li>Send code from your R scripts directly to the terminal with <code>Ctrl</code>+<code>Alt</code>+<code>Enter</code><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></li>
+</ol>
+<h2 id="copy-and-paste-to-and-from-terminal">Copy and paste to and from terminal</h2>
+<p>If you are familiar with the behavior of the terminal window on Linux and macOS, you will find the Windows terminal to be very strange. However, if you’ve used Git Bash before, then you will already know how it works.</p>
+<p>To copy text from the terminal, highlight the text and press <code>Enter</code>. Alternatively, you can right-click the Ubuntu icon in the top left of the window, select <code>Edit</code>, and finally select <code>Copy</code>. Now you can paste into another window with <code>Ctrl</code>+<code>V</code>.</p>
+<p><img src="img/terminal-copy.png" alt="Copy text from the terminal." /></p>
+<p>To paste text into the terminal, right click with the mouse. Alternatively, you can use the menu: <code>Edit</code>-&gt;<code>Paste</code>. You can also try <code>Ctrl</code>+<code>V</code> or the <code>Insert</code> key to see if either of those happen to work on your computer.</p>
+<p><img src="img/terminal-paste.png" alt="Paste text into the terminal." /></p>
+<h2 id="wsl2">WSL2</h2>
+<p>Technically everything I have said above applies to WSL1. The new <a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-index">WSL2</a> is a rewrite that changes the technical implementation of running Linux on Windows (it uses a lightweight VM to run the Linux kernel), with the goal of faster file access. From the user perspective, you shouldn’t have to worry much if you want to try out the WSL2. You should still be able to access RStudio Server at <a href="http://localhost/rstudio/" class="uri">http://localhost/rstudio/</a> (<a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-ux-changes#accessing-linux-applications-from-windows">source</a>). And you can switch back and forth between WSL1 and WSL2, or run them both. However, it is still in development, so you may have to do some more troubleshooting. For example, the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl">VS Code Remote-WSL extension</a> explicitly states that its support for the WSL2 is experimental.</p>
+<p>If you’re feeling ambitious, you can <a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-install">install the WSL2</a>. Also, see this post for using the <a href="https://code.visualstudio.com/blogs/2019/09/03/wsl2">WSL 2 with Visual Studio Code</a>. Note that you’ll need a Windows account to be able to access this new feature via the Windows Insiders Program.</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>After following these steps, hopefully you are now able to productively develop your R code on Ubuntu running via the WSL. Please let me know if you ran into any issues or if a critical step is missing. Also, please let me know if you have any tips and tricks to share, especially if you have a better strategy for activating the SSH agent.</p>
+<h2 id="other-resources">Other resources</h2>
+<ul>
+<li>Dave Tang’s post on <a href="https://davetang.org/muse/2019/04/09/setting-up-windows-for-bioinformatics-in-2019/">Setting up Windows for bioinformatics in 2019</a></li>
+<li><a href="https://ubuntu.com/tutorials/tutorial-ubuntu-on-windows#1-overview">Canonical’s instructions for installing Ubuntu with the WSL</a></li>
+</ul>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Not to mention that sharing host files with the VM requires <a href="https://www.howtogeek.com/189974/how-to-share-your-computers-files-with-a-virtual-machine/">additional setup</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn2" role="doc-endnote"><p>For whatever reason, read/write operations and filepath manipulations, e.g. converting an absolute path to a relative path, take a lot longer on Windows 10. On the WSL, which has access to the same computational resources on my laptop as Windows, workflowr functions run a lot faster.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn3" role="doc-endnote"><p>Note that bionic refers to Bionic Beaver, the release name for Ubuntu 18.04.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn4" role="doc-endnote"><p>Don’t be concerned about the 3.5. There was a big change between versions 3.4 and 3.5 in how R was packaged for Debian/Ubuntu. We’re far enough away from that event that you shouldn’t have to worry about it. Just remember that for the latest version of R, you want the 3.5 version.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn5" role="doc-endnote"><p>See this recent blog post from Jumping Rivers on various strategies for <a href="https://www.jumpingrivers.com/blog/faster-r-package-installation-rstudio/">Faster R package installation</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn6" role="doc-endnote"><p>Serving RStudio Server is a very limited use case for OpenCPU. It’s primary purpose is for converting R code into web applications. This post is already too long to include a detailed description, but you should check out the <a href="https://www.opencpu.org/apps.html">example apps</a> to get a sense of the possibilities.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn7" role="doc-endnote"><p>Also note that his PPA contains r-base and the r-recommended packages. These will eventually become outdated, but since you’ve added the <a href="https://launchpad.net/~marutter/+archive/ubuntu/rrutter3.5">RRutter v3.5 PPA</a>, you’ll continue to get the latest version of R from there. Thus you are only relying on the OpenCPU PPA for OpenCPU server, Apache, and RStudio Server.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn8" role="doc-endnote"><p>I got this idea from this <a href="https://chaijiaxun.com/automatically-starting-ssh-agent-for-windows-10-bash/">blog post</a>. However, I don’t agree with all of his conclusions. He says that the ssh-agent doesn’t persist. When I run <code>ps -ef | grep ssh-agent</code>, it clearly persists across sessions. But for whatever reason it doesn’t work, and a new agent has to be started. One reason I feel this is so hacky is that each time I open a window, a new ssh-agent process is spawned.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn9" role="doc-endnote"><p>There are similar extensions for remote development in <a href="https://code.visualstudio.com/docs/remote/containers">Docker containers</a> or in <a href="https://code.visualstudio.com/docs/remote/ssh">any remote machine accessible via SSH</a>, e.g. an HPC cluster. I’ve used all 3, and they are amazing.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn10" role="doc-endnote"><p>Unfortunately none of the other RStudio panes are aware of R running in the terminal. Plots won’t display, and the Environment pane won’t update. If you need these features, use the RStudio Server strategy described above.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩</a></p></li>
+</ol>
+</section>
+<!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=R%20programming%20in%20the%20Windows%20Subsystem%20for%20Linux&amp;url=https%3A%2F%2Fblog.jdblischak.com%2Fposts%2Fwsl-r%2F">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </span>
+  </p>
+</div>
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="updates-and-corrections">Corrections</h3>
+  <p>If you see mistakes or want to suggest changes, please <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/new">create an issue</a> on the source repository.</p>
+  <h3 id="reuse">Reuse</h3>
+  <p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/jdblischak/blog.jdblischak.com">https://github.com/jdblischak/blog.jdblischak.com</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">Blischak (2020, March 31). John Blischak's blog: R programming in the Windows Subsystem for Linux. Retrieved from https://blog.jdblischak.com/posts/wsl-r/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{blischak2020r,
+  author = {Blischak, John},
+  title = {John Blischak's blog: R programming in the Windows Subsystem for Linux},
+  url = {https://blog.jdblischak.com/posts/wsl-r/},
+  year = {2020}
+}</pre>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<div class="distill-site-nav distill-site-footer">
+  <p>
+  © 2019
+  <a href="https://jdblischak.com"> John Blischak</a>,
+  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY</a>
+</p>
+</div>
+<!--/radix_placeholder_navigation_after_body-->
+
+
+</body>
+
+</html>
