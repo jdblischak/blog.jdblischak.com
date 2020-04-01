@@ -173,6 +173,14 @@ git/bionic 1:2.17.0-1ubuntu1 amd64
 
 Running `sudo apt upgrade` will replace Git 2.17.1 with 2.26.0.
 
+And since this is a new environment, don't forget to set your `user.name` and
+`user.email` to sign your Git commits:
+
+```
+git config --global user.name "Your Name"
+git config --global user.email "email@domain"
+```
+
 ## Install R
 
 R is available for installation with APT, but similar to Git, it is outdated (R
