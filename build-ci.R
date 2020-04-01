@@ -10,7 +10,7 @@ library(rstudioapi)
 
 stopifnot(file_exists("blog.jdblischak.com.Rproj"))
 is_ci_build <- identical(Sys.getenv("CIRCLECI"), "true")
-if (!is_ci_build) warning("This isn't a CI build", immediate. = TRUE)
+if (!is_ci_build) warning("This isn't a CI build", call. = FALSE, immediate. = TRUE)
 
 rmd <- dir_ls(path = "_posts/", recurse = TRUE, glob = "*/*Rmd")
 # https://github.com/r-lib/fs/pull/208

@@ -2,5 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-_posts/*/*_files
+_posts/*/*_files/*/*js
+_posts/*/*_files/*/*css
 public/README.html
