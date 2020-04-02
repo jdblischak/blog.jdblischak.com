@@ -36,14 +36,20 @@
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="An example of progressively optimizing the speed of a function"/>
 <meta property="og:url" content="https://blog.jdblischak.com/posts/pairwise-overlaps/"/>
+<meta property="og:image" content="https://blog.jdblischak.com/posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png"/>
+<meta property="og:image:width" content="1248"/>
+<meta property="og:image:height" content="768"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="John Blischak&#39;s blog"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
-<meta property="twitter:card" content="summary"/>
+<meta property="twitter:card" content="summary_large_image"/>
 <meta property="twitter:title" content="John Blischak&#39;s blog: How to efficiently calculate pairwise overlaps of many sets"/>
 <meta property="twitter:description" content="An example of progressively optimizing the speed of a function"/>
 <meta property="twitter:url" content="https://blog.jdblischak.com/posts/pairwise-overlaps/"/>
+<meta property="twitter:image" content="https://blog.jdblischak.com/posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png"/>
+<meta property="twitter:image:width" content="1248"/>
+<meta property="twitter:image:height" content="768"/>
 <meta property="twitter:creator" content="@jdblischak"/>
 
 <!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
@@ -57,7 +63,7 @@
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","date","output","categories","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["How to efficiently calculate pairwise overlaps of many sets"]},{"type":"character","attributes":{},"value":["An example of progressively optimizing the speed of a function"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["03-27-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["Software Development with R"]},{"type":"character","attributes":{},"value":["https://blog.jdblischak.com/posts/pairwise-overlaps/"]},{"type":"character","attributes":{},"value":["https://blog.jdblischak.com/posts/pairwise-overlaps/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","date","output","preview","categories","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["How to efficiently calculate pairwise overlaps of many sets"]},{"type":"character","attributes":{},"value":["An example of progressively optimizing the speed of a function"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["03-27-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png"]},{"type":"character","attributes":{},"value":["Software Development with R"]},{"type":"character","attributes":{},"value":["https://blog.jdblischak.com/posts/pairwise-overlaps/"]},{"type":"character","attributes":{},"value":["https://blog.jdblischak.com/posts/pairwise-overlaps/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1492,7 +1498,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
                        name2 = vec_name2,
                        num_shared = vec_num_shared,
                        overlap = vec_overlap,
-                       jaccard = vec_overlap,
+                       jaccard = vec_jaccard,
                        stringsAsFactors = FALSE)
   return(result)
 }</code></pre>
@@ -1504,16 +1510,16 @@ head(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
   name1 name2 num_shared   overlap   jaccard
 1  set1  set1         21 1.0000000 1.0000000
-2  set1  set2          5 0.2777778 0.2777778
-3  set1  set3          8 0.4210526 0.4210526
-4  set1  set4          9 0.4500000 0.4500000
-5  set1  set5          7 0.6363636 0.6363636
-6  set1  set6          6 0.4000000 0.4000000</code></pre>
+2  set1  set2          5 0.2777778 0.1470588
+3  set1  set3          8 0.4210526 0.2500000
+4  set1  set4          9 0.4500000 0.2812500
+5  set1  set5          7 0.6363636 0.2800000
+6  set1  set6          6 0.4000000 0.2000000</code></pre>
 <pre class="r"><code>
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.948   0.012   0.962 </code></pre>
+  0.965   0.016   0.981 </code></pre>
 </div>
 <h2 id="combinations-and-indexing">Combinations and indexing</h2>
 <p>One big issue with the strategy above is that each pairwise combination is performed twice. In other words, I calculated the overlap statistics for each permutation of the sets, when I really only need to calculate each combination. The second issue I’ll address in this iteration is how to fetch each set. Above I obtained each set by name, <code>sets[[name1]]</code>, which requires searching over the names of the list to find a match. While convenient, this gets slower as the list grows. Thus instead of looping over the names of the list, it is better to use an index variable to track the position in the list. This allows the sets to be quickly obtained via their position in the list.</p>
@@ -1568,7 +1574,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
                        name2 = vec_name2,
                        num_shared = vec_num_shared,
                        overlap = vec_overlap,
-                       jaccard = vec_overlap,
+                       jaccard = vec_jaccard,
                        stringsAsFactors = FALSE)
   return(result)
 }</code></pre>
@@ -1579,7 +1585,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.296   0.008   0.304 </code></pre>
+  0.300   0.016   0.316 </code></pre>
 </div>
 <p>And these improvements are essentially the advice from this <a href="https://stackoverflow.com/a/27369862">StackOverflow answer</a> on the same topic.</p>
 <h2 id="preallocation">Preallocation</h2>
@@ -1646,7 +1652,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
                        name2 = vec_name2,
                        num_shared = vec_num_shared,
                        overlap = vec_overlap,
-                       jaccard = vec_overlap,
+                       jaccard = vec_jaccard,
                        stringsAsFactors = FALSE)
   return(result)
 }</code></pre>
@@ -1657,7 +1663,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.088   0.000   0.089 </code></pre>
+   0.09    0.00    0.09 </code></pre>
 </div>
 <p>And it can even handle 1000 sets in a reasonable amount of time:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1665,7 +1671,7 @@ system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 system.time(calc_pairwise_overlaps(simulate_sets(n_sets = 1000)))</code></pre>
 <pre><code>
    user  system elapsed 
-  7.324   0.008   7.333 </code></pre>
+  7.912   0.020   7.932 </code></pre>
 </div>
 <p>But I had thousands of sets to compare, and this was still slow.</p>
 <h2 id="check-sets-once-instead-of-every-overlap">Check sets once instead of every overlap</h2>
@@ -1680,7 +1686,7 @@ function (x, y)
     y &lt;- as.vector(y)
     unique(y[match(as.vector(x), y, 0L)])
 }
-&lt;bytecode: 0x563e7d57c660&gt;
+&lt;bytecode: 0x55e29093f8a8&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>Since these calculations are performed during each pairwise overlap, they are extremely redundant. It is faster to confirm all the input sets are unique vectors at the very beginning of the function, since then the code no longer needs to check during each iteration of the loop. When valid input can be assumed, <code>intersect()</code> reduces to:</p>
@@ -1695,7 +1701,7 @@ union</code></pre>
 <pre><code>
 function (x, y) 
 unique(c(as.vector(x), as.vector(y)))
-&lt;bytecode: 0x563e7c21a6c8&gt;
+&lt;bytecode: 0x55e29117c3d8&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>But even <code>unique()</code> itself can be sped up. Since there is no specific <code>unique()</code> method for character vectors (i.e. <code>unique.character()</code>), character vectors are processed with <code>unique.default()</code>.</p>
@@ -1729,7 +1735,7 @@ function (x, incomparables = FALSE, fromLast = FALSE, nmax = NA,
         structure(z, class = class(x))
     else z
 }
-&lt;bytecode: 0x563e7bbaae58&gt;
+&lt;bytecode: 0x55e28eee5e58&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>And the majority of <code>unique.default()</code> is code to handle various types of input like factors, times, or dates. Since I will ensure the input will always be character vectors, the only required line of <code>unique.default()</code> is the one below:</p>
@@ -1796,7 +1802,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
                        name2 = vec_name2,
                        num_shared = vec_num_shared,
                        overlap = vec_overlap,
-                       jaccard = vec_overlap,
+                       jaccard = vec_jaccard,
                        stringsAsFactors = FALSE)
   return(result)
 }</code></pre>
@@ -1807,7 +1813,7 @@ calc_pairwise_overlaps &lt;- function(sets) {
 system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 <pre><code>
    user  system elapsed 
-  0.048   0.000   0.048 </code></pre>
+  0.057   0.000   0.057 </code></pre>
 </div>
 <p>And even 1000 sets is finished processing in only a few seconds:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1815,7 +1821,7 @@ system.time(calc_pairwise_overlaps(sets_100))</code></pre>
 system.time(calc_pairwise_overlaps(sets_1000))</code></pre>
 <pre><code>
    user  system elapsed 
-  3.037   0.008   3.044 </code></pre>
+  2.444   0.011   2.456 </code></pre>
 </div>
 <h2 id="conclusions">Conclusions</h2>
 <p>In this post, I demonstrated how to iteratively increase the speed of a slow function. The biggest lesson I learned from this experience is that it is possible to increase the speed of base R functions since they may be designed to handle multiple different types of inputs.</p>
@@ -1848,24 +1854,25 @@ attached base packages:
 
 other attached packages:
 [1] tidygraph_1.1.2 ggraph_2.0.2    ggplot2_3.3.0   rstudioapi_0.11
-[5] rmarkdown_2.1   fs_1.3.2        git2r_0.26.1   
+[5] rmarkdown_2.1   fs_1.4.0        git2r_0.26.1   
 
 loaded via a namespace (and not attached):
  [1] Rcpp_1.0.4         compiler_3.6.3     pillar_1.4.3      
  [4] viridis_0.5.1      tools_3.6.3        digest_0.6.25     
  [7] viridisLite_0.3.0  evaluate_0.14      lifecycle_0.2.0   
-[10] tibble_2.1.3       gtable_0.3.0       pkgconfig_2.0.3   
-[13] rlang_0.4.5        igraph_1.2.5       ggrepel_0.8.2     
-[16] distill_0.7        yaml_2.2.1         xfun_0.11         
-[19] gridExtra_2.3      withr_2.1.2        stringr_1.4.0     
-[22] dplyr_0.8.5        knitr_1.28         graphlayouts_0.6.0
-[25] vctrs_0.2.4        grid_3.6.3         tidyselect_1.0.0  
-[28] glue_1.3.2         R6_2.4.1           polyclip_1.10-0   
-[31] farver_2.0.1       tweenr_1.0.1       tidyr_1.0.2       
-[34] purrr_0.3.3        magrittr_1.5       MASS_7.3-51.5     
-[37] scales_1.1.0       htmltools_0.4.0    assertthat_0.2.1  
-[40] ggforce_0.3.1      colorspace_1.4-1   labeling_0.3      
-[43] stringi_1.4.6      munsell_0.5.0      crayon_1.3.4      </code></pre>
+[10] tibble_3.0.0       gtable_0.3.0       pkgconfig_2.0.3   
+[13] rlang_0.4.5        igraph_1.2.5       cli_2.0.2         
+[16] ggrepel_0.8.2      distill_0.7        yaml_2.2.1        
+[19] xfun_0.11          gridExtra_2.3      withr_2.1.2       
+[22] stringr_1.4.0      dplyr_0.8.5        knitr_1.28        
+[25] graphlayouts_0.6.0 vctrs_0.2.4        grid_3.6.3        
+[28] tidyselect_1.0.0   glue_1.3.2         R6_2.4.1          
+[31] fansi_0.4.1        polyclip_1.10-0    farver_2.0.1      
+[34] tweenr_1.0.1       tidyr_1.0.2        purrr_0.3.3       
+[37] magrittr_1.5       MASS_7.3-51.5      scales_1.1.0      
+[40] htmltools_0.4.0    ellipsis_0.3.0     assertthat_0.2.1  
+[43] ggforce_0.3.1      colorspace_1.4-1   labeling_0.3      
+[46] stringi_1.4.6      munsell_0.5.0      crayon_1.3.4      </code></pre>
 </div>
 </details>
 <section class="footnotes" role="doc-endnotes">
