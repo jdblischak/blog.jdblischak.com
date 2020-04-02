@@ -220,7 +220,7 @@ calc_pairwise_overlaps <- function(sets) {
                        name2 = vec_name2,
                        num_shared = vec_num_shared,
                        overlap = vec_overlap,
-                       jaccard = vec_overlap,
+                       jaccard = vec_jaccard,
                        stringsAsFactors = FALSE)
   return(result)
 }
@@ -302,7 +302,7 @@ calc_pairwise_overlaps <- function(sets) {
                        name2 = vec_name2,
                        num_shared = vec_num_shared,
                        overlap = vec_overlap,
-                       jaccard = vec_overlap,
+                       jaccard = vec_jaccard,
                        stringsAsFactors = FALSE)
   return(result)
 }
@@ -390,7 +390,7 @@ calc_pairwise_overlaps <- function(sets) {
                        name2 = vec_name2,
                        num_shared = vec_num_shared,
                        overlap = vec_overlap,
-                       jaccard = vec_overlap,
+                       jaccard = vec_jaccard,
                        stringsAsFactors = FALSE)
   return(result)
 }
@@ -521,7 +521,7 @@ calc_pairwise_overlaps <- function(sets) {
                        name2 = vec_name2,
                        num_shared = vec_num_shared,
                        overlap = vec_overlap,
-                       jaccard = vec_overlap,
+                       jaccard = vec_jaccard,
                        stringsAsFactors = FALSE)
   return(result)
 }
