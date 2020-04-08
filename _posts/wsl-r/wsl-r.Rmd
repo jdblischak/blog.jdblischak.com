@@ -303,6 +303,27 @@ If a package you want isn't available when you try to install `r-cran-foo` (note
 that the R package should always be lowercase), then you can install it with
 `install.packages()` into a personal library directory.
 
+Note that there is a downside to using the pre-built binary R packages. Since
+they were already built, they don't include any system dependencies that are
+only required for compiling the package. For example, you can install and use
+the RCurl package with `sudo apt install r-cran-rcurl`, but still get an error
+when running `install.packages("RCurl")`. This is because RCurl requires the
+system library [libcurl4](https://packages.ubuntu.com/bionic/libcurl4) to run,
+but it additionally needs the system library
+[libcurl4-openssl-dev](https://packages.ubuntu.com/bionic/libcurl4-openssl-dev)
+to compile the package from source. Thus if you find yourself installing R
+packages from source because they aren't available from a PPA, you'll want to
+install some of the commonly required system libraries like
+libcurl4-openssl-dev:
+
+```
+sudo apt install libcurl4-openssl-dev
+```
+
+For other system software you may need to install, check out the [Dockerfile for
+the rhub Ubuntu
+image](https://github.com/r-hub/rhub-linux-builders/blob/b9f37a7bb1c966a11e6152d6d76a6cb48263a5cc/ubuntu/Dockerfile#L21).
+
 ## Install Bioconductor packages
 
 There are a decent number of Bioconductor packages available for Ubuntu, but
