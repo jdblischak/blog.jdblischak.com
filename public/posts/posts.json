@@ -16,7 +16,7 @@
       "Windows"
     ],
     "preview": "posts/wsl-r/img/windows-store-ubuntu.png",
-    "last_modified": "2020-04-02T01:44:16+00:00",
+    "last_modified": "2020-04-08T15:33:36+00:00",
     "preview_width": 947,
     "preview_height": 888
   },
@@ -35,7 +35,7 @@
       "Software Development with R"
     ],
     "preview": "posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png",
-    "last_modified": "2020-04-02T01:46:21+00:00",
+    "last_modified": "2020-04-08T15:31:33+00:00",
     "preview_width": 1248,
     "preview_height": 768
   },
@@ -54,7 +54,7 @@
       "conference"
     ],
     "preview": "posts/rstudioconf2020/img/rstudioconf2020.jpg",
-    "last_modified": "2020-04-02T01:44:16+00:00"
+    "last_modified": "2020-04-08T15:31:33+00:00"
   },
   {
     "path": "posts/circleci-ssh/",
@@ -71,7 +71,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-04-02T01:44:16+00:00"
+    "last_modified": "2020-04-08T15:31:32+00:00"
   },
   {
     "path": "posts/debug-circleci/",
@@ -90,7 +90,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-04-02T01:44:16+00:00"
+    "last_modified": "2020-04-08T15:31:32+00:00"
   },
   {
     "path": "posts/circleci-for-r-2/",
@@ -108,7 +108,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-04-02T01:44:16+00:00"
+    "last_modified": "2020-04-08T15:31:32+00:00"
   },
   {
     "path": "posts/debug-appveyor/",
@@ -127,7 +127,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-04-02T01:44:16+00:00"
+    "last_modified": "2020-04-08T15:31:32+00:00"
   },
   {
     "path": "posts/debug-travis/",
@@ -146,7 +146,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-04-02T01:44:16+00:00"
+    "last_modified": "2020-04-08T15:31:33+00:00"
   },
   {
     "path": "posts/circleci-for-r-1/",
@@ -164,6 +164,6 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-04-02T01:44:16+00:00"
+    "last_modified": "2020-04-08T15:31:32+00:00"
   }
 ]
