@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/chircollab2020/",
+    "title": "My experience at the Chicago R Collaborative 2020",
+    "description": "A fun event to build the R community",
+    "author": [
+      {
+        "name": "John Blischak",
+        "url": "https://jdblischak.com"
+      }
+    ],
+    "date": "2020-05-10",
+    "categories": [
+      "conference"
+    ],
+    "preview": "https://github.com/chircollab/chircollab20/raw/master/img/logo.png",
+    "last_modified": "2020-05-11T01:03:03+00:00"
+  },
+  {
     "path": "posts/wsl-r/",
     "title": "R programming in the Windows Subsystem for Linux",
     "description": "A comprehensive guide to setup an R development environment for Ubuntu running\nin the Windows Subsystem for Linux (WSL)",
@@ -16,7 +33,7 @@
       "Windows"
     ],
     "preview": "posts/wsl-r/img/windows-store-ubuntu.png",
-    "last_modified": "2020-04-08T15:33:36+00:00",
+    "last_modified": "2020-05-11T01:00:47+00:00",
     "preview_width": 947,
     "preview_height": 888
   },
@@ -35,7 +52,7 @@
       "Software Development with R"
     ],
     "preview": "posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png",
-    "last_modified": "2020-04-08T15:31:33+00:00",
+    "last_modified": "2020-05-11T01:00:47+00:00",
     "preview_width": 1248,
     "preview_height": 768
   },
@@ -54,7 +71,7 @@
       "conference"
     ],
     "preview": "posts/rstudioconf2020/img/rstudioconf2020.jpg",
-    "last_modified": "2020-04-08T15:31:33+00:00"
+    "last_modified": "2020-05-11T01:00:47+00:00"
   },
   {
     "path": "posts/circleci-ssh/",
@@ -71,7 +88,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-04-08T15:31:32+00:00"
+    "last_modified": "2020-05-11T01:00:47+00:00"
   },
   {
     "path": "posts/debug-circleci/",
@@ -90,7 +107,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-04-08T15:31:32+00:00"
+    "last_modified": "2020-05-11T01:00:47+00:00"
   },
   {
     "path": "posts/circleci-for-r-2/",
@@ -108,7 +125,7 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-04-08T15:31:32+00:00"
+    "last_modified": "2020-05-11T01:00:47+00:00"
   },
   {
     "path": "posts/debug-appveyor/",
@@ -127,7 +144,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-04-08T15:31:32+00:00"
+    "last_modified": "2020-05-11T01:00:47+00:00"
   },
   {
     "path": "posts/debug-travis/",
@@ -146,7 +163,7 @@
       "debugging"
     ],
     "preview": {},
-    "last_modified": "2020-04-08T15:31:33+00:00"
+    "last_modified": "2020-05-11T01:00:47+00:00"
   },
   {
     "path": "posts/circleci-for-r-1/",
@@ -164,6 +181,6 @@
       "devops"
     ],
     "preview": {},
-    "last_modified": "2020-04-08T15:31:32+00:00"
+    "last_modified": "2020-05-11T01:00:47+00:00"
   }
 ]

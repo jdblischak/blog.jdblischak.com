@@ -7,7 +7,16 @@
     <description>My tech blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 31 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 May 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>My experience at the Chicago R Collaborative 2020</title>
+      <dc:creator>John Blischak</dc:creator>
+      <link>https://blog.jdblischak.com/posts/chircollab2020</link>
+      <description>A fun event to build the R community</description>
+      <guid>https://blog.jdblischak.com/posts/chircollab2020</guid>
+      <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://github.com/chircollab/chircollab20/raw/master/img/logo.png" medium="image" type="image/png"/>
+    </item>
     <item>
       <title>R programming in the Windows Subsystem for Linux</title>
       <dc:creator>John Blischak</dc:creator>
