@@ -32,6 +32,7 @@ preview: https://github.com/chircollab/chircollab20/raw/master/img/logo.png
 [github-suggest]: https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/incorporating-feedback-in-your-pull-request#applying-a-suggested-change
 [googlecivic]: https://github.com/willdebras/googlecivic/
 [httr-retry]: https://github.com/chircollab/chircollab20/issues/1
+[introslides]: https://github.com/chircollab/introslides
 [issues]: https://github.com/chircollab/chircollab20/issues
 [james-lamb]: http://twitter.com/_jameslamb
 [jim-gruman]: https://twitter.com/jim_gruman
@@ -165,6 +166,9 @@ first unit test! ([PR #202][workflowr-pr-202])
 * [kableExtra cookbook][kableExtra] -
 [Sharla Gelfand][sharla-gelfand], [Brooke Anderson][brooke-anderson],
 and [Jim Gruman][jim-gruman]
+
+* [Collaborative introduction slides converted to xaringan][introslides] -
+[Eric Nantz][eric-nantz] and [Angela Li][angela-li]
 
 * [googlecivic][] -
 [Will Bonnell][will-bonnell], [Edward Visel][edward-visel],
