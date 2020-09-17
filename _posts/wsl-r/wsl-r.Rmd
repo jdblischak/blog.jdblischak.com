@@ -702,3 +702,4 @@ activating the SSH agent.
 
 * Dave Tang's post on [Setting up Windows for bioinformatics in 2019](https://davetang.org/muse/2019/04/09/setting-up-windows-for-bioinformatics-in-2019/)
 * [Canonical's instructions for installing Ubuntu with the WSL](https://ubuntu.com/tutorials/tutorial-ubuntu-on-windows#1-overview)
+* RStudio's instructions for [Using RStudio Server in Windows WSL2](https://support.rstudio.com/hc/en-us/articles/360049776974-Using-RStudio-Server-in-Windows-WSL2)
