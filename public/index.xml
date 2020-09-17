@@ -13,6 +13,7 @@
       <dc:creator>John Blischak</dc:creator>
       <link>https://blog.jdblischak.com/posts/chircollab2020</link>
       <description>A fun event to build the R community</description>
+      <category>conference</category>
       <guid>https://blog.jdblischak.com/posts/chircollab2020</guid>
       <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
       <media:content url="https://github.com/chircollab/chircollab20/raw/master/img/logo.png" medium="image" type="image/png"/>
@@ -23,6 +24,9 @@
       <link>https://blog.jdblischak.com/posts/wsl-r</link>
       <description>A comprehensive guide to setup an R development environment for Ubuntu running
 in the Windows Subsystem for Linux (WSL)</description>
+      <category>Software Development with R</category>
+      <category>Ubuntu</category>
+      <category>Windows</category>
       <guid>https://blog.jdblischak.com/posts/wsl-r</guid>
       <pubDate>Tue, 31 Mar 2020 00:00:00 +0000</pubDate>
       <media:content url="https://blog.jdblischak.com/posts/wsl-r/img/windows-store-ubuntu.png" medium="image" type="image/png" width="947" height="888"/>
@@ -32,6 +36,7 @@ in the Windows Subsystem for Linux (WSL)</description>
       <dc:creator>John Blischak</dc:creator>
       <link>https://blog.jdblischak.com/posts/pairwise-overlaps</link>
       <description>An example of progressively optimizing the speed of a function</description>
+      <category>Software Development with R</category>
       <guid>https://blog.jdblischak.com/posts/pairwise-overlaps</guid>
       <pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate>
       <media:content url="https://blog.jdblischak.com/posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png" medium="image" type="image/png" width="1248" height="768"/>
@@ -42,6 +47,7 @@ in the Windows Subsystem for Linux (WSL)</description>
       <link>https://blog.jdblischak.com/posts/rstudioconf2020</link>
       <description>There were a lot of great talks at rstudio::conf. In this post I highlight a
 few of the themes that emerged for me.</description>
+      <category>conference</category>
       <guid>https://blog.jdblischak.com/posts/rstudioconf2020</guid>
       <pubDate>Wed, 12 Feb 2020 00:00:00 +0000</pubDate>
       <media:content url="https://blog.jdblischak.com/posts/rstudioconf2020/img/rstudioconf2020.jpg" medium="image" type="image/jpeg"/>
@@ -52,6 +58,7 @@ few of the themes that emerged for me.</description>
       <link>https://blog.jdblischak.com/posts/circleci-ssh</link>
       <description>Automatically update your documentation or other repository content by
 authenticating CircleCI to push commits directly to GitHub</description>
+      <category>devops</category>
       <guid>https://blog.jdblischak.com/posts/circleci-ssh</guid>
       <pubDate>Tue, 04 Feb 2020 00:00:00 +0000</pubDate>
     </item>
@@ -61,6 +68,9 @@ authenticating CircleCI to push commits directly to GitHub</description>
       <link>https://blog.jdblischak.com/posts/debug-circleci</link>
       <description>If your CircleCI build is failing, you can interactively debug it locally or
 remotely.</description>
+      <category>Software Development with R</category>
+      <category>devops</category>
+      <category>debugging</category>
       <guid>https://blog.jdblischak.com/posts/debug-circleci</guid>
       <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
     </item>
@@ -69,6 +79,8 @@ remotely.</description>
       <dc:creator>John Blischak</dc:creator>
       <link>https://blog.jdblischak.com/posts/circleci-for-r-2</link>
       <description>Enhance your continuous integration tests on CircleCI</description>
+      <category>Software Development with R</category>
+      <category>devops</category>
       <guid>https://blog.jdblischak.com/posts/circleci-for-r-2</guid>
       <pubDate>Fri, 17 May 2019 00:00:00 +0000</pubDate>
     </item>
@@ -78,6 +90,9 @@ remotely.</description>
       <link>https://blog.jdblischak.com/posts/debug-appveyor</link>
       <description>If you can't replicate the error locally, you can access an AppVeyor server
 via Remote Desktop to interactively debug your R package.</description>
+      <category>Software Development with R</category>
+      <category>devops</category>
+      <category>debugging</category>
       <guid>https://blog.jdblischak.com/posts/debug-appveyor</guid>
       <pubDate>Thu, 04 Apr 2019 00:00:00 +0000</pubDate>
     </item>
@@ -87,6 +102,9 @@ via Remote Desktop to interactively debug your R package.</description>
       <link>https://blog.jdblischak.com/posts/debug-travis</link>
       <description>If you can't replicate the error locally, you can SSH into a Travis server to
 interactively debug your R package.</description>
+      <category>Software Development with R</category>
+      <category>devops</category>
+      <category>debugging</category>
       <guid>https://blog.jdblischak.com/posts/debug-travis</guid>
       <pubDate>Tue, 26 Mar 2019 00:00:00 +0000</pubDate>
     </item>
@@ -96,6 +114,8 @@ interactively debug your R package.</description>
       <link>https://blog.jdblischak.com/posts/circleci-for-r-1</link>
       <description>If you like using Docker, you should try out CircleCI for testing your
 R packages and projects.</description>
+      <category>Software Development with R</category>
+      <category>devops</category>
       <guid>https://blog.jdblischak.com/posts/circleci-for-r-1</guid>
       <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
     </item>
