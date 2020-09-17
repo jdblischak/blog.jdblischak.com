@@ -15,6 +15,7 @@ jobs:
             apt-get upgrade --yes
             apt-get install --yes \
               git \
+              libssl-dev \
               r-cran-bookdown \
               r-cran-fs \
               r-cran-ggplot2 \
