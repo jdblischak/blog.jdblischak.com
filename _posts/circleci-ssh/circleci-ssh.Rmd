@@ -138,10 +138,16 @@ directly to the project on CircleCI.]
 
 Don't click on the "Settings" in the menu on the left. That is for user
 settings. Instead, click on the gear icon in the top right. Then choose "SSH
-Permissions" and "Add SSH key". You can put whatever you like in the Hostname
-field to remind you that this key is for pushing to GitHub. Copy-paste the
-private key in `/tmp/ssh-temp/key` into the field "Private Key". As the name
-implies, it is really important that you do not expose this key.
+Permissions" and "Add SSH key". For the Hostname put "github.com" ^[**Update:**
+I had originally said that you could put whatever you like in the Hostname field
+to remind you that this key is for pushing to GitHub. However,
+[SampsonM](https://github.com/SampsonM) kindly took the time to [inform
+me](https://github.com/jdblischak/blog.jdblischak.com/issues/2) that it actually
+has to be "github.com", and I confirmed this is what the [CircleCI
+docs](https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-deploy-key)
+state.]. Copy-paste the private key in `/tmp/ssh-temp/key` into the field
+"Private Key". As the name implies, it is really important that you do not
+expose this key.
 
 ![Add private key to CircleCI](img/circleci-ssh-2.png)
 
