@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
-  <link rel="alternate" type="application/rss+xml" href="https://blog.jdblischak.com/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -85,637 +84,39 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>John Blischak's blog: Posts</title>
+  <title>OmicNavigator</title>
+  
+  <meta property="description" itemprop="description" content="Open-source software for omic data analysis and visualization"/>
   
   
-  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
-  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2021-10-11"/>
+  <meta property="article:created" itemprop="dateCreated" content="2021-10-11"/>
+  <meta name="article:author" content="John Blischak"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="John Blischak&#39;s blog: Posts"/>
+  <meta property="og:title" content="OmicNavigator"/>
   <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Open-source software for omic data analysis and visualization"/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="John Blischak&#39;s blog"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="John Blischak&#39;s blog: Posts"/>
-  <meta property="twitter:creator" content="@jdblischak"/>
+  <meta property="twitter:title" content="OmicNavigator"/>
+  <meta property="twitter:description" content="Open-source software for omic data analysis and visualization"/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["OmicNavigator"]},{"type":"character","attributes":{},"value":["Open-source software for omic data analysis and visualization\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["10-11-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["bioinformatics"]},{"type":"character","attributes":{},"value":["https://raw.githubusercontent.com/abbvie-external/OmicNavigator/main/man/figures/omicnavigator-dark-text.png"]},{"type":"logical","attributes":{},"value":[true]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["img/differential-expression.png","img/enrichment-analysis.png"]}
+  </script>
   <!--radix_placeholder_navigation_in_header-->
-  <meta name="distill:offset" content=""/>
-  
-  <script type="application/javascript">
-  
-    window.headroom_prevent_pin = false;
-  
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-  
-      // initialize headroom for banner
-      var header = $('header').get(0);
-      var headerHeight = header.offsetHeight;
-      var headroom = new Headroom(header, {
-        tolerance: 5,
-        onPin : function() {
-          if (window.headroom_prevent_pin) {
-            window.headroom_prevent_pin = false;
-            headroom.unpin();
-          }
-        }
-      });
-      headroom.init();
-      if(window.location.hash)
-        headroom.unpin();
-      $(header).addClass('headroom--transition');
-  
-      // offset scroll location for banner on hash change
-      // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
-      window.addEventListener("hashchange", function(event) {
-        window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
-      });
-  
-      // responsive menu
-      $('.distill-site-header').each(function(i, val) {
-        var topnav = $(this);
-        var toggle = topnav.find('.nav-toggle');
-        toggle.on('click', function() {
-          topnav.toggleClass('responsive');
-        });
-      });
-  
-      // nav dropdowns
-      $('.nav-dropbtn').click(function(e) {
-        $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
-        $(this).parent().siblings('.nav-dropdown')
-           .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $("body").click(function(e){
-        $('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $(".nav-dropdown").click(function(e){
-        e.stopPropagation();
-      });
-    });
-  </script>
-  
-  <style type="text/css">
-  
-  /* Theme (user-documented overrideables for nav appearance) */
-  
-  .distill-site-nav {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: #0F2E3D;
-    font-size: 15px;
-    font-weight: 300;
-  }
-  
-  .distill-site-nav a {
-    color: inherit;
-    text-decoration: none;
-  }
-  
-  .distill-site-nav a:hover {
-    color: white;
-  }
-  
-  @media print {
-    .distill-site-nav {
-      display: none;
-    }
-  }
-  
-  .distill-site-header {
-  
-  }
-  
-  .distill-site-footer {
-  
-  }
-  
-  
-  /* Site Header */
-  
-  .distill-site-header {
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 3;
-  }
-  
-  .distill-site-header .nav-left {
-    display: inline-block;
-    margin-left: 8px;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header .nav-left {
-      margin-left: 0;
-    }
-  }
-  
-  
-  .distill-site-header .nav-right {
-    float: right;
-    margin-right: 8px;
-  }
-  
-  .distill-site-header a,
-  .distill-site-header .title {
-    display: inline-block;
-    text-align: center;
-    padding: 14px 10px 14px 10px;
-  }
-  
-  .distill-site-header .title {
-    font-size: 18px;
-    min-width: 150px;
-  }
-  
-  .distill-site-header .logo {
-    padding: 0;
-  }
-  
-  .distill-site-header .logo img {
-    display: none;
-    max-height: 20px;
-    width: auto;
-    margin-bottom: -4px;
-  }
-  
-  .distill-site-header .nav-image img {
-    max-height: 18px;
-    width: auto;
-    display: inline-block;
-    margin-bottom: -3px;
-  }
-  
-  
-  
-  @media screen and (min-width: 1000px) {
-    .distill-site-header .logo img {
-      display: inline-block;
-    }
-    .distill-site-header .nav-left {
-      margin-left: 20px;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 20px;
-    }
-    .distill-site-header .title {
-      padding-left: 12px;
-    }
-  }
-  
-  
-  .distill-site-header .nav-toggle {
-    display: none;
-  }
-  
-  .nav-dropdown {
-    display: inline-block;
-    position: relative;
-  }
-  
-  .nav-dropdown .nav-dropbtn {
-    border: none;
-    outline: none;
-    color: rgba(255, 255, 255, 0.8);
-    padding: 16px 10px;
-    background-color: transparent;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    margin: 0;
-    margin-top: 1px;
-    z-index: 2;
-  }
-  
-  .nav-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 200px;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 4px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    z-index: 1;
-    margin-top: 2px;
-    white-space: nowrap;
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-  
-  .nav-dropdown-content hr {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-dropdown-active {
-    display: block;
-  }
-  
-  .nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
-    color: black;
-    padding: 6px 24px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-  
-  .nav-dropdown-content .nav-dropdown-header {
-    display: block;
-    padding: 5px 24px;
-    padding-bottom: 0;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #999999;
-    white-space: nowrap;
-  }
-  
-  .nav-dropdown:hover .nav-dropbtn {
-    color: white;
-  }
-  
-  .nav-dropdown-content a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  .nav-right .nav-dropdown-content {
-    margin-left: -45%;
-    right: 0;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
-    .distill-site-header a.nav-toggle {
-      float: right;
-      display: block;
-    }
-    .distill-site-header .title {
-      margin-left: 0;
-    }
-    .distill-site-header .nav-right {
-      margin-right: 0;
-    }
-    .distill-site-header {
-      overflow: hidden;
-    }
-    .nav-right .nav-dropdown-content {
-      margin-left: 0;
-    }
-  }
-  
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-header.responsive {position: relative; min-height: 500px; }
-    .distill-site-header.responsive a.nav-toggle {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    .distill-site-header.responsive a,
-    .distill-site-header.responsive .nav-dropdown {
-      display: block;
-      text-align: left;
-    }
-    .distill-site-header.responsive .nav-left,
-    .distill-site-header.responsive .nav-right {
-      width: 100%;
-    }
-    .distill-site-header.responsive .nav-dropdown {float: none;}
-    .distill-site-header.responsive .nav-dropdown-content {position: relative;}
-    .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
-      display: block;
-      width: 100%;
-      text-align: left;
-    }
-  }
-  
-  /* Site Footer */
-  
-  .distill-site-footer {
-    width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    z-index: 3;
-    margin-top: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    text-align: center;
-  }
-  
-  /* Headroom */
-  
-  d-title {
-    padding-top: 6rem;
-  }
-  
-  @media print {
-    d-title {
-      padding-top: 4rem;
-    }
-  }
-  
-  .headroom {
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  .headroom--transition {
-    transition: all .4s ease-in-out;
-  }
-  
-  .headroom--unpinned {
-    top: -100px;
-  }
-  
-  .headroom--pinned {
-    top: 0;
-  }
-  
-  /* adjust viewport for navbar height */
-  /* helps vertically center bootstrap (non-distill) content */
-  .min-vh-100 {
-    min-height: calc(100vh - 100px) !important;
-  }
-  
-  </style>
-  
-  <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-  <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
-  <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
-  <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
-  <script src="site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
-  <script src="site_libs/fuse-6.4.1/fuse.min.js"></script>
-  
-  <script type="application/javascript">
-  
-  function getMeta(metaName) {
-    var metas = document.getElementsByTagName('meta');
-    for (let i = 0; i < metas.length; i++) {
-      if (metas[i].getAttribute('name') === metaName) {
-        return metas[i].getAttribute('content');
-      }
-    }
-    return '';
-  }
-  
-  function offsetURL(url) {
-    var offset = getMeta('distill:offset');
-    return offset ? offset + '/' + url : url;
-  }
-  
-  function createFuseIndex() {
-  
-    // create fuse index
-    var options = {
-      keys: [
-        { name: 'title', weight: 20 },
-        { name: 'categories', weight: 15 },
-        { name: 'description', weight: 10 },
-        { name: 'contents', weight: 5 },
-      ],
-      ignoreLocation: true,
-      threshold: 0
-    };
-    var fuse = new window.Fuse([], options);
-  
-    // fetch the main search.json
-    return fetch(offsetURL('search.json'))
-      .then(function(response) {
-        if (response.status == 200) {
-          return response.json().then(function(json) {
-            // index main articles
-            json.articles.forEach(function(article) {
-              fuse.add(article);
-            });
-            // download collections and index their articles
-            return Promise.all(json.collections.map(function(collection) {
-              return fetch(offsetURL(collection)).then(function(response) {
-                if (response.status === 200) {
-                  return response.json().then(function(articles) {
-                    articles.forEach(function(article) {
-                      fuse.add(article);
-                    });
-                  })
-                } else {
-                  return Promise.reject(
-                    new Error('Unexpected status from search index request: ' +
-                              response.status)
-                  );
-                }
-              });
-            })).then(function() {
-              return fuse;
-            });
-          });
-  
-        } else {
-          return Promise.reject(
-            new Error('Unexpected status from search index request: ' +
-                        response.status)
-          );
-        }
-      });
-  }
-  
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-  
-    // get search element (bail if we don't have one)
-    var searchEl = window.document.getElementById('distill-search');
-    if (!searchEl)
-      return;
-  
-    createFuseIndex()
-      .then(function(fuse) {
-  
-        // make search box visible
-        searchEl.classList.remove('hidden');
-  
-        // initialize autocomplete
-        var options = {
-          autoselect: true,
-          hint: false,
-          minLength: 2,
-        };
-        window.autocomplete(searchEl, options, [{
-          source: function(query, callback) {
-            const searchOptions = {
-              isCaseSensitive: false,
-              shouldSort: true,
-              minMatchCharLength: 2,
-              limit: 10,
-            };
-            var results = fuse.search(query, searchOptions);
-            callback(results
-              .map(function(result) { return result.item; })
-            );
-          },
-          templates: {
-            suggestion: function(suggestion) {
-              var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
-                ? `<img src="${offsetURL(suggestion.preview)}"</img>`
-                : '';
-              var html = `
-                <div class="search-item">
-                  <h3>${suggestion.title}</h3>
-                  <div class="search-item-description">
-                    ${suggestion.description || ''}
-                  </div>
-                  <div class="search-item-preview">
-                    ${img}
-                  </div>
-                </div>
-              `;
-              return html;
-            }
-          }
-        }]).on('autocomplete:selected', function(event, suggestion) {
-          window.location.href = offsetURL(suggestion.path);
-        });
-        // remove inline display style on autocompleter (we want to
-        // manage responsive display via css)
-        $('.algolia-autocomplete').css("display", "");
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  
-  });
-  
-  </script>
-  
-  <style type="text/css">
-  
-  .nav-search {
-    font-size: x-small;
-  }
-  
-  /* Algolioa Autocomplete */
-  
-  .algolia-autocomplete {
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: sub;
-    background-color: white;
-    color: black;
-    padding: 6px;
-    padding-top: 8px;
-    padding-bottom: 0;
-    border-radius: 6px;
-    border: 1px #0F2E3D solid;
-    width: 180px;
-  }
-  
-  
-  @media screen and (max-width: 768px) {
-    .distill-site-nav .algolia-autocomplete {
-      display: none;
-      visibility: hidden;
-    }
-    .distill-site-nav.responsive .algolia-autocomplete {
-      display: inline-block;
-      visibility: visible;
-    }
-    .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
-      margin-left: 0;
-      width: 400px;
-      max-height: 400px;
-    }
-  }
-  
-  .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
-    width: 90%;
-    outline: none;
-    border: none;
-  }
-  
-  .algolia-autocomplete .aa-hint {
-    color: #999;
-  }
-  .algolia-autocomplete .aa-dropdown-menu {
-    width: 550px;
-    max-height: 70vh;
-    overflow-x: visible;
-    overflow-y: scroll;
-    padding: 5px;
-    margin-top: 3px;
-    margin-left: -150px;
-    background-color: #fff;
-    border-radius: 5px;
-    border: 1px solid #999;
-    border-top: none;
-  }
-  
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
-    cursor: pointer;
-    padding: 5px 4px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
-    border-bottom: none;
-    margin-bottom: 2px;
-  }
-  
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
-    overflow: hidden;
-    font-size: 0.8em;
-    line-height: 1.4em;
-  }
-  
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
-    font-size: 1rem;
-    margin-block-start: 0;
-    margin-block-end: 5px;
-  }
-  
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
-    display: inline-block;
-    overflow: hidden;
-    height: 2.8em;
-    width: 80%;
-    margin-right: 4%;
-  }
-  
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
-    display: inline-block;
-    width: 15%;
-  }
-  
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
-    height: 3em;
-    width: auto;
-    display: none;
-  }
-  
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
-    display: initial;
-  }
-  
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
-    background-color: #eee;
-  }
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
-    font-weight: bold;
-    font-style: normal;
-  }
-  
-  </style>
-  
-  
   <!--/radix_placeholder_navigation_in_header-->
   <!--radix_placeholder_distill-->
   
@@ -2031,467 +1432,143 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/popper-2.6.0/popper.min.js"></script>
-  <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
-  <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
-  <script src="site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
-  <script src="site_libs/anchor-4.2.2/anchor.min.js"></script>
-  <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
-  <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
-  <script src="site_libs/distill-2.2.21/template.v2.js"></script>
+  <script src="omicnavigator_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="omicnavigator_files/popper-2.6.0/popper.min.js"></script>
+  <link href="omicnavigator_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="omicnavigator_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="omicnavigator_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="omicnavigator_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="omicnavigator_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="omicnavigator_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="omicnavigator_files/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
-  <style type="text/css">
-  /*
-  Custom themes for blog.jdblischak.com
-  
-  https://rstudio.github.io/distill/website.html#theming
-  */
-  
-  .distill-site-nav {
-    background-color: #543a54;
-  }
-  
-  .distill-site-footer a {
-    text-decoration: underline;
-  }
-  
-  /*
-  This is the same color (#f5f5f5; white smoke) used in standard R Markdown code
-  chunks.
-  */
-  code {
-    background-color: RGB(245, 245, 245);
-  }
-  
-  </style>
   <!--/radix_placeholder_site_in_header-->
 
-  <link rel="stylesheet" href="static/styles.css" type="text/css"/>
 
 </head>
 
-<body class="layout-listing">
+<body>
 
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Posts","authors":[]}
+{"title":"OmicNavigator","description":"Open-source software for omic data analysis and visualization","authors":[{"author":"John Blischak","authorURL":"https://jdblischak.com","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-10-11T00:00:00.000+00:00","citationText":"Blischak, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
 <!--radix_placeholder_navigation_before_body-->
-<header class="header header--fixed" role="banner">
-<nav class="distill-site-nav distill-site-header">
-<div class="nav-left">
-<a href="index.html" class="title">John Blischak's blog</a>
-<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
-</div>
-<div class="nav-right">
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="index.xml">
-<i class="fa fa-rss" aria-hidden="true"></i>
-</a>
-<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
-</div>
-</nav>
-</header>
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
-<!--radix_placeholder_article_listing-->
-
-
-<script type="application/javascript">
-
-function init_posts_list() {
-
-  function load_image(img) {
-    var src = $(img).attr('data-src');
-    if (src) {
-      $(img).attr('src', src);
-      $(img).load(function() {
-        img.removeAttribute('data-src');
-      });
-    }
-  }
-
-  function set_posts_visible(posts, visible) {
-    if (visible) {
-
-      // show bottom border by default
-      $(posts).removeClass('post-preview-last');
-
-      // apply limits if need be
-      var max_posts = 25;
-      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
-      if (apply_limits && posts.length > max_posts) {
-        posts = $(posts).slice(0, max_posts);
-      } else {
-        $('.posts-more a').addClass('hidden');
-      }
-
-      // apply last style
-      $(posts.slice(-1)[0]).addClass('post-preview-last');
-
-      $(posts).removeClass('hidden');
-      $(posts).find('img[data-src]').each(function(i, img) {
-        load_image(img);
-      });
-    } else {
-      $(posts).addClass('hidden');
-    }
-  }
-
-  function apply_hash_filter() {
-
-    // clear active state
-    $('.categories .active').removeClass('active');
-
-    // mark all posts invisible to start
-    set_posts_visible($('.posts-list').children('a'), false);
-
-    // if we have a hash filter
-    if (window.location.hash && window.location.hash.startsWith("#category:")) {
-
-      // mark posts that match the category visible
-      var page_category = window.location.hash.replace(/^#category:/, "");
-      var posts = $('.post-metadata').map(function(idx, script) {
-        var metadata = $.parseJSON($(script).html());
-        var post = null;
-        $.each(metadata.categories, function(idx, category) {
-          category = category.replace(/ /g,"_");
-          if ((page_category || '').toLowerCase() === "articles" || category === page_category) {
-            post = $(script).parent().get();
-            return false;
-          }
-        });
-        return post;
-      });
-      set_posts_visible(posts, true);
-
-      // mark the hash active
-      $('.categories li>a[href="' + window.location.hash + '"]').addClass('active');
-
-      // update the list_caption
-      var list_caption = $('.posts-list-caption');
-      var caption = (page_category || '').toLowerCase() === "articles"
-        ? list_caption.attr('data-caption')
-        : ('Category: ' + page_category.replace(/_/g," "));
-      list_caption.text(caption);
-
-    } else {
-
-      // no hash filter, make all posts visible (subject to max display)
-      set_posts_visible($('.posts-list').children(), true);
-
-      // reset list caption
-      var list_caption = $('.posts-list-caption');
-      list_caption.text(list_caption.attr('data-caption'));
-
-
-    }
-  }
-
-  // more articles
-  function apply_post_limits(apply) {
-    if (apply) {
-      $('.posts-container').addClass('posts-apply-limit');
-      $('.posts-more a').removeClass('hidden');
-    } else {
-      $('.posts-container').removeClass('posts-apply-limit');
-      $('.posts-more a').addClass('hidden');
-    }
-  }
-
-  // click handling for tags
-  $('.dt-tag').click(function(ev) {
-    window.location.hash = '#category:' + $(this).text().replace(/ /g, "_");
-    return false;
-  })
-
-  // hash filter handling
-  apply_hash_filter();
-  $(window).on('hashchange',function() {
-    apply_post_limits(true);
-    apply_hash_filter();
-  });
-
-  // more articles link
-  $('.posts-more a').click(function(e) {
-    e.preventDefault();
-    apply_post_limits(false);
-    apply_hash_filter();
-    return false;
-  });
-
-}
-
-</script>
-
-
-
-<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
-<div class="posts-list">
-<h1 class="posts-list-caption" data-caption="Posts">Posts</h1>
-<a href="posts/chircollab2020/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["conference"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 10, 2020</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img src="https://github.com/chircollab/chircollab20/raw/master/img/logo.png"/>
-</div>
-<div class="description">
-<h2>My experience at the Chicago R Collaborative 2020</h2>
-<div class="dt-tags">
-<div class="dt-tag">conference</div>
-</div>
-<p>A fun event to build the R community</p>
-</div>
-</a>
-<a href="posts/wsl-r/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","Ubuntu","Windows"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 31, 2020</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img src="posts/wsl-r/img/windows-store-ubuntu.png"/>
-</div>
-<div class="description">
-<h2>R programming in the Windows Subsystem for Linux</h2>
-<div class="dt-tags">
-<div class="dt-tag">Software Development with R</div>
-<div class="dt-tag">Ubuntu</div>
-<div class="dt-tag">Windows</div>
-</div>
-<p>A comprehensive guide to setup an R development environment for Ubuntu running
-in the Windows Subsystem for Linux (WSL)</p>
-</div>
-</a>
-<a href="posts/pairwise-overlaps/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 27, 2020</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img src="posts/pairwise-overlaps/pairwise-overlaps_files/figure-html5/combinatorial-explosion-1.png"/>
-</div>
-<div class="description">
-<h2>How to efficiently calculate pairwise overlaps of many sets</h2>
-<div class="dt-tags">
-<div class="dt-tag">Software Development with R</div>
-</div>
-<p>An example of progressively optimizing the speed of a function</p>
-</div>
-</a>
-<a href="posts/rstudioconf2020/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["conference"]}</script>
-<div class="metadata">
-<div class="publishedDate">Feb. 12, 2020</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img src="posts/rstudioconf2020/img/rstudioconf2020.jpg"/>
-</div>
-<div class="description">
-<h2>Some themes from rstudio::conf 2020</h2>
-<div class="dt-tags">
-<div class="dt-tag">conference</div>
-</div>
-<p>There were a lot of great talks at rstudio::conf. In this post I highlight a
-few of the themes that emerged for me.</p>
-</div>
-</a>
-<a href="posts/circleci-ssh/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["devops"]}</script>
-<div class="metadata">
-<div class="publishedDate">Feb. 4, 2020</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Automate commits to GitHub from a CircleCI job</h2>
-<div class="dt-tags">
-<div class="dt-tag">devops</div>
-</div>
-<p>Automatically update your documentation or other repository content by
-authenticating CircleCI to push commits directly to GitHub</p>
-</div>
-</a>
-<a href="posts/debug-circleci/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops","debugging"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 18, 2019</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Debug your R package on CircleCI via Docker or SSH</h2>
-<div class="dt-tags">
-<div class="dt-tag">Software Development with R</div>
-<div class="dt-tag">devops</div>
-<div class="dt-tag">debugging</div>
-</div>
-<p>If your CircleCI build is failing, you can interactively debug it locally or
-remotely.</p>
-</div>
-</a>
-<a href="posts/circleci-for-r-2/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 17, 2019</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>CircleCI for R: Workflows, caches, and more</h2>
-<div class="dt-tags">
-<div class="dt-tag">Software Development with R</div>
-<div class="dt-tag">devops</div>
-</div>
-<p>Enhance your continuous integration tests on CircleCI</p>
-</div>
-</a>
-<a href="posts/debug-appveyor/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops","debugging"]}</script>
-<div class="metadata">
-<div class="publishedDate">April 4, 2019</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Debug your R package on AppVeyor via Remote Desktop</h2>
-<div class="dt-tags">
-<div class="dt-tag">Software Development with R</div>
-<div class="dt-tag">devops</div>
-<div class="dt-tag">debugging</div>
-</div>
-<p>If you can't replicate the error locally, you can access an AppVeyor server
-via Remote Desktop to interactively debug your R package.</p>
-</div>
-</a>
-<a href="posts/debug-travis/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops","debugging"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 26, 2019</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Debug your R package on Travis CI via SSH</h2>
-<div class="dt-tags">
-<div class="dt-tag">Software Development with R</div>
-<div class="dt-tag">devops</div>
-<div class="dt-tag">debugging</div>
-</div>
-<p>If you can't replicate the error locally, you can SSH into a Travis server to
-interactively debug your R package.</p>
-</div>
-</a>
-<a href="posts/circleci-for-r-1/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Software Development with R","devops"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 25, 2019</div>
-<div class="dt-authors">
-<div class="dt-author">John Blischak</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>CircleCI for R: Motivation and basic setup</h2>
-<div class="dt-tags">
-<div class="dt-tag">Software Development with R</div>
-<div class="dt-tag">devops</div>
-</div>
-<p>If you like using Docker, you should try out CircleCI for testing your
-R packages and projects.</p>
-</div>
-</a>
-</div>
-<div class="posts-sidebar">
-<div class="sidebar-section categories">
-<h3>Categories</h3>
-<ul>
-<li>
-<a href="#category:Articles">Articles</a>
-<span class="category-count">(10)</span>
-</li>
-<li>
-<a href="#category:conference">conference</a>
-<span class="category-count">(2)</span>
-</li>
-<li>
-<a href="#category:debugging">debugging</a>
-<span class="category-count">(3)</span>
-</li>
-<li>
-<a href="#category:devops">devops</a>
-<span class="category-count">(6)</span>
-</li>
-<li>
-<a href="#category:Software_Development_with_R">Software Development with R</a>
-<span class="category-count">(7)</span>
-</li>
-<li>
-<a href="#category:Ubuntu">Ubuntu</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#category:Windows">Windows</a>
-<span class="category-count">(1)</span>
-</li>
-</ul>
-</div>
-</div>
-<div class="posts-more">
-<a href="#">More articles &raquo;</a>
-</div>
-</div>
-<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>Posts</h1>
+<h1>OmicNavigator</h1>
 <!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt=tag">bioinformatics</div>
+</div>
 <!--/radix_placeholder_categories-->
-
+<p><p>Open-source software for omic data analysis and visualization</p></p>
 </div>
 
+<div class="d-byline">
+  John Blischak <a href="https://jdblischak.com" class="uri">https://jdblischak.com</a> 
+  
+<br/>10-11-2021
+</div>
 
 <div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#overview-facilitating-collaborative-omics-research">Overview: Facilitating collaborative omics research</a></li>
+<li><a href="#app-features">App features</a></li>
+<li><a href="#create-an-omicnavigator-study-with-your-own-data">Create an OmicNavigator study with your own data</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#comparison-to-other-dashboard-like-tools">Comparison to other dashboard-like tools</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
+</ul>
+</nav>
+</div>
+<p><strong>tl;dr</strong> We built an interactive web app for exploring the results of genomics assays: OmicNavigator. You input your data with R, and then OmicNavigator instantly creates a dynamic web app for you to use and share with your collaborators! Available from <a href="https://cran.r-project.org/package=OmicNavigator">CRAN</a> and <a href="https://github.com/abbvie-external/OmicNavigator">GitHub</a>.</p>
+<h2 id="overview-facilitating-collaborative-omics-research">Overview: Facilitating collaborative omics research</h2>
+<p>The motivation to build OmicNavigator arose from the needs of research projects at <a href="https://www.abbvie.com/">AbbVie</a> that involved high-throughput omics assays. These are highly collaborative projects that require expertise of both disease specialists and bioinformaticians. The disease specialists need to explore the results in-depth, but they are often dependent on the bioinformaticians to query and visualize the data. And the bioinformaticians’ time is best spent on performing statistical analyses and generating custom visualizations. Any time spent generating generic boxplots or yet another basic Shiny app is time they could have spent on more high-value activities. OmicNavigator to the rescue! OmicNavigator aims to facilitate these routine interactions and streamline the research project for all participants:</p>
+<ul>
+<li><p><strong>Disease specialist:</strong> Instead of emailing your collaborator each time you want to explore a new gene of interest, you can open your browser and explore all the study results whenever you want. You can also perform your own filters to subset the data to the genes you think are the most interesting, and export the plots to include in your presentations.</p></li>
+<li><p><strong>Bioinformatician:</strong> The next time you perform a differential expression and enrichment analysis, you can send your collaborators to your OmicNavigator web app to explore the results. You don’t have to become a web dev expert. You can instead spend your time creating custom visualizations, which you can then integrate into OmicNavigator, and your collaborators will be able to auto-generate your plots for whichever genes they dynamically select in the app.</p></li>
+<li><p><strong>Manager:</strong> OmicNavigator is able to display the results of many studies from the same interface. You just have to choose which study to explore in the drop down menu. Instead of having the results from each project scattered in different locations, you can have them all in one place.</p></li>
+<li><p><strong>Data curator</strong>: The data in OmicNavigator studies are organized in a uniform way. Thus instead of having to manually curate each project’s data, you can write scripts to automatically convert OmicNavigator data files into the format you need.</p></li>
+<li><p><strong>Web developer:</strong> If you’re a web developer that needs to integrate results stored in OmicNavigator into your application, you don’t need to worry about learning R or waiting for the bioinformatician to package the data into the format you need. The data in OmicNavigator studies is accessible from a standard API and exportable in many formats, e.g. JSON (more on that below in the section <a href="#architecture">Architecture</a>). You can have your app query the OmicNavigator API to always automatically download the latest data.</p></li>
+</ul>
+<h2 id="app-features">App features</h2>
+<p>The app has two main panes: one for differential expression results and one for enrichment results.</p>
+<p>The differential expression pane includes:</p>
+<ul>
+<li><p>a dynamic results table that you can search, filter, sort, etc.</p></li>
+<li><p>an interactive scatter plot. If you drag and select points in the plot, the table is automatically filtered to only include these features. A typical use case is creating a “volcano”-style plot, but you can compare any two numeric columns that you like</p></li>
+<li><p>Custom R plots. If the bioinformatician has added any custom plots, you can select any gene to visualize it (and export the plot if needed)</p></li>
+<li><p>A filter to subset genes based on the results from all the available tests. This makes it easier to find genes that are significantly differentially expressed in one test but not others</p></li>
+</ul>
+<figure>
+<img src="img/differential-expression.png" alt="Screenshot of differential expression pane" /><figcaption>Screenshot of differential expression pane</figcaption>
+</figure>
+<p>The enrichment analysis pane includes:</p>
+<ul>
+<li><p>a dynamic table with the enrichment results that you can search, filter, sort, etc.</p></li>
+<li><p>a network view for visualizing the relationships between the various terms used for enrichment (e.g. how many genes are in common between the terms)</p></li>
+<li><p>a “barcode” view for investigating the genes driving the enrichment of a term in an interactive barcode plot</p></li>
+<li><p>A filter to subset genes based on the enrichment results from all the available tests. This makes it is easier to find terms that are significantly enriched in one test but not others</p></li>
+</ul>
+<figure>
+<img src="img/enrichment-analysis.png" alt="Screenshot of enrichment analysis pane" /><figcaption>Screenshot of enrichment analysis pane</figcaption>
+</figure>
+<p>There are even more existing features, e.g. custom plots for visualizing multiple features at once, and more features in development, but the above should give you a good sense of the app’s capabilities.</p>
+<h2 id="create-an-omicnavigator-study-with-your-own-data">Create an OmicNavigator study with your own data</h2>
+<p>After performing the statistical analysis, the bioinformatician deposits the data into an OmicNavigator study. This should require minimal data manipulation since OmicNavigator provides helper functions to ingest data frames directly in R. Once assembled, OmicNavigator exports the data as an R package for consumption by the web app.</p>
+<p>And you don’t need to include every single piece of potential data. The app only enables the features that are supported based on the available data. For example, if you didn’t perform an enrichment analysis, you can still use OmicNavigator to share differential expression results.</p>
+<p>Below is a quick start guide to give you an idea of how this works. To learn more, check out the extensive <a href="https://cran.r-project.org/web/packages/OmicNavigator/vignettes/OmicNavigatorUsersGuide.pdf">User’s Guide</a> and <a href="https://github.com/abbvie-external/OmicNavigatorExample">example study</a>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Install and load the package</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"OmicNavigator"</span>, dependencies <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>OmicNavigator</span><span class='op'>)</span>
+
+<span class='co'># Create a very minimal study with a single results table</span>
+<span class='va'>quickstart</span> <span class='op'>&lt;-</span> <span class='fu'>createStudy</span><span class='op'>(</span><span class='st'>"quickstart"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"RNAseq123"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>basal.vs.lp</span><span class='op'>)</span>
+<span class='va'>resultsTable</span> <span class='op'>&lt;-</span> <span class='va'>basal.vs.lp</span><span class='op'>[</span>, <span class='op'>-</span><span class='fl'>2</span><span class='op'>:</span><span class='op'>-</span><span class='fl'>3</span><span class='op'>]</span>
+<span class='va'>quickstart</span> <span class='op'>&lt;-</span> <span class='fu'>addResults</span><span class='op'>(</span><span class='va'>quickstart</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>model <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>test <span class='op'>=</span> <span class='va'>resultsTable</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>installStudy</span><span class='op'>(</span><span class='va'>quickstart</span><span class='op'>)</span>
+
+<span class='co'># (optional) Install the example study RNAseq123 which demos many of the app's</span>
+<span class='co'># available features</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gplots"</span>, <span class='st'>"viridis"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>tarball</span> <span class='op'>&lt;-</span> <span class='st'>"https://github.com/abbvie-external/OmicNavigatorExample/releases/latest/download/ONstudyRNAseq123.tar.gz"</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='va'>tarball</span>, repos <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='co'># Install and start the web app</span>
+<span class='fu'>installApp</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>startApp</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="architecture">Architecture</h2>
+<p>The central piece of infrastructure is <a href="https://www.opencpu.org/">OpenCPU</a>, an amazing framework for creating web apps with R. The basic idea behind OpenCPU is that is exposes all the functions in the R packages installed on the machine via a uniform HTTP API. This makes it possible for web apps to harness the power of R without R developers having to perform extra steps to make their code deployable.</p>
+<p>This is an incredibly powerful paradigm. It lets me as the R developer use all the tools I am familiar with. My code is organized as an R package, my functions are documented, I’m able to easily test my functions since they return standard R objects like lists and data frames. Then my collaborators developing the front-end JavaScript app are able to call my R functions via HTTP and request JSON formatted data in return. They don’t have to worry about R-specific things like data frames and factors; in fact, they don’t even need to install R! They are able to focus on the front-end using whichever tools they prefer, in this case <a href="https://reactjs.org/">React</a> and <a href="https://d3js.org/">D3</a>.</p>
+<p>And because OpenCPU is serving the R functions via a standard HTTP API, other developers can query and access the data for inclusion in other apps throughout the organization. By default OpenCPU provides many <a href="https://www.opencpu.org/api.html#api-formats">options for output formats</a>, including JSON, NDJSON, and protocol buffers.</p>
+<p>In summary, OpenCPU allows us to take advantage of the best of the R and JavaScript ecosystems.</p>
+<h2 id="comparison-to-other-dashboard-like-tools">Comparison to other dashboard-like tools</h2>
+<p>There are lots of options for creating dashboards. OmicNavigator aims to complement these existing options. OmicNavigator provides dynamic web app capabilities to the R user while also allowing them to customize the app with bespoke plotting functions.</p>
+<p>To best illustrate how OmicNavigator fits in, below I compare it to some other available options:</p>
+<ul>
+<li><p><strong>Point-and-click GUIs:</strong> While the app itself is point-and-click, it is created and deployed by the R user. This allows them to easily update their study. When new data arrives, or they add a new statistical model, simply update the data-in script and re-export the OmicNavigator study</p></li>
+<li><p><strong>Dashboard frameworks:</strong> Frameworks like <a href="https://shiny.rstudio.com/">Shiny</a> and <a href="https://streamlit.io/">streamlit</a> enable you to quickly create a custom dashboard from scratch using R and Python, respectively. This is super useful, but can also be time-consuming. OmicNavigator attempts to cover the common use cases of reporting differential expression results so that the bioinformatician can spend their time developing bespoke dashboards for the unique aspects of a particular study</p></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>OmicNavigator is the brain child of <a href="https://github.com/bengalengel">Brett Engelmann</a>. The web app has been primarily developed by <a href="https://github.com/paulnordlund">Paul Nordlund</a>, <a href="https://github.com/ternst23">Terry Ernst</a>, and <a href="https://github.com/JoeDalen81">Joe Dalen</a>. Additional contributors include Justin Moore, Akshay Bhamidipati , and <a href="https://github.com/curadomr">Marco Curado</a>.</p>
+<p>And of course thanks to AbbVie for supporting the development of this open source tool!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
@@ -2504,21 +1581,9 @@ R packages and projects.</p>
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom">
-<h3 id="updates-and-corrections">Corrections</h3>
-<p>If you see mistakes or want to suggest changes, please <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/new">create an issue</a> on the source repository.</p>
-<h3 id="reuse">Reuse</h3>
-<p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/jdblischak/blog.jdblischak.com">https://github.com/jdblischak/blog.jdblischak.com</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
-</div>
+<div class="appendix-bottom"></div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
-<div class="distill-site-nav distill-site-footer">
-<p>
-  &#169; 2019-2021
-  <a href="https://jdblischak.com"> John Blischak</a>,
-  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY</a>
-</p>
-</div>
 <!--/radix_placeholder_navigation_after_body-->
 
 </body>
