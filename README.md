@@ -3,7 +3,7 @@
 Start a new post:
 
 ```
-distill::create_post(title = "name-of-post", date_prefix = FALSE, draft = TRUE)
+distill::create_post(title = "name-of-post", date_prefix = NULL, draft = TRUE)
 ```
 
 Build post for publication:
