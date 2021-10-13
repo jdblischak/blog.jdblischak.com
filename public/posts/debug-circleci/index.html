@@ -1815,7 +1815,10 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
-      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        return "<p>" + $('#ref-' + ref).html() + "</p>";
+      }).join("\n");
       window.tippy(this, {
         allowHTML: true,
         content: refHtml,
@@ -2010,7 +2013,7 @@ https://rstudio.github.io/distill/website.html#theming
 This is the same color (#f5f5f5; white smoke) used in standard R Markdown code
 chunks.
 */
-code {
+d-article pre, d-article div.sourceCode {
   background-color: RGB(245, 245, 245);
 }
 
@@ -2160,15 +2163,17 @@ cd /root/project/</code></pre>
 }</pre>
 </div>
 <!--/radix_placeholder_appendices-->
-<!--radix_placeholder_navigation_after_body-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!--radix_placeholder_navigation_after_body--><html><body>
 <div class="distill-site-nav distill-site-footer">
-  <p>
+<p>
   © 2019-2021
   <a href="https://jdblischak.com"> John Blischak</a>,
   <a href="https://creativecommons.org/licenses/by/4.0/">CC BY</a>
 </p>
 </div>
 <!--/radix_placeholder_navigation_after_body-->
+</body></html>
 
 
 </body>

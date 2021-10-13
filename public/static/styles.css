@@ -16,6 +16,6 @@ https://rstudio.github.io/distill/website.html#theming
 This is the same color (#f5f5f5; white smoke) used in standard R Markdown code
 chunks.
 */
-code {
+d-article pre, d-article div.sourceCode {
   background-color: RGB(245, 245, 245);
 }

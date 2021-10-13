@@ -54,7 +54,7 @@ a.sourceLine::before { text-decoration: underline; }
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -75,13 +75,14 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
 code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
+
 
   <!--radix_placeholder_meta_tags-->
   <title>OmicNavigator</title>
@@ -114,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/differential-expression.png","img/enrichment-analysis.png"]}
+  {"type":"character","attributes":{},"value":["img/differential-expression.png","img/enrichment-analysis.png","omicnavigator_files/jquery-3.6.0/jquery-3.6.0.min.map"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1261,7 +1262,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1493,7 +1497,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><strong>tl;dr</strong> We built an interactive web app for exploring the results of genomics assays: OmicNavigator. You input your data with R, and then OmicNavigator instantly creates a dynamic web app for you to use and share with your collaborators! Available from <a href="https://cran.r-project.org/package=OmicNavigator">CRAN</a> and <a href="https://github.com/abbvie-external/OmicNavigator">GitHub</a>.</p>
 <h2 id="overview-facilitating-collaborative-omics-research">Overview: Facilitating collaborative omics research</h2>
-<p>The motivation to build OmicNavigator arose from the needs of research projects at <a href="https://www.abbvie.com/">AbbVie</a> that involved high-throughput omics assays. These are highly collaborative projects that require expertise of both disease specialists and bioinformaticians. The disease specialists need to explore the results in-depth, but they are often dependent on the bioinformaticians to query and visualize the data. And the bioinformaticians’ time is best spent on performing statistical analyses and generating custom visualizations. Any time spent generating generic boxplots or yet another basic Shiny app is time they could have spent on more high-value activities. OmicNavigator to the rescue! OmicNavigator aims to facilitate these routine interactions and streamline the research project for all participants:</p>
+<p>The motivation to build OmicNavigator arose from the desire to improve research projects at <a href="https://www.abbvie.com/">AbbVie</a> that involved high-throughput omics assays. These are highly collaborative projects that require expertise of both disease specialists and bioinformaticians. The disease specialists need to explore the results in-depth, but they are often dependent on the bioinformaticians to query and visualize the data. And the bioinformaticians’ time is best spent on performing statistical analyses and generating custom visualizations. Any time spent generating generic boxplots or yet another basic Shiny app is time they could have spent on more high-value activities. OmicNavigator to the rescue! OmicNavigator aims to facilitate these routine interactions and streamline the research project for all participants:</p>
 <ul>
 <li><p><strong>Disease specialist:</strong> Instead of emailing your collaborator each time you want to explore a new gene of interest, you can open your browser and explore all the study results whenever you want. You can also perform your own filters to subset the data to the genes you think are the most interesting, and export the plots to include in your presentations.</p></li>
 <li><p><strong>Bioinformatician:</strong> The next time you perform a differential expression and enrichment analysis, you can send your collaborators to your OmicNavigator web app to explore the results. You don’t have to become a web dev expert. You can instead spend your time creating custom visualizations, which you can then integrate into OmicNavigator, and your collaborators will be able to auto-generate your plots for whichever genes they dynamically select in the app.</p></li>
@@ -1508,7 +1512,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p>a dynamic results table that you can search, filter, sort, etc.</p></li>
 <li><p>an interactive scatter plot. If you drag and select points in the plot, the table is automatically filtered to only include these features. A typical use case is creating a “volcano”-style plot, but you can compare any two numeric columns that you like</p></li>
 <li><p>Custom R plots. If the bioinformatician has added any custom plots, you can select any gene to visualize it (and export the plot if needed)</p></li>
-<li><p>A filter to subset genes based on the results from all the available tests. This makes it easier to find genes that are significantly differentially expressed in one test but not others</p></li>
+<li><p>A filter to subset genes based on the results from all the available tests. This makes it easier to e.g. find genes that are significantly differentially expressed in one test but not others</p></li>
 </ul>
 <figure>
 <img src="img/differential-expression.png" alt="Screenshot of differential expression pane" /><figcaption>Screenshot of differential expression pane</figcaption>
@@ -1518,7 +1522,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p>a dynamic table with the enrichment results that you can search, filter, sort, etc.</p></li>
 <li><p>a network view for visualizing the relationships between the various terms used for enrichment (e.g. how many genes are in common between the terms)</p></li>
 <li><p>a “barcode” view for investigating the genes driving the enrichment of a term in an interactive barcode plot</p></li>
-<li><p>A filter to subset genes based on the enrichment results from all the available tests. This makes it is easier to find terms that are significantly enriched in one test but not others</p></li>
+<li><p>A filter to subset genes based on the enrichment results from all the available tests. This makes it is easier to e.g. find terms that are significantly enriched in one test but not others</p></li>
 </ul>
 <figure>
 <img src="img/enrichment-analysis.png" alt="Screenshot of enrichment analysis pane" /><figcaption>Screenshot of enrichment analysis pane</figcaption>
