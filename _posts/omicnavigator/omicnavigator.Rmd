@@ -92,7 +92,7 @@ select any gene to visualize it (and export the plot if needed)
 This makes it easier to e.g. find genes that are significantly differentially
 expressed in one test but not others
 
-![Screenshot of differential expression pane](img/differential-expression.png)
+![Screenshot of differential expression pane (R package version 1.6.3.3 and web app version 1.3.4)](img/differential-expression.png)
 
 The enrichment analysis pane includes:
 
@@ -108,7 +108,7 @@ in an interactive barcode plot
 available tests. This makes it is easier to e.g. find terms that are significantly
 enriched in one test but not others
 
-![Screenshot of enrichment analysis pane](img/enrichment-analysis.png)
+![Screenshot of enrichment analysis pane (R package version 1.6.3.3 and web app version 1.3.4)](img/enrichment-analysis.png)
 
 There are even more existing features, e.g. custom plots for visualizing
 multiple features at once, and more features in development, but the above
