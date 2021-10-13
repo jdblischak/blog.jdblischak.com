@@ -26,7 +26,7 @@ collaborators! Available from [CRAN][cran] and [GitHub][github].
 
 ## Overview: Facilitating collaborative omics research
 
-The motivation to build OmicNavigator arose from the needs of research projects
+The motivation to build OmicNavigator arose from the desire to improve research projects
 at [AbbVie][abbvie] that involved high-throughput omics assays. These are highly
 collaborative projects that require expertise of both disease specialists and
 bioinformaticians. The disease specialists need to explore the results in-depth,
@@ -89,7 +89,7 @@ columns that you like
 select any gene to visualize it (and export the plot if needed)
 
 * A filter to subset genes based on the results from all the available tests.
-This makes it easier to find genes that are significantly differentially
+This makes it easier to e.g. find genes that are significantly differentially
 expressed in one test but not others
 
 ![Screenshot of differential expression pane](img/differential-expression.png)
@@ -105,7 +105,7 @@ used for enrichment (e.g. how many genes are in common between the terms)
 in an interactive barcode plot
 
 * A filter to subset genes based on the enrichment results from all the
-available tests. This makes it is easier to find terms that are significantly
+available tests. This makes it is easier to e.g. find terms that are significantly
 enriched in one test but not others
 
 ![Screenshot of enrichment analysis pane](img/enrichment-analysis.png)
