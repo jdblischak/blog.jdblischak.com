@@ -13,7 +13,7 @@ output:
 categories:
   - bioinformatics
 preview: https://raw.githubusercontent.com/abbvie-external/OmicNavigator/main/man/figures/omicnavigator-dark-text.png
-draft: true
+draft: false
 ---
 
 **tl;dr** We built an interactive web app for exploring the results of genomics
