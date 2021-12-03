@@ -110,7 +110,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["OmicNavigator"]},{"type":"character","attributes":{},"value":["Open-source software for omic data analysis and visualization\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["10-11-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["bioinformatics"]},{"type":"character","attributes":{},"value":["https://raw.githubusercontent.com/abbvie-external/OmicNavigator/main/man/figures/omicnavigator-dark-text.png"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview","draft"]}},"value":[{"type":"character","attributes":{},"value":["OmicNavigator"]},{"type":"character","attributes":{},"value":["Open-source software for omic data analysis and visualization\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["John Blischak"]},{"type":"character","attributes":{},"value":["https://jdblischak.com"]}]}]},{"type":"character","attributes":{},"value":["10-11-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["bioinformatics"]},{"type":"character","attributes":{},"value":["https://raw.githubusercontent.com/abbvie-external/OmicNavigator/main/man/figures/omicnavigator-dark-text.png"]},{"type":"logical","attributes":{},"value":[false]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1515,7 +1515,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p>A filter to subset genes based on the results from all the available tests. This makes it easier to e.g. find genes that are significantly differentially expressed in one test but not others</p></li>
 </ul>
 <figure>
-<img src="img/differential-expression.png" alt="Screenshot of differential expression pane (R package version 1.6.3.3 and web app version 1.3.4)" /><figcaption>Screenshot of differential expression pane (R package version 1.6.3.3 and web app version 1.3.4)</figcaption>
+<img src="img/differential-expression.png" alt="Screenshot of differential expression pane (R package version 1.8.0 and web app version 1.4.0)" /><figcaption>Screenshot of differential expression pane (R package version 1.8.0 and web app version 1.4.0)</figcaption>
 </figure>
 <p>The enrichment analysis pane includes:</p>
 <ul>
@@ -1525,7 +1525,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p>A filter to subset genes based on the enrichment results from all the available tests. This makes it is easier to e.g. find terms that are significantly enriched in one test but not others</p></li>
 </ul>
 <figure>
-<img src="img/enrichment-analysis.png" alt="Screenshot of enrichment analysis pane (R package version 1.6.3.3 and web app version 1.3.4)" /><figcaption>Screenshot of enrichment analysis pane (R package version 1.6.3.3 and web app version 1.3.4)</figcaption>
+<img src="img/enrichment-analysis.png" alt="Screenshot of enrichment analysis pane (R package version 1.8.0 and web app version 1.4.0)" /><figcaption>Screenshot of enrichment analysis pane (R package version 1.8.0 and web app version 1.4.0)</figcaption>
 </figure>
 <p>There are even more existing features, e.g. custom plots for visualizing multiple features at once, and more features in development, but the above should give you a good sense of the app’s capabilities.</p>
 <h2 id="create-an-omicnavigator-study-with-your-own-data">Create an OmicNavigator study with your own data</h2>
@@ -1536,7 +1536,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Install and load the package</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"OmicNavigator"</span>, dependencies <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>OmicNavigator</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/abbvie-external/OmicNavigator'>OmicNavigator</a></span><span class='op'>)</span>
 
 <span class='co'># Create a very minimal study with a single results table</span>
 <span class='va'>quickstart</span> <span class='op'>&lt;-</span> <span class='fu'>createStudy</span><span class='op'>(</span><span class='st'>"quickstart"</span><span class='op'>)</span>
@@ -1560,7 +1560,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <h2 id="architecture">Architecture</h2>
 <p>The central piece of infrastructure is <a href="https://www.opencpu.org/">OpenCPU</a>, an amazing framework for creating web apps with R. The basic idea behind OpenCPU is that is exposes all the functions in the R packages installed on the machine via a uniform HTTP API. This makes it possible for web apps to harness the power of R without R developers having to perform extra steps to make their code deployable.</p>
-<p>This is an incredibly powerful paradigm. It lets me as the R developer use all the tools I am familiar with. My code is organized as an R package, my functions are documented, I’m able to easily test my functions since they return standard R objects like lists and data frames. Then my collaborators developing the front-end JavaScript app are able to call my R functions via HTTP and request JSON formatted data in return. They don’t have to worry about R-specific things like data frames and factors; in fact, they don’t even need to install R! They are able to focus on the front-end using whichever tools they prefer, in this case <a href="https://reactjs.org/">React</a> and <a href="https://d3js.org/">D3</a>.</p>
+<p>This is an incredibly powerful paradigm. It lets me as the R developer use all the tools I am familiar with. My code is organized as an R package, my functions are documented, and I’m able to easily test my functions since they return standard R objects like lists and data frames. Then my collaborators developing the front-end JavaScript app are able to call my R functions via HTTP and request JSON formatted data in return. They don’t have to worry about R-specific things like data frames and factors; in fact, they don’t even need to install R! They are able to focus on the front-end using whichever tools they prefer, in this case <a href="https://reactjs.org/">React</a> and <a href="https://d3js.org/">D3</a>.</p>
 <p>And because OpenCPU is serving the R functions via a standard HTTP API, other developers can query and access the data for inclusion in other apps throughout the organization. By default OpenCPU provides many <a href="https://www.opencpu.org/api.html#api-formats">options for output formats</a>, including JSON, NDJSON, and protocol buffers.</p>
 <p>In summary, OpenCPU allows us to take advantage of the best of the R and JavaScript ecosystems.</p>
 <h2 id="comparison-to-other-dashboard-like-tools">Comparison to other dashboard-like tools</h2>
