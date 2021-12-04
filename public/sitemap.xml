@@ -2,54 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
   <url>
     <loc>https://blog.jdblischak.com/about.html</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/omicnavigator/</loc>
-    <lastmod>2021-12-03T21:10:27+00:00</lastmod>
+    <lastmod>2021-12-04T01:51:25+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/chircollab2020/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/wsl-r/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/pairwise-overlaps/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/rstudioconf2020/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/circleci-ssh/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/debug-circleci/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/circleci-for-r-2/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/debug-appveyor/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/debug-travis/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
   <url>
     <loc>https://blog.jdblischak.com/posts/circleci-for-r-1/</loc>
-    <lastmod>2021-12-03T21:08:55+00:00</lastmod>
+    <lastmod>2021-12-04T01:49:49+00:00</lastmod>
   </url>
 </urlset>

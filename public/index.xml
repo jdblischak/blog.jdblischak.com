@@ -7,7 +7,7 @@
     <description>My tech blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 11 Oct 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 03 Dec 2021 00:00:00 +0000</lastBuildDate>
     <item>
       <title>OmicNavigator</title>
       <dc:creator>John Blischak</dc:creator>
@@ -15,7 +15,7 @@
       <description>Open-source software for omic data analysis and visualization</description>
       <category>bioinformatics</category>
       <guid>https://blog.jdblischak.com/posts/omicnavigator</guid>
-      <pubDate>Mon, 11 Oct 2021 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 03 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://raw.githubusercontent.com/abbvie-external/OmicNavigator/main/man/figures/omicnavigator-dark-text.png" medium="image" type="image/png"/>
     </item>
     <item>
