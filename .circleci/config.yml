@@ -35,7 +35,9 @@ jobs:
             pandoc -v
       - run:
           name: Installation (CRAN)
-          command: Rscript -e 'install.packages("distill")'
+          command: |
+            Rscript -e 'install.packages("distill")'
+            Rscript -e 'install.packages("faviconPlease")'
       - run:
           name: Session information
           command: Rscript -e 'sessionInfo()'

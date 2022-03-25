@@ -1,0 +1,259 @@
+---
+title: "faviconPlease"
+description: |
+  A favicon-grabber for R
+author:
+  - name: John Blischak
+    url: https://jdblischak.com
+date: 2022-03-25
+output:
+  distill::distill_article:
+    self_contained: false
+categories:
+  - Software Development with R
+draft: false
+preview: img/faviconPlease.gif
+---
+
+**tl;dr** The R package [faviconPlease][] returns the URL to the favicon file
+for any website. Also available to install from [CRAN][]
+
+[cran]: https://cran.r-project.org/package=faviconPlease
+[faviconPlease]: https://github.com/jdblischak/faviconPlease
+
+![Jenny Slate wants her favicon.
+^[I downloaded the image from [giphy.com](https://giphy.com/gifs/cinemagraph-money-please-kGi8FPpIvv6vK)
+and edited it with [ezgif.com](https://ezgif.com/).
+I obviously have no rights to this image, so i guess
+["fair use"](https://www.forbes.com/sites/propointgraphics/2016/04/30/animated-gifs-and-fair-use-what-is-and-isnt-legal-according-to-copyright-law/?sh=698464d2371b)??]](img/faviconPlease.gif)
+
+## Motivation
+
+For the [OmicNavigator][] web app I helped develop (see my [previous blog
+post][omicnavigator-post]), we allow the user to include external linkouts for
+more information on the features (see example screenshot below), e.g.
+a link to the [Ensembl][] page for each gene. In order to make the display
+appealing and intuitive, we wanted to display the links using each website's
+unique favicon. Since we don't know in advance which external resources a user
+will include, we needed a general solution that could obtain a favicon for any
+website.
+
+[OmicNavigator]: https://github.com/abbvie-external/OmicNavigator
+[omicnavigator-post]: ../omicnavigator/
+[Ensembl]: https://www.ensembl.org/
+
+
+![The first 2 columns of the interactive table contain favicons which are linkouts to external websites](../omicnavigator/img/differential-expression.png)
+
+My initial plan was to use a 3rd party service to obtain the favicon to display.
+Search engine providers like [Google][] and [DuckDuckGo][] display the
+favicon for each site in their search results, and they conveniently provide an
+API for others to query their favicon databases. Frustratingly though, the
+coverage was not as good as I had anticipated, especially for the scientific
+websites our users were likely to need. Some examples:
+
+[Google]: https://www.google.com/
+[DuckDuckGo]: https://duckduckgo.com/
+
+* DuckDuckGo has the favicon for GitHub. Google used to not have it at all, and
+  currently they have a grainy version
+    * https://icons.duckduckgo.com/ip3/github.com.ico
+    <img
+      src="https://icons.duckduckgo.com/ip3/github.com.ico"
+      alt="GitHub's favicon from DuckDuckGo"
+      height="20px"
+    />
+    * https://www.google.com/s2/favicons?domain_url=github.com
+    <img
+      src="https://www.google.com/s2/favicons?domain_url=github.com"
+      alt="GitHub's favicon from Google"
+      height="20px"
+    />
+
+* Google has the favicon for [AmiGO][amigo] but not DuckDuckGo
+    * https://www.google.com/s2/favicons?domain_url=amigo.geneontology.org
+    <img
+      src="https://www.google.com/s2/favicons?domain_url=geneontology.org"
+      alt="AmiGO's favicon from Google"
+      height="20px"
+    />
+    * https://icons.duckduckgo.com/ip3/amigo.geneontology.org.ico
+        <img
+      src="https://icons.duckduckgo.com/ip3/amigo.geneontology.org.ico"
+      alt="GitHub's favicon from DuckDuckGo"
+      height="20px"
+    />
+
+[amigo]: http://amigo.geneontology.org/
+
+Fortunately though they both provide a generic favicon to insert when they don't
+have the favicon, as you can see for the DuckDuckGo example above.
+
+Another big limitation is that the search engine providers only have favicons
+available for publicly accessible websites. If you have internal websites with
+their own favicons, this requires a more involved approach.
+
+Next I looked for available open source [favicon-grabber][] software. As
+expected, these are mainly written in more web-oriented programming languages
+like JavaScript and PHP.
+
+[favicon-grabber]: https://github.com/topics/favicon-grabber
+
+Grabbing the favicon mainly involves parsing HTML and/or downloading files,
+which R can handle, so I decided to create a favicon-grabber for R:
+faviconPlease!
+
+## How favicons work
+
+From the [mdn web docs][mdn]:
+
+> A favicon (favorite icon) is a tiny icon included along with a website, which
+> is displayed in places like the browser's address bar, page tabs and bookmarks
+> menu.
+
+[mdn]: https://developer.mozilla.org/en-US/docs/Glossary/Favicon
+
+The default option for a website to display a favicon in a web browser tab is to
+provide the file `favicon.ico` at the root of the web server. If every web
+site used this option, then finding favicons would be trivial. Unfortunately
+there are [many ways to configure a favicon][favicon-configure].
+
+[favicon-configure]: https://en.wikipedia.org/wiki/Favicon#How_to_use
+
+When a website doesn't provide `favicon.ico`, they often specify the
+favicon file with a `<link>` element in the `<head>` of the file. The `rel`
+attribute is set to either `"icon"` or `"shortcut icon"`.
+
+```
+<link rel="icon" href="path/to/favicon.ico">
+
+<link rel="shortcut icon" href="path/to/favicon.ico">
+```
+
+This also isn't too bad. You can parse the HTML and then query with [XPath][]
+to obtain the URL.
+
+[Xpath]: https://en.wikipedia.org/wiki/XPath
+
+A big challenge is that the `href` attribute with the path to the file can be
+specified in so many different ways:
+
+```
+<!--  absolute: the full URL to the file -->
+<link rel="icon" href="https://example.com/path/to/favicon.ico">
+
+<!--  protocol-relative - everything but the http(s) -->
+<link rel="icon" href="//othersite.com/path/to/favicon.ico">
+
+<!--  root-relative - relative to the root of the server, as opposed to the current file -->
+<link rel="icon" href="/path/to/favicon.ico">
+
+<!--  relative - relative to the current file -->
+<link rel="icon" href="path/to/favicon.ico">
+```
+
+And an added twist is that relative paths can be globally modified by the
+[`base`][base] element:
+
+[base]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+> The <base> HTML element specifies the base URL to use for all relative URLs in
+> a document. There can be only one <base> element in a document.
+
+## Implementation
+
+My goal was to create a single function that abstracted away all of the above
+complexity. You pass a URL, and it returns a URL to a favicon you can use to
+display in your app. It'll try various strategies to obtain a favicon, and fall
+back to one of the default favicons from DuckDuckGo or Google. Here's an
+example:
+
+```{r github.com}
+library(faviconPlease)
+faviconPlease("https://github.com/")
+```
+
+By default, `faviconPlease()` uses the following strategy to find the URL to the
+favicon for a given website. It stops once it finds a URL and returns it.
+
+1. Download the HTML file and search its `<head>` for any `<link>` elements with
+   `rel="icon"` or `rel="shortcut icon"`.
+
+2. Download the HTML file at the root of the server (i.e. discard the path) and
+   search its `<head>` for any `<link>` elements with `rel="icon"` or
+   `rel="shortcut icon"`.
+
+3. Attempt to download a file called `favicon.ico` at the root of the server.
+   This is the default location that a browser looks if the HTML file does not
+   specify an alternative location in a `<link>` element. If the file `favicon.ico`
+   is successfully downloaded, then this URL is returned.
+
+4. If the above steps fail, as a fallback, use the
+   [favicon service](https://help.duckduckgo.com/privacy/favicons/)
+   provided by the search engine [DuckDuckGo][], e.g.
+   <https://icons.duckduckgo.com/ip3/github.com.ico>. This provides a nice
+   default for websites that don’t have a favicon (or can’t be easily found).
+
+I also wanted to make sure the function was extensible and customizable so that
+it could be useful to others without me having to implement every alternative
+strategy for finding favicons. To accomplish this, I took advantage of the
+feature that R has [first-class functions][first-class]. The argument `functions`
+accepts a list of functions to find a favicon URL. And the argument `fallback`
+accepts a single function that always returns a URL (e.g. from DuckDuckGo).
+
+[first-class]: https://en.wikipedia.org/wiki/First-class_function
+
+```{r faviconPlease}
+args(faviconPlease)
+```
+
+This way, if you instead wanted to first check for the existence of
+`favicon.ico` and use Google as a fallback, you could adjust the functions passed
+to `faviconPlease`. In the case of github.com, it does find a `favicon.ico`
+file.
+
+```{r rearranged}
+library(faviconPlease)
+faviconPlease("https://github.com/", functions = list(faviconIco, faviconLink),
+              fallback = faviconGoogle)
+```
+
+Furthermore, if you wanted to create your own favicon search function, you could
+model it after `faviconLink()` and `faviconIco()`, and then pass it in the list
+of functions.
+
+## Challenges
+
+The first challenge is that `download.file()` is not fool-proof. I first
+encountered this issue when trying to write workshop tutorials. A simple call to
+`download.file()` will fail in many different situations depending on the
+operating system. `?download.file` recommends:
+
+> Setting the `method` should be left to the end user.
+
+And thus this is what I did, by exposing the argument `method` (and others) to
+pass from `faviconIco()` to `download.file()`. Fortunately it is also possible
+to control this behavior with a global option `"download.file.method"`.
+
+A second big challenge is security policies. As a primary example, Ubuntu 20.04
+increased the default security restrictions when accessing web resources, and
+many websites haven't updated their SSL certificates. This is one way the
+ability to create custom functions is useful. To use less-restrictive security
+policies, you can wrap the call to `faviconIco()` in a new function and
+specifically pass the flags `--no-check-certificate` and
+`--ciphers=DEFAULT:@SECLEVEL=1` directly to `wget`.
+
+```{r faviconIcoUbuntu20, eval=FALSE}
+faviconIcoUbuntu20 <- function(scheme, server, path) {
+  faviconIco(scheme, server, path, method = "wget",
+             extra = c("--no-check-certificate",
+                       "--ciphers=DEFAULT:@SECLEVEL=1"))
+}
+```
+
+Lastly, it's a challenge to anticipate all the different ways a website may
+serve their favicon. If you find any websites that have a favicon but that
+`faviconPlease()` fails to find, please open an [Issue][issue] so that I can
+potentially expand the support for more sites.
+
+[issue]: https://github.com/jdblischak/faviconPlease/issues/new
