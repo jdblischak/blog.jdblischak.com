@@ -6,14 +6,14 @@
       "description": "Welcome to my blog",
       "author": [],
       "contents": "\nHi! I’m John. I’m the author of the R package workflowr for reproducible research. This is my personal blog where I’ll share my thoughts on various technical topics: R, reproducible research, open science, bioinformatics, genetics, statistics, etc. For more information about my background and other projects, please see my personal website.\nI created this site using distill with minimal modifications. The blog content is licensed under CC-BY 4.0.\nSome of my favorite tools that I use often and hope to blog about in the future (in no particular order) include R, RStudio, knitr/rmarkdown, limma, Git, Python, Snakemake, conda, Firefox\n\n\n",
-      "last_modified": "2021-12-04T01:49:49+00:00"
+      "last_modified": "2022-03-25T19:48:53+00:00"
     },
     {
       "path": "index.html",
       "title": "Posts",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-12-04T01:51:26+00:00"
+      "last_modified": "2022-03-25T19:50:44+00:00"
     }
   ],
   "collections": ["posts/posts.json"]

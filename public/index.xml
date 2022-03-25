@@ -7,7 +7,17 @@
     <description>My tech blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 03 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 25 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>faviconPlease</title>
+      <dc:creator>John Blischak</dc:creator>
+      <link>https://blog.jdblischak.com/posts/faviconplease</link>
+      <description>A favicon-grabber for R</description>
+      <category>Software Development with R</category>
+      <guid>https://blog.jdblischak.com/posts/faviconplease</guid>
+      <pubDate>Fri, 25 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://blog.jdblischak.com/posts/faviconplease/img/faviconPlease.gif" medium="image" type="image/gif"/>
+    </item>
     <item>
       <title>OmicNavigator</title>
       <dc:creator>John Blischak</dc:creator>
