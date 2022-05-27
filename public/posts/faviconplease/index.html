@@ -48,16 +48,17 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  { color: #00769e; background-color: #f1f3f5; }
 @media screen {
 a.sourceLine::before { text-decoration: underline; }
 }
+code span. { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { } /* Attribute */
+code span.at { color: #657422; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #007ba5; } /* ControlFlow */
+code span.cf { color: #00769e; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -71,9 +72,9 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #007ba5; } /* Keyword */
+code span.kw { color: #00769e; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #007ba5; } /* Other */
+code span.ot { color: #00769e; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
 code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
@@ -130,7 +131,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/faviconPlease.gif"]}
+  {"type":"character","attributes":{},"value":["faviconplease_files/jquery-3.6.0/jquery-3.6.0.min.map","img/faviconPlease.gif"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -1050,10 +1051,6 @@ figure img.external {
   margin-top: 1.5em;
 }
 
-.figure img {
-  width: 100%;
-}
-
 .figure .caption {
   color: rgba(0, 0, 0, 0.6);
   font-size: 12px;
@@ -1883,6 +1880,12 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
+      if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
+        var fn = $(this).children()[0]
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
       var refs = $(this).attr('data-cites').split(" ");
       var refHtml = refs.map(function(ref) {
         return "<p>" + $('#ref-' + ref).html() + "</p>";
@@ -1897,6 +1900,31 @@ function init_distill() {
         placement: 'bottom-start'
       });
     });
+
+    // fix footnotes in tables (#411)
+    // replacing broken distill.pub feature
+    $('table d-footnote').each(function() {
+      // we replace internal showAtNode methode which is triggered when hovering a footnote
+      this.hoverBox.showAtNode = function(node) {
+        // ported from https://github.com/distillpub/template/pull/105/files
+        calcOffset = function(elem) {
+            let x = elem.offsetLeft;
+            let y = elem.offsetTop;
+            // Traverse upwards until an `absolute` element is found or `elem`
+            // becomes null.
+            while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                x += elem.offsetLeft;
+                y += elem.offsetTop;
+            }
+
+            return { left: x, top: y };
+        }
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+        const bbox = node.getBoundingClientRect();
+        const offset = calcOffset(node);
+        this.show([offset.left + bbox.width, offset.top + bbox.height]);
+      }
+    })
 
     // clear polling timer
     clearInterval(tid);
@@ -1996,6 +2024,8 @@ function init_common() {
   // mark non-body figures created by knitr chunks as 100% width
   $('.layout-chunk').each(function(i, val) {
     var figures = $(this).find('img, .html-widget');
+    // ignore leaflet img layers (#106)
+    figures = figures.filter(':not(img[class*="leaflet"])')
     if ($(this).attr('data-layout') !== "l-body") {
       figures.css('width', '100%');
     } else {
@@ -2018,7 +2048,7 @@ function init_common() {
   // get rid of index.html references in header
   if (window.location.protocol !== "file:") {
     $('.distill-site-header a[href]').each(function(i,val) {
-      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
     });
   }
 
@@ -2152,9 +2182,9 @@ d-article pre, d-article div.sourceCode {
 <figure>
 <img src="../omicnavigator/img/differential-expression.png" alt="The first 2 columns of the interactive table contain favicons which are linkouts to external websites" /><figcaption>The first 2 columns of the interactive table contain favicons which are linkouts to external websites</figcaption>
 </figure>
-<p>My initial plan was to use a 3rd party service to obtain the favicon to display. Search engine providers like <a href="https://www.google.com/">Google</a> and <a href="https://duckduckgo.com/">DuckDuckGo</a> display the favicon for each site in their search results, and they conveniently provide an API for others to query their favicon databases. Frustratingly though, the coverage was not as good as I had anticipated, especially for the scientific websites our users were likely to need. Some examples:</p>
+<p>My initial plan was to use a 3rd party service to obtain the favicon to display. Search engine providers like <a href="https://www.google.com/">Google</a> and <a href="https://duckduckgo.com/">DuckDuckGo</a> display the favicon for each site in their search results, and they conveniently provide an API for others to query their favicon databases. Frustratingly though, the coverage was not as good as I had anticipated, especially for the scientific websites our users were likely to need. And the availability changes over time. Some examples from back when I was originally writing the package: 1) DuckDuckGo had the favicon for GitHub but not Google, and 2) Google had the favicon for <a href="http://amigo.geneontology.org/">AmiGO</a> but not DuckDuckGo. The last time I checked though both services provide favicons for GitHub and <a href="http://amigo.geneontology.org/">AmiGO</a>.</p>
 <ul>
-<li>DuckDuckGo has the favicon for GitHub. Google used to not have it at all, and currently they have a grainy version
+<li>GitHub’s favicon
 <ul>
 <li><a href="https://icons.duckduckgo.com/ip3/github.com.ico" class="uri">https://icons.duckduckgo.com/ip3/github.com.ico</a> <img
 src="https://icons.duckduckgo.com/ip3/github.com.ico"
@@ -2167,7 +2197,7 @@ alt="GitHub's favicon from Google"
 height="20px"
   /></li>
 </ul></li>
-<li>Google has the favicon for <a href="http://amigo.geneontology.org/">AmiGO</a> but not DuckDuckGo
+<li>AmiGo’s favicon
 <ul>
 <li><a href="https://www.google.com/s2/favicons?domain_url=amigo.geneontology.org" class="uri">https://www.google.com/s2/favicons?domain_url=amigo.geneontology.org</a> <img
 src="https://www.google.com/s2/favicons?domain_url=geneontology.org"
@@ -2181,7 +2211,19 @@ height="20px"
   /></li>
 </ul></li>
 </ul>
-<p>Fortunately though they both provide a generic favicon to insert when they don’t have the favicon, as you can see for the DuckDuckGo example above.</p>
+<p>Fortunately though they both provide a generic favicon to insert when they don’t have the favicon:</p>
+<ul>
+<li><p>DuckDuckGo <img
+    src="https://icons.duckduckgo.com/ip3/"
+    alt="DuckDuckGo's generic fallback favicon"
+    height="20px"
+  /></p></li>
+<li><p>Google <img
+    src="https://www.google.com/s2/favicons?domain_url=."
+    alt="Google's generic fallback favicon"
+    height="20px"
+  /></p></li>
+</ul>
 <p>Another big limitation is that the search engine providers only have favicons available for publicly accessible websites. If you have internal websites with their own favicons, this requires a more involved approach.</p>
 <p>Next I looked for available open source <a href="https://github.com/topics/favicon-grabber">favicon-grabber</a> software. As expected, these are mainly written in more web-oriented programming languages like JavaScript and PHP.</p>
 <p>Grabbing the favicon mainly involves parsing HTML and/or downloading files, which R can handle, so I decided to create a favicon-grabber for R: faviconPlease!</p>
@@ -2279,8 +2321,8 @@ NULL</code></pre>
   <p class="social_footer">
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=faviconPlease&amp;url=https%3A%2F%2Fblog.jdblischak.com%2Fposts%2Ffaviconplease%2F">
-        <i class="fab fa-twitter"></i>
+      <a href="https://twitter.com/share?text=faviconPlease&amp;url=https%3A%2F%2Fblog.jdblischak.com%2Fposts%2Ffaviconplease%2F" aria-label="share on twitter">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
       </a>
     </span>
   </p>
