@@ -46,17 +46,20 @@ website.
 ![The first 2 columns of the interactive table contain favicons which are linkouts to external websites](../omicnavigator/img/differential-expression.png)
 
 My initial plan was to use a 3rd party service to obtain the favicon to display.
-Search engine providers like [Google][] and [DuckDuckGo][] display the
-favicon for each site in their search results, and they conveniently provide an
-API for others to query their favicon databases. Frustratingly though, the
-coverage was not as good as I had anticipated, especially for the scientific
-websites our users were likely to need. Some examples:
+Search engine providers like [Google][] and [DuckDuckGo][] display the favicon
+for each site in their search results, and they conveniently provide an API for
+others to query their favicon databases. Frustratingly though, the coverage was
+not as good as I had anticipated, especially for the scientific websites our
+users were likely to need. And the availability changes over time. Some examples
+from back when I was originally writing the package: 1) DuckDuckGo had the
+favicon for GitHub but not Google, and 2) Google had the favicon for
+[AmiGO][amigo] but not DuckDuckGo. The last time I checked though both services
+provide favicons for GitHub and [AmiGO][amigo].
 
 [Google]: https://www.google.com/
 [DuckDuckGo]: https://duckduckgo.com/
 
-* DuckDuckGo has the favicon for GitHub. Google used to not have it at all, and
-  currently they have a grainy version
+* GitHub's favicon
     * https://icons.duckduckgo.com/ip3/github.com.ico
     <img
       src="https://icons.duckduckgo.com/ip3/github.com.ico"
@@ -70,7 +73,7 @@ websites our users were likely to need. Some examples:
       height="20px"
     />
 
-* Google has the favicon for [AmiGO][amigo] but not DuckDuckGo
+* AmiGo's favicon
     * https://www.google.com/s2/favicons?domain_url=amigo.geneontology.org
     <img
       src="https://www.google.com/s2/favicons?domain_url=geneontology.org"
@@ -87,7 +90,22 @@ websites our users were likely to need. Some examples:
 [amigo]: http://amigo.geneontology.org/
 
 Fortunately though they both provide a generic favicon to insert when they don't
-have the favicon, as you can see for the DuckDuckGo example above.
+have the favicon:
+
+* DuckDuckGo
+    <img
+      src="https://icons.duckduckgo.com/ip3/"
+      alt="DuckDuckGo's generic fallback favicon"
+      height="20px"
+    />
+
+
+* Google
+    <img
+      src="https://www.google.com/s2/favicons?domain_url=."
+      alt="Google's generic fallback favicon"
+      height="20px"
+    />
 
 Another big limitation is that the search engine providers only have favicons
 available for publicly accessible websites. If you have internal websites with
