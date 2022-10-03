@@ -260,12 +260,17 @@ There are alternative options for authentication:
 either for your own account or a bot account, with the required scope to write
 to your repository (`public_repo` for a public repository, `repo` for a private
 repository). You would then define this as an environment variable in your
-CircleCI build (e.g. `GITHUB_PAT`), which would authenticate you to push to
-your repository using the following URL pattern:
-`https://workflowr:$GITHUB_PAT@github.com/<account>/<repo>.git`. I dislike this
+CircleCI build (e.g. `GITHUB_PAT`), which would authenticate you to push to your
+repository using the following URL pattern:
+`https://<account>:$GITHUB_PAT@github.com/<account>/<repo>.git`. I dislike this
 option because it is not possible to limit the scope of a PAT to a single
 repository. In other words, if a PAT with write permissions is exposed, it gives
-write access to every repository owned by that account.
+write access to every repository owned by that account. **Update (2022-10-03):**
+Even though GitHub has [disabled password-based HTTP
+authentication][disabled-http-password], I confirmed that it is still possible
+to perform PAT-based HTTP authentication from a CI build.
+
+    [disabled-http-password]: https://github.blog/changelog/2019-08-08-password-based-http-basic-authentication-deprecation-and-removal/
 
 * **SSH user key**: CircleCI has a convenient option to register a user key.
 In the CircleCI project settings page, choose "Checkout SSH keys" and then
