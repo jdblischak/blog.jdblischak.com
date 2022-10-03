@@ -48,16 +48,17 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  { color: #00769e; background-color: #f1f3f5; }
 @media screen {
 a.sourceLine::before { text-decoration: underline; }
 }
+code span. { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { color: #657422; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #007ba5; } /* ControlFlow */
+code span.cf { color: #00769e; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -71,17 +72,18 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #007ba5; } /* Keyword */
+code span.kw { color: #00769e; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #007ba5; } /* Other */
+code span.ot { color: #00769e; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
 code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
+
 
   <!--radix_placeholder_meta_tags-->
   <title>Automate commits to GitHub from a CircleCI job</title>
@@ -185,6 +187,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
+    font-size: 100%;
   }
   
   .html-widget {
@@ -426,10 +429,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     position: relative;
     margin-bottom: 2.5em;
     margin-top: 1.5em;
-  }
-  
-  .figure img {
-    width: 100%;
   }
   
   .figure .caption {
@@ -1261,7 +1260,22 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+  
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1272,6 +1286,31 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
           placement: 'bottom-start'
         });
       });
+  
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+  
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
   
       // clear polling timer
       clearInterval(tid);
@@ -1371,6 +1410,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {
@@ -1393,7 +1434,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // get rid of index.html references in header
     if (window.location.protocol !== "file:") {
       $('.distill-site-header a[href]').each(function(i,val) {
-        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
       });
     }
   
@@ -1432,7 +1473,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="circleci-ssh_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="circleci-ssh_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="circleci-ssh_files/popper-2.6.0/popper.min.js"></script>
   <link href="circleci-ssh_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="circleci-ssh_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -1465,10 +1506,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1>Automate commits to GitHub from a CircleCI job</h1>
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
-<div class="dt=tag">devops</div>
+<div class="dt-tag">devops</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Automatically update your documentation or other repository content by authenticating CircleCI to push commits directly to GitHub</p></p>
+<p><p>Automatically update your documentation or other repository content by
+authenticating CircleCI to push commits directly to GitHub</p></p>
 </div>
 
 <div class="d-byline">
@@ -1496,41 +1538,94 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </ul>
 </nav>
 </div>
-<p>Continuous integration (CI) is traditionally used for testing software and also optionally deploying the code to be executed on a different server. However, I sometimes want to be able to have the CI job commit changes back to the Git repository that initially triggered the CI build. For example, if I have automated a data analysis, I want the latest version of the report to be committed back the repository. Another example is committing the latest version of the documentation (e.g. to the gh-pages branch of a GitHub repository).</p>
-<p>As I mentioned in my <a href="../circleci-for-r-1/">first post on using CircleCI</a>, I have found that configuring CircleCI to commit back to a Git repository to be easier compared to other CI platforms. Below I detail the steps required.</p>
+<p>Continuous integration (CI) is traditionally used for testing software and also
+optionally deploying the code to be executed on a different server. However, I
+sometimes want to be able to have the CI job commit changes back to the Git
+repository that initially triggered the CI build. For example, if I have
+automated a data analysis, I want the latest version of the report to be
+committed back the repository. Another example is committing the latest version
+of the documentation (e.g. to the gh-pages branch of a GitHub repository).</p>
+<p>As I mentioned in my <a href="../circleci-for-r-1/">first post on using CircleCI</a>, I have
+found that configuring CircleCI to commit back to a Git repository to be easier
+compared to other CI platforms. Below I detail the steps required.</p>
 <h2 id="initial-setup">Initial setup</h2>
 <p>This post assumes you already have already done the following:</p>
 <ol type="1">
 <li>Created a GitHub repository</li>
 <li>Activated CI builds for the repository on CircleCI</li>
 </ol>
-<p>If you haven’t done this, see the CircleCI documentation <a href="https://circleci.com/docs/2.0/getting-started/">Getting Started</a>.</p>
+<p>If you haven’t done this, see the CircleCI documentation <a href="https://circleci.com/docs/2.0/getting-started/">Getting
+Started</a>.</p>
 <h2 id="overview-and-terminology">Overview and terminology</h2>
-<p>The overall goal is to automatically save some artifact generated by a CI job (e.g. report, plot, documentation).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> To accomplish this, the main challenge is authenticating the CI server to be able to commit to your repository on your behalf.</p>
-<p>In this post, I will detail how to setup an SSH deploy key with write access to your repository. I recommend this method because it is straight-forward and secure. If your private key gets exposed (e.g. accidentially printing it in a CI log), an attacker would only gain access to that one repository. In a later section, I briefly explain <a href="#alternative-authentication-options">alternative authentication options</a>.</p>
-<p>You already have one deploy key setup for your repository. When you activate CircleCI to build a GitHub repository, it automatically adds a key to the GitHub repository. In fact, you probably received an email from GitHub with the title “A new public key was added to &lt;account&gt;/&lt;repository&gt;” alerting you to the fact that this happened. You can navigate to view the key on GitHub by going to Settings -&gt; Deploy Keys. Note that this key is named “CircleCI”. Importantly, it is “Read-only”. This means that CircleCI currently only has permission to read from the repository. If you add a <code>git push</code> to your CI job, it will fail with an authentication error.</p>
-<p>Thus you need to generate a new pair of SSH keys. You will add the public key to your GitHub repository as a deploy key with write access. Next you will add the private key to the corresponding project on CircleCI. Lastly, you will update the CircleCI configuration file so that it pushes to GitHub. Each of these steps is explained below.</p>
+<p>The overall goal is to automatically save some artifact generated by a CI job
+(e.g. report, plot, documentation).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> To accomplish this, the main challenge is authenticating the CI
+server to be able to commit to your repository on your behalf.</p>
+<p>In this post, I will detail how to setup an SSH deploy key with write access to
+your repository. I recommend this method because it is straight-forward and
+secure. If your private key gets exposed (e.g. accidentially printing it in a CI
+log), an attacker would only gain access to that one repository. In a later
+section, I briefly explain <a href="#alternative-authentication-options">alternative authentication
+options</a>.</p>
+<p>You already have one deploy key setup for your repository. When you activate
+CircleCI to build a GitHub repository, it automatically adds a key to the GitHub
+repository. In fact, you probably received an email from GitHub with the title
+“A new public key was added to &lt;account&gt;/&lt;repository&gt;” alerting you
+to the fact that this happened. You can navigate to view the key on GitHub by
+going to Settings -&gt; Deploy Keys. Note that this key is named “CircleCI”.
+Importantly, it is “Read-only”. This means that CircleCI currently only has
+permission to read from the repository. If you add a <code>git push</code> to your CI job,
+it will fail with an authentication error.</p>
+<p>Thus you need to generate a new pair of SSH keys. You will add the public key to
+your GitHub repository as a deploy key with write access. Next you will
+add the private key to the corresponding project on CircleCI. Lastly, you
+will update the CircleCI configuration file so that it pushes to GitHub. Each
+of these steps is explained below.</p>
 <h2 id="generate-one-off-ssh-keys">Generate one-off SSH keys</h2>
-<p>First you need to create some one-off SSH keys that will only be used by CircleCI to authenticate with this one GitHub repository. You can follow the standard instructions from GitHub for <a href="https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generating a new SSH key</a>. However, there is one main difference. You will immediately delete the key from your local computer afterwards, thus you want to make sure you don’t break your current setup. If you already have SSH keys on your machine, they are likely in the default location: <code>~/.ssh/</code>. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> You can use the flag <code>-f</code> to specify the location of the output key files. Run the commands below to generate new SSH keys.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> When asked for a passphrase, press enter twice to not add a passphrase to the key.</p>
+<p>First you need to create some one-off SSH keys that will only be used by
+CircleCI to authenticate with this one GitHub repository. You can follow the
+standard instructions from GitHub for <a href="https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generating a new SSH
+key</a>. However, there is one main difference. You will
+immediately delete the key from your local computer afterwards, thus you want to
+make sure you don’t break your current setup. If you already have SSH keys on
+your machine, they are likely in the default location: <code>~/.ssh/</code>. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> You can use the flag <code>-f</code> to specify the location of
+the output key files. Run the commands below to generate new SSH keys.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> When asked for a passphrase, press enter twice to not add
+a passphrase to the key.</p>
 <pre><code>mkdir /tmp/ssh-temp/
 ssh-keygen -t rsa -b 4096 -C &quot;CircleCI Deploy Key with Write Access&quot; -f /tmp/ssh-temp/key</code></pre>
-<p>This created the private key <code>/tmp/ssh-temp/key</code> and the public key <code>/tmp/ssh-temp/key.pub</code>.</p>
-<p>In order for the key to work, it must be in <a href="https://discuss.circleci.com/t/adding-ssh-keys-fails/7747/24">PEM format</a>. Confirm this by running the code below. The first line of the private key field must be <code>-----BEGIN RSA PRIVATE KEY-----</code>.</p>
+<p>This created the private key <code>/tmp/ssh-temp/key</code> and the public key
+<code>/tmp/ssh-temp/key.pub</code>.</p>
+<p>In order for the key to work, it must be in <a href="https://discuss.circleci.com/t/adding-ssh-keys-fails/7747/24">PEM format</a>. Confirm this by
+running the code below. The first line of the private key field must be
+<code>-----BEGIN RSA PRIVATE KEY-----</code>.</p>
 <pre><code>head -n 1 /tmp/ssh-temp/key</code></pre>
-<p>If your version of <code>ssh-keygen</code> didn’t produce that line verbatim, delete the keys and re-run the command with the additional flag <code>-m PEM</code>.</p>
+<p>If your version of <code>ssh-keygen</code> didn’t produce that line verbatim, delete the
+keys and re-run the command with the additional flag <code>-m PEM</code>.</p>
 <h2 id="add-the-public-key-to-github">Add the public key to GitHub</h2>
-<p>Next navigate to your repository on GitHub. Click on Settings and then select “Deploy keys” from the menu on the left. You should see that there is already a “Read-only” key named “CircleCI”. Click “Add deploy key”. You can name it whatever you like.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Then copy-paste the contents of the public key <code>/tmp/ssh-temp/key.pub</code> into the Key field. Lastly, check the box “Allow write access” so that CircleCI can push back to GitHub.</p>
+<p>Next navigate to your repository on GitHub. Click on Settings and then select
+“Deploy keys” from the menu on the left. You should see that there is already a
+“Read-only” key named “CircleCI”. Click “Add deploy key”. You can name it
+whatever you like.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Then copy-paste the contents of the public key
+<code>/tmp/ssh-temp/key.pub</code> into the Key field. Lastly, check the box “Allow write
+access” so that CircleCI can push back to GitHub.</p>
 <figure>
 <img src="img/circleci-ssh-1.png" alt="Deploy keys for GitHub repository. The top one is the default Read-only deploy key added automatically by CircleCI. The bottom one is the new Read/write deploy key." /><figcaption>Deploy keys for GitHub repository. The top one is the default Read-only deploy key added automatically by CircleCI. The bottom one is the new Read/write deploy key.</figcaption>
 </figure>
 <h2 id="add-the-private-key-to-circleci">Add the private key to CircleCI</h2>
-<p>Next navigate to the project on CircleCI. The URL follows the pattern: <code>https://circleci.com/gh/&lt;account&gt;/&lt;repo&gt;</code>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
-<p>Don’t click on the “Settings” in the menu on the left. That is for user settings. Instead, click on the gear icon in the top right. Then choose “SSH Permissions” and “Add SSH key”. For the Hostname put “github.com” <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Copy-paste the private key in <code>/tmp/ssh-temp/key</code> into the field “Private Key”. As the name implies, it is really important that you do not expose this key.</p>
+<p>Next navigate to the project on CircleCI. The URL follows the pattern:
+<code>https://circleci.com/gh/&lt;account&gt;/&lt;repo&gt;</code>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>Don’t click on the “Settings” in the menu on the left. That is for user
+settings. Instead, click on the gear icon in the top right. Then choose “SSH
+Permissions” and “Add SSH key”. For the Hostname put “github.com” <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Copy-paste the private key in <code>/tmp/ssh-temp/key</code> into the field
+“Private Key”. As the name implies, it is really important that you do not
+expose this key.</p>
 <figure>
 <img src="img/circleci-ssh-2.png" alt="Add private key to CircleCI" /><figcaption>Add private key to CircleCI</figcaption>
 </figure>
 <h2 id="add-the-fingerprint-to-configuration-file">Add the fingerprint to configuration file</h2>
-<p>After adding the private key to CircleCI, you will see it displays a fingerprint for the key. You will need to add this key to the configuration file <code>.circleci/config.yml</code> in your repository using the step <code>add_ssh_keys</code>. Copy-paste the fingerprint into an <code>add_ssh_keys</code> step as shown below:</p>
+<p>After adding the private key to CircleCI, you will see it displays a fingerprint
+for the key. You will need to add this key to the configuration file
+<code>.circleci/config.yml</code> in your repository using the step <code>add_ssh_keys</code>.
+Copy-paste the fingerprint into an <code>add_ssh_keys</code> step as shown below:</p>
 <pre><code>    steps:
       - checkout
       - add_ssh_keys:
@@ -1538,7 +1633,13 @@ ssh-keygen -t rsa -b 4096 -C &quot;CircleCI Deploy Key with Write Access&quot; -
             - &quot;&lt;copy-paste-fingerprint-here&gt;&quot;
       - run:</code></pre>
 <h2 id="push-to-github">Push to GitHub</h2>
-<p>Now that CircleCI has permission to push to GitHub, you’ll need to add a step to do this. It can look something like below. It configures Git, checks out the master branch,<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> commits any changes to all tracked files, and then pushes to GitHub. The <code>--allow-empty</code> prevents an error in the case where no files were changed. The <code>[skip ci]</code> prevents the job from running in an infinite loop due to constantly re-triggering the CI build.</p>
+<p>Now that CircleCI has permission to push to GitHub, you’ll need to add a step to
+do this. It can look something like below. It configures Git, checks out the
+master branch,<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> commits any
+changes to all tracked files, and then pushes to GitHub. The <code>--allow-empty</code>
+prevents an error in the case where no files were changed. The <code>[skip ci]</code>
+prevents the job from running in an infinite loop due to constantly
+re-triggering the CI build.</p>
 <pre><code>      - run:
           name: Commit to GitHub
           command: |
@@ -1547,7 +1648,10 @@ ssh-keygen -t rsa -b 4096 -C &quot;CircleCI Deploy Key with Write Access&quot; -
             git checkout master
             git commit --allow-empty -am &quot;Automatic commit from CircleCI [skip ci]&quot;
             git push origin master</code></pre>
-<p>Now you probably don’t want to always attempt to push to GitHub. For example, when CI builds are triggered by a Pull Request. The updated version below requires a specific CircleCI user account and that it is not a Pull Request. Otherwise it doesn’t attempt to commit.</p>
+<p>Now you probably don’t want to always attempt to push to GitHub. For example,
+when CI builds are triggered by a Pull Request. The updated version below
+requires a specific CircleCI user account and that it is not a Pull Request.
+Otherwise it doesn’t attempt to commit.</p>
 <pre><code>      - run:
           name: Commit to GitHub
           command: |
@@ -1562,25 +1666,57 @@ ssh-keygen -t rsa -b 4096 -C &quot;CircleCI Deploy Key with Write Access&quot; -
             else
               echo &quot;Not committing to GitHub&quot;
             fi</code></pre>
-<p>Commit this update to the local configuration file and then push to GitHub. This time the build should result in a new commit to the repository.</p>
+<p>Commit this update to the local configuration file and then push to GitHub. This
+time the build should result in a new commit to the repository.</p>
 <p>If you receive an error due to a message such as the one below:</p>
 <pre><code>The authenticity of host &#39;github.com (192.30.253.113)&#39; can&#39;t be established.
 RSA key fingerprint is SHA256:&lt;fingerprint&gt;.
 Are you sure you want to continue connecting (yes/no)?</code></pre>
-<p>You can bypass it by <a href="https://stackoverflow.com/a/32387182">manually adding GitHub to the list of known SSH hosts</a> prior to running <code>git push</code>:<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>You can bypass it by <a href="https://stackoverflow.com/a/32387182">manually adding GitHub to the list of known SSH
+hosts</a> prior to running <code>git push</code>:<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
 <pre><code>ssh-keyscan -t rsa github.com &gt;&gt; ~/.ssh/known_hosts</code></pre>
 <h2 id="delete-the-local-ssh-key-files">Delete the local SSH key files</h2>
-<p>Once you’ve confirmed everything is working as expected, delete the one-off SSH keys from your local machine:</p>
+<p>Once you’ve confirmed everything is working as expected, delete the one-off SSH
+keys from your local machine:</p>
 <pre><code>rm -r /tmp/ssh-temp/</code></pre>
 <h2 id="conclusion">Conclusion</h2>
-<p>Now any time you want CircleCI to automatically update the results of an analysis or documentation files for a GitHub repository, you can follow these steps to setup the authentication.</p>
-<p>Lastly, I’ll note that a powerful combination is to <a href="https://circleci.com/docs/2.0/workflows/#scheduling-a-workflow">schedule the workflow</a> to be run on CircleCI at regular intervals. Then the repository will stay up-to-date without requiring any intervention.</p>
+<p>Now any time you want CircleCI to automatically update the results of an
+analysis or documentation files for a GitHub repository, you can follow these
+steps to setup the authentication.</p>
+<p>Lastly, I’ll note that a powerful combination is to <a href="https://circleci.com/docs/2.0/workflows/#scheduling-a-workflow">schedule the
+workflow</a> to be run on CircleCI at regular intervals. Then
+the repository will stay up-to-date without requiring any intervention.</p>
 <h2 id="alternative-authentication-options">Alternative authentication options</h2>
 <p>There are alternative options for authentication:</p>
 <ul>
-<li><p><strong>GitHub Personal Access Token (PAT)</strong>: You could generate a GitHub PAT, either for your own account or a bot account, with the required scope to write to your repository (<code>public_repo</code> for a public repository, <code>repo</code> for a private repository). You would then define this as an environment variable in your CircleCI build (e.g. <code>GITHUB_PAT</code>), which would authenticate you to push to your repository using the following URL pattern: <code>https://workflowr:$GITHUB_PAT@github.com/&lt;account&gt;/&lt;repo&gt;.git</code>. I dislike this option because it is not possible to limit the scope of a PAT to a single repository. In other words, if a PAT with write permissions is exposed, it gives write access to every repository owned by that account.</p></li>
-<li><p><strong>SSH user key</strong>: CircleCI has a convenient option to register a user key. In the CircleCI project settings page, choose “Checkout SSH keys” and then “Authorize with GitHub”. This will add a public key to your GitHub account, and CircleCI keeps the private key. Now your CI build will be able to access all of your public and private repositories on GitHub. I recommend this option if your CI build needs write access to multiple repositories (or read access to multiple private repositories). If you only need write access to the one repository, it is more secure to use a deploy key since it has limited access to your account.</p>
-<p>If you want to create a user key, you can automate this even more using the R package <a href="https://github.com/ropenscilabs/circle">ropenscilabs/circle</a> developed by <a href="https://twitter.com/pjs_228">Patrick Schratz</a>. It requires some initial setup: 1) generate a CircleCI API key and save it in <code>~/.Renviron</code> as <code>R_CIRCLE</code>, and 2) generate a GitHub PAT and save it in <code>~/.Renviron</code> as <code>GITHUB_PAT</code>. Then the user key can be created with the function <code>use_circle_deploy()</code>.</p></li>
+<li><p><strong>GitHub Personal Access Token (PAT)</strong>: You could generate a GitHub PAT,
+either for your own account or a bot account, with the required scope to write
+to your repository (<code>public_repo</code> for a public repository, <code>repo</code> for a private
+repository). You would then define this as an environment variable in your
+CircleCI build (e.g. <code>GITHUB_PAT</code>), which would authenticate you to push to your
+repository using the following URL pattern:
+<code>https://&lt;account&gt;:$GITHUB_PAT@github.com/&lt;account&gt;/&lt;repo&gt;.git</code>. I dislike this
+option because it is not possible to limit the scope of a PAT to a single
+repository. In other words, if a PAT with write permissions is exposed, it gives
+write access to every repository owned by that account. <strong>Update (2022-10-03):</strong>
+Even though GitHub has <a href="https://github.blog/changelog/2019-08-08-password-based-http-basic-authentication-deprecation-and-removal/">disabled password-based HTTP
+authentication</a>, I confirmed that it is still possible
+to perform PAT-based HTTP authentication from a CI build.</p></li>
+<li><p><strong>SSH user key</strong>: CircleCI has a convenient option to register a user key.
+In the CircleCI project settings page, choose “Checkout SSH keys” and then
+“Authorize with GitHub”. This will add a public key to your GitHub account,
+and CircleCI keeps the private key. Now your CI build will be able to access
+all of your public and private repositories on GitHub. I recommend this option
+if your CI build needs write access to multiple repositories (or read access to
+multiple private repositories). If you only need write access to the one
+repository, it is more secure to use a deploy key since it has limited access
+to your account.</p>
+<p>If you want to create a user key, you can automate this even more using the
+R package <a href="https://github.com/ropenscilabs/circle">ropenscilabs/circle</a> developed by <a href="https://twitter.com/pjs_228">Patrick
+Schratz</a>. It requires some initial setup: 1) generate a CircleCI API key
+and save it in <code>~/.Renviron</code> as <code>R_CIRCLE</code>, and 2) generate a GitHub PAT
+and save it in <code>~/.Renviron</code> as <code>GITHUB_PAT</code>. Then the user key can be
+created with the function <code>use_circle_deploy()</code>.</p></li>
 </ul>
 <h2 id="links-to-further-documentation">Links to further documentation</h2>
 <ul>
@@ -1611,14 +1747,45 @@ Are you sure you want to continue connecting (yes/no)?</code></pre>
 <section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1" role="doc-endnote"><p>Version control purists will object to saving generated content in a version control repository. And sure, if you are a part of a team working on a large enterprise codebase, you would be wise to save generated content on a separate server for sharing with others. But for individuals or small teams with fewer resources, saving generated content in the original Git repository is a practical choice with plenty of benefits: keep everything in one place, serve HTML files with GitHub Pages, record history of changes, etc.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn2" role="doc-endnote"><p><strong>WARNING: Do not be tempted to use your existing SSH keys.</strong> If an SSH key linked to your GitHub account is exposed, an attacker would have access to all of your public and private repositories.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn3" role="doc-endnote"><p>The comment passed to <code>-C</code> can be whatever you like. It’s purpose is to remind you what the key is for.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn4" role="doc-endnote"><p>In the screenshot below, you can see that I named it “CircleCI User Key”. This is because at the time I was confused by the CircleCI documentation (which I have since <a href="https://github.com/circleci/circleci-docs/pull/4116">fixed</a>). It is a deploy key since it is associated with a single repository. A user key is one that is assoiciated with a user account.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn5" role="doc-endnote"><p>For convenience, I recommend the Firefox addon <a href="https://addons.mozilla.org/en-US/firefox/addon/open-circleci-workflows/">Open CircleCI Workflows</a>. Whenever you have a GitHub repository open in your browser, it inserts a button with the CircleCI logo into the address bar. Clicking on this button takes you directly to the project on CircleCI.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn6" role="doc-endnote"><p><strong>Update:</strong> I had originally said that you could put whatever you like in the Hostname field to remind you that this key is for pushing to GitHub. However, <a href="https://github.com/SampsonM">SampsonM</a> kindly took the time to <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/2">inform me</a> that it actually has to be “github.com”, and I confirmed this is what the <a href="https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-deploy-key">CircleCI docs</a> state.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn1" role="doc-endnote"><p>Version control purists will object to
+saving generated content in a version control repository. And sure, if you are a
+part of a team working on a large enterprise codebase, you would be wise to save
+generated content on a separate server for sharing with others. But for
+individuals or small teams with fewer resources, saving generated content in the
+original Git repository is a practical choice with plenty of benefits: keep
+everything in one place, serve HTML files with GitHub Pages, record history of
+changes, etc.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn2" role="doc-endnote"><p><strong>WARNING:
+Do not be tempted to use your existing SSH keys.</strong> If an SSH key linked to your
+GitHub account is exposed, an attacker would have access to all of your public
+and private repositories.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn3" role="doc-endnote"><p>The
+comment passed to <code>-C</code> can be whatever you like. It’s purpose is to remind you
+what the key is for.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn4" role="doc-endnote"><p>In the screenshot below, you can see that I named it
+“CircleCI User Key”. This is because at the time I was confused by the CircleCI
+documentation (which I have since <a href="https://github.com/circleci/circleci-docs/pull/4116">fixed</a>). It is a deploy key
+since it is associated with a single repository. A user key is one that is
+assoiciated with a user account.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn5" role="doc-endnote"><p>For convenience, I recommend the
+Firefox addon <a href="https://addons.mozilla.org/en-US/firefox/addon/open-circleci-workflows/">Open CircleCI
+Workflows</a>.
+Whenever you have a GitHub repository open in your browser, it inserts a button
+with the CircleCI logo into the address bar. Clicking on this button takes you
+directly to the project on CircleCI.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn6" role="doc-endnote"><p><strong>Update:</strong>
+I had originally said that you could put whatever you like in the Hostname field
+to remind you that this key is for pushing to GitHub. However,
+<a href="https://github.com/SampsonM">SampsonM</a> kindly took the time to <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/2">inform
+me</a> that it actually
+has to be “github.com”, and I confirmed this is what the <a href="https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-deploy-key">CircleCI
+docs</a>
+state.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩</a></p></li>
 <li id="fn7" role="doc-endnote"><p>By default it is in detached HEAD state.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn8" role="doc-endnote"><p>This can be a <a href="https://serverfault.com/a/971922">security concern</a>. If you’re concerned, e.g. you are pushing sensitive data to a private repository, you can confirm the fingerprint in the CircleCI build log matches the fingerprint published in <a href="https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection">GitHub’s SSH help page</a>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn8" role="doc-endnote"><p>This can be a <a href="https://serverfault.com/a/971922">security
+concern</a>. If you’re concerned, e.g. you are pushing sensitive data
+to a private repository, you can confirm the fingerprint in the CircleCI build
+log matches the fingerprint published in <a href="https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection">GitHub’s SSH help page</a>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩</a></p></li>
 </ol>
 </section>
 <!--radix_placeholder_article_footer-->
