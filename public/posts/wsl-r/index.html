@@ -18,6 +18,73 @@
  <!--radix_placeholder_import_source-->
  <!--/radix_placeholder_import_source-->
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span. { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
   <!--radix_placeholder_meta_tags-->
 <title>John Blischak's blog: R programming in the Windows Subsystem for Linux</title>
 
@@ -2031,7 +2098,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!--/radix_placeholder_distill-->
-  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
   <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
   <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
@@ -2098,7 +2170,15 @@ d-article pre, d-article div.sourceCode {
 
 <div class="d-title">
 <h1>R programming in the Windows Subsystem for Linux</h1>
-<p><p>A comprehensive guide to setup an R development environment for Ubuntu running in the Windows Subsystem for Linux (WSL)</p></p>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:Software_Development_with_R" class="dt-tag">Software Development with R</a>
+  <a href="../../index.html#category:Ubuntu" class="dt-tag">Ubuntu</a>
+  <a href="../../index.html#category:Windows" class="dt-tag">Windows</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>A comprehensive guide to setup an R development environment for Ubuntu running
+in the Windows Subsystem for Linux (WSL)</p></p>
 </div>
 
 <div class="d-byline">
@@ -2108,8 +2188,9 @@ d-article pre, d-article div.sourceCode {
 </div>
 
 <div class="d-article">
-<h3 class="d-toc-header">Table of Contents</h3>
-<nav class="d-toc" id="TOC">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
 <ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#install-windows-subsytem-for-linux-from-the-windows-store">Install Windows Subsytem for Linux from the Windows Store</a></li>
@@ -2129,142 +2210,276 @@ d-article pre, d-article div.sourceCode {
 <li><a href="#other-resources">Other resources</a></li>
 </ul>
 </nav>
-<hr class="d-toc-separator"/>
+</div>
+<p><strong>Updates (2022-11-04)</strong></p>
+<ul>
+<li><p>This post is now a few years old, thus some of the specifics are outdated. It
+installs Ubuntu Bionic (18.04) on Windows via WSL1. The general strategy below
+is still valid, but I recommend you install a more recent version of Ubuntu via
+WSL2 (which is now the default)</p></li>
+<li><p>If you previously installed Ubuntu via WSL1, you can <a href="https://learn.microsoft.com/en-us/windows/wsl/install#upgrade-version-from-wsl-1-to-wsl-2">upgrade the existing
+installation to WSL2</a></p></li>
+<li><p>This post describes how to run RStudio Server in the WSL and access it from
+your browser running in Windows. However, <a href="https://github.com/remlapmot">Tom
+Palmer</a> taught me about an alternative option. You
+can install a graphical desktop environment in WSL and then run RStudio Desktop
+directly on Ubuntu. This requires some extra setup, but if you want a more
+integrated Ubuntu experience, the effort will be worth it. See <a href="https://github.com/jdblischak/blog.jdblischak.com/issues/1">Tom’s
+Issue</a> for more
+details</p></li>
+</ul>
 <h2 id="introduction">Introduction</h2>
-<p>The <a href="https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux">Windows Subsystem for Linux</a> (WSL) is really impressive. It provides a convenient and smooth experience for running Ubuntu (and other Linux distributions) from Windows because the Linux executables are able to run natively on the Windows machine. In the past, I’ve tried running Ubuntu in a <a href="https://en.wikipedia.org/wiki/Virtual_machine">virtual machine</a>, but it was painfully slow, so much so that I never really used it for real work.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> I’ve also dual-booted multiple machines, but I always found reformatting the hard drive to be a nerve-wracking and time-consuming experience. And while I productively used a dual-boot setup for years, I essentially only used Ubuntu during that time. Only in the rare occasion that I had to use Adobe Illustrator would I boot into Windows. Finally with the WSL, using both Windows and Ubuntu is realistic.</p>
-<p>I’ve experimented with the WSL since early 2018 after <a href="https://twitter.com/revodavid">David Smith</a> provided instructions for <a href="https://blog.revolutionanalytics.com/2017/12/r-in-the-windows-subsystem-for-linux.html">installing R in the WSL</a> and <a href="https://twitter.com/opencpu">Jeroen Ooms</a> announced that <a href="https://twitter.com/opencpu/status/941115822705119232">you can host RStudio Server and OpenCPU apps from the WSL</a>. However, the most I’ve used it for real work was for speed benchmarking my R package <a href="https://github.com/jdblischak/workflowr">workflowr</a>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> However, for one of my current freelance jobs, I was provided a Windows laptop. With RStudio and <a href="https://gitforwindows.org/">Git Bash</a>, I’ve been productively developing on Windows for the past couple of months. But it has been noticeably slower. Recently I had some code that was taking minutes to run on Windows, so I tried it on the WSL, and it ran it in seconds. This finally convinced me that I should really switch over to primarily using the WSL.</p>
-<p>In this post, I’ll describe how to install the WSL, configure it for R development, and share other tips and tricks.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux">Windows Subsystem for Linux</a> (WSL) is really impressive. It provides a
+convenient and smooth experience for running Ubuntu (and other Linux
+distributions) from Windows because the Linux executables are able to run
+natively on the Windows machine. In the past, I’ve tried running Ubuntu in a
+<a href="https://en.wikipedia.org/wiki/Virtual_machine">virtual machine</a>, but it was
+painfully slow, so much so that I never really used it for real work.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>
+I’ve also dual-booted multiple machines, but I always found reformatting the
+hard drive to be a nerve-wracking and time-consuming experience. And while I
+productively used a dual-boot setup for years, I essentially only used Ubuntu
+during that time. Only in the rare occasion that I had to use Adobe Illustrator
+would I boot into Windows. Finally with the WSL, using both Windows and Ubuntu
+is realistic.</p>
+<p>I’ve experimented with the WSL since early 2018 after <a href="https://twitter.com/revodavid">David
+Smith</a> provided instructions for <a href="https://blog.revolutionanalytics.com/2017/12/r-in-the-windows-subsystem-for-linux.html">installing R in
+the
+WSL</a>
+and <a href="https://twitter.com/opencpu">Jeroen Ooms</a> announced that <a href="https://twitter.com/opencpu/status/941115822705119232">you can host
+RStudio Server and OpenCPU apps from the
+WSL</a>. However, the most
+I’ve used it for real work was for speed benchmarking my R package
+<a href="https://github.com/jdblischak/workflowr">workflowr</a>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> However, for one of my current freelance jobs, I
+was provided a Windows laptop. With RStudio and <a href="https://gitforwindows.org/">Git
+Bash</a>, I’ve been productively developing on Windows
+for the past couple of months. But it has been noticeably slower. Recently I had
+some code that was taking minutes to run on Windows, so I tried it on the WSL,
+and it ran it in seconds. This finally convinced me that I should really switch
+over to primarily using the WSL.</p>
+<p>In this post, I’ll describe how to install the WSL, configure it for R
+development, and share other tips and tricks.</p>
 <h2 id="install-windows-subsytem-for-linux-from-the-windows-store">Install Windows Subsytem for Linux from the Windows Store</h2>
-<p>The easiest method for installing the WSL is to use the Windows Store. Follow these steps:</p>
+<p>The easiest method for installing the WSL is to use the Windows Store. Follow
+these steps:</p>
 <ol type="1">
 <li>Confirm that the WSL feature is enabled for Windows.
 <ol type="a">
-<li>Open the Settings app, search for “windows features”, and select “Turn Windows features on or off”. Annoyingly I can’t find a way to navigate to these settings without having to use the search bar. <img src="img/windows-features.png" alt="Search Windows settings for to turn on Windows features." /></li>
-<li>Scroll down and confirm that Windows Subsystem for Linux is enabled. If it wasn’t previously enabled, you’ll need to restart your computer. <img src="img/activate-wsl.png" alt="Enable the feature Windows Subsystem for Linux." /></li>
+<li>Open the Settings app, search for “windows features”, and select “Turn
+Windows features on or off”. Annoyingly I can’t find a way to navigate to
+these settings without having to use the search bar.
+<img src="img/windows-features.png" alt="Search Windows settings for to turn on Windows features." /></li>
+<li>Scroll down and confirm that Windows Subsystem for Linux is enabled. If
+it wasn’t previously enabled, you’ll need to restart your computer.
+<img src="img/activate-wsl.png" alt="Enable the feature Windows Subsystem for Linux." /></li>
 </ol></li>
-<li>Open the Microsoft Store app (you open it like any other app), search for “Ubuntu”, and choose the most recent LTS version (currently 18.04). <img src="img/windows-store-ubuntu.png" alt="Ubuntu in the Windows Store." /></li>
-<li>Click on “Install” (or “Get” if you access the Microsoft Store in the browser) and login with your Microsoft Account.</li>
-<li>Open the Ubuntu app. Enter a username and password. As the directions state, this username and password is in <strong>no</strong> way related to your Windows user account. <img src="img/wsl-initial-config.png" alt="Initial WSL user configuration." style="width: 100%" /></li>
+<li>Open the Microsoft Store app (you open it like any other app), search for
+“Ubuntu”, and choose the most recent LTS version (currently 18.04).
+<img src="img/windows-store-ubuntu.png" alt="Ubuntu in the Windows Store." /></li>
+<li>Click on “Install” (or “Get” if you access the Microsoft Store in the
+browser) and login with your Microsoft Account.</li>
+<li>Open the Ubuntu app. Enter a username and password. As the directions state,
+this username and password is in <strong>no</strong> way related to your Windows user
+account.
+<img src="img/wsl-initial-config.png" alt="Initial WSL user configuration." style="width: 100%" /></li>
 </ol>
 <h2 id="install-windows-subsytem-for-linux-from-powershell">Install Windows Subsytem for Linux from PowerShell</h2>
-<p>On my work laptop, IT blocked the Microsoft Store app. And when I tried the Microsoft Store via the browser, the “Get” link failed (in multiple browsers, so I assume IT somehow also blocked this). If you find yourself in a similar situation, or if you simply don’t want to create a Microsoft Account, you can perform all the steps above from a PowerShell terminal.</p>
+<p>On my work laptop, IT blocked the Microsoft Store app. And when I tried the
+Microsoft Store via the browser, the “Get” link failed (in multiple browsers, so
+I assume IT somehow also blocked this). If you find yourself in a similar
+situation, or if you simply don’t want to create a Microsoft Account, you can
+perform all the steps above from a PowerShell terminal.</p>
 <ol type="1">
-<li><p>Enable the WSL feature and restart your computer (<a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10#install-the-windows-subsystem-for-linux">source</a>).</p>
-<pre><code>
-Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</code></pre></li>
-<li><p>Download Ubuntu (<a href="https://docs.microsoft.com/en-us/windows/wsl/install-manual#download-using-powershell">source</a>).</p>
-<pre><code>
-Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing</code></pre></li>
-<li><p>Install Ubuntu (<a href="https://docs.microsoft.com/en-us/windows/wsl/install-manual#installing-your-distro">source</a>).</p>
-<pre><code>
-Add-AppxPackage .\Ubuntu.appx</code></pre></li>
+<li><p>Enable the WSL feature and restart your computer
+(<a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10#install-the-windows-subsystem-for-linux">source</a>).</p>
+<pre><code>Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</code></pre></li>
+<li><p>Download Ubuntu
+(<a href="https://docs.microsoft.com/en-us/windows/wsl/install-manual#download-using-powershell">source</a>).</p>
+<pre><code>Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing</code></pre></li>
+<li><p>Install Ubuntu
+(<a href="https://docs.microsoft.com/en-us/windows/wsl/install-manual#installing-your-distro">source</a>).</p>
+<pre><code>Add-AppxPackage .\Ubuntu.appx</code></pre></li>
 <li><p>Open Ubuntu and configure your username and password, as described above.</p></li>
 </ol>
 <h2 id="install-software-with-apt">Install software with APT</h2>
-<p>You can install software using the package manager <a href="https://en.wikipedia.org/wiki/APT_(software)">APT</a>. The very first thing you should do after installing Ubuntu is to upgrade the software. You’ll need to enter your Ubuntu password to run commands as the root user (<code>sudo</code>).</p>
-<pre><code>
-# Check for latest package versions
+<p>You can install software using the package manager
+<a href="https://en.wikipedia.org/wiki/APT_(software)">APT</a>. The very first thing you
+should do after installing Ubuntu is to upgrade the software. You’ll need to
+enter your Ubuntu password to run commands as the root user (<code>sudo</code>).</p>
+<pre><code># Check for latest package versions
 sudo apt update
 # Upgrade currently installed packages
 sudo apt upgrade
 # Install emacs and unzip. Enter &quot;y&quot; to accept
 sudo apt install emacs unzip</code></pre>
 <p>It’s a good habit to regularly update the software by running <code>sudo apt update &amp;&amp; sudo apt upgrade</code>.</p>
-<p>The software versions available from the default sources used by APT eventually become outdated if you don’t regularly upgrade Ubuntu. Ubuntu 18.04 was <a href="https://en.wikipedia.org/wiki/Ubuntu_version_history#1804">released in April 2018</a>, so this is definitely a potential issue. The solution to this is to install more recent versions from <a href="https://launchpad.net/ubuntu/+ppas">Personal Package Archives</a> (PPAs).</p>
-<p>For example, the versions of Git available in the default channels are 2.17.0 and 2.17.1.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
-<pre><code>
-$ apt list -a git
+<p>The software versions available from the default sources used by APT eventually
+become outdated if you don’t regularly upgrade Ubuntu. Ubuntu 18.04 was
+<a href="https://en.wikipedia.org/wiki/Ubuntu_version_history#1804">released in April
+2018</a>, so this is
+definitely a potential issue. The solution to this is to install more recent
+versions from <a href="https://launchpad.net/ubuntu/+ppas">Personal Package Archives</a>
+(PPAs).</p>
+<p>For example, the versions of Git available in the default channels are 2.17.0
+and 2.17.1.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<pre><code>$ apt list -a git
 Listing... Done
 git/bionic-updates,bionic-security,now 1:2.17.1-1ubuntu0.5 amd64 [installed,automatic]
 git/bionic 1:2.17.0-1ubuntu1 amd64</code></pre>
-<p>Fortunately, the Git developers provide a PPA to <a href="https://git-scm.com/download/linux">install the latest stable upstream version</a>, which can be added using the command below:</p>
-<pre><code>
-sudo add-apt-repository ppa:git-core/ppa</code></pre>
+<p>Fortunately, the Git developers provide a PPA to <a href="https://git-scm.com/download/linux">install the latest stable
+upstream version</a>, which can be added using
+the command below:</p>
+<pre><code>sudo add-apt-repository ppa:git-core/ppa</code></pre>
 <p>And now Git 2.26.0 is available for download:</p>
-<pre><code>
-$ apt list -a git
+<pre><code>$ apt list -a git
 Listing... Done
 git/bionic 1:2.26.0-1~ppa1~ubuntu18.04.1 amd64 [upgradable from: 1:2.17.1-1ubuntu0.5]
 git/bionic-updates,bionic-security,now 1:2.17.1-1ubuntu0.5 amd64 [installed,upgradable to: 1:2.26.0-1~ppa1~ubuntu18.04.1]
 git/bionic 1:2.17.0-1ubuntu1 amd64</code></pre>
 <p>Running <code>sudo apt upgrade</code> will replace Git 2.17.1 with 2.26.0.</p>
-<p>And since this is a new environment, don’t forget to set your <code>user.name</code> and <code>user.email</code> to sign your Git commits:</p>
-<pre><code>
-git config --global user.name &quot;Your Name&quot;
+<p>And since this is a new environment, don’t forget to set your <code>user.name</code> and
+<code>user.email</code> to sign your Git commits:</p>
+<pre><code>git config --global user.name &quot;Your Name&quot;
 git config --global user.email &quot;email@domain&quot;</code></pre>
 <h2 id="install-r">Install R</h2>
-<p>R is available for installation with APT, but similar to Git, it is outdated (R 3.4.4 was released in March 2018):</p>
-<pre><code>
-$ apt list r-base
+<p>R is available for installation with APT, but similar to Git, it is outdated (R
+3.4.4 was released in March 2018):</p>
+<pre><code>$ apt list r-base
 Listing... Done
 r-base/bionic 3.4.4-1ubuntu1 all</code></pre>
-<p>The official <a href="https://cran.r-project.org/bin/linux/ubuntu/README.html">CRAN Ubuntu installation instructions</a> describe how to manually edit the file <code>/etc/apt/sources.list</code>, which lists the sources for APT to check for available software. However, since I am recommending the use of PPAs, I think it is easier to directly add Michael Rutter’s <a href="https://launchpad.net/~marutter/+archive/ubuntu/rrutter3.5">RRutter v3.5 PPA</a>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> This is the source PPA that is synced to CRAN, so it is identical to the official CRAN source.</p>
-<pre><code>
-sudo add-apt-repository ppa:marutter/rrutter3.5</code></pre>
-<p>Instead of manually editing <code>/etc/apt/sources.list</code>, the command above added the new source in a separate file in the directory <code>/etc/apt/sources.list.d/</code>. Note that the Git PPA is also there. For me, this makes it easier to manage PPAs. You can quickly view which PPAs you are using, and you know which file to edit if you need to update or disable the PPA.</p>
-<pre><code>
-$ ls /etc/apt/sources.list.d/
+<p>The official <a href="https://cran.r-project.org/bin/linux/ubuntu/README.html">CRAN Ubuntu installation
+instructions</a> describe
+how to manually edit the file <code>/etc/apt/sources.list</code>, which lists the sources
+for APT to check for available software. However, since I am recommending the
+use of PPAs, I think it is easier to directly add Michael Rutter’s <a href="https://launchpad.net/~marutter/+archive/ubuntu/rrutter3.5">RRutter v3.5
+PPA</a>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> This is the source PPA that is synced to CRAN,
+so it is identical to the official CRAN source.</p>
+<pre><code>sudo add-apt-repository ppa:marutter/rrutter3.5</code></pre>
+<p>Instead of manually editing <code>/etc/apt/sources.list</code>, the command above added the
+new source in a separate file in the directory <code>/etc/apt/sources.list.d/</code>. Note
+that the Git PPA is also there. For me, this makes it easier to manage PPAs. You
+can quickly view which PPAs you are using, and you know which file to edit if
+you need to update or disable the PPA.</p>
+<pre><code>$ ls /etc/apt/sources.list.d/
 git-core-ubuntu-ppa-bionic.list  git-core-ubuntu-ppa-bionic.list.save  marutter-ubuntu-rrutter3_5-bionic.list</code></pre>
 <p>Now R 3.6.3 is available to install:</p>
-<pre><code>
-$ apt list -a r-base
+<pre><code>$ apt list -a r-base
 Listing... Done
 r-base/bionic 3.6.3-1bionic all
 r-base/bionic 3.4.4-1ubuntu1 all</code></pre>
-<p>Before you install R, an optional but advisable step is to <a href="https://cran.r-project.org/bin/linux/ubuntu/README.html#secure-apt">register Michael Rutter’s signing key</a> to ensure the binaries you are installing on your machine are actually the ones he uploaded to his PPA. Note you’ll need to have admin access to your Windows machine for this step.</p>
-<pre><code>
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9</code></pre>
-<p>If you have trouble connecting to the server and you use a VPN, try disconnecting from it. Also, the CRAN instructions have alternative commands to try. The below option worked for me on my work laptop:</p>
-<pre><code>
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+<p>Before you install R, an optional but advisable step is to <a href="https://cran.r-project.org/bin/linux/ubuntu/README.html#secure-apt">register Michael
+Rutter’s signing
+key</a> to
+ensure the binaries you are installing on your machine are actually the ones he
+uploaded to his PPA. Note you’ll need to have admin access to your Windows
+machine for this step.</p>
+<pre><code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9</code></pre>
+<p>If you have trouble connecting to the server and you use a VPN, try
+disconnecting from it. Also, the CRAN instructions have alternative commands to
+try. The below option worked for me on my work laptop:</p>
+<pre><code>gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | sudo apt-key add -</code></pre>
-<p>Install <code>r-base</code> (which includes <code>r-base-core</code>, <code>r-base-dev</code>, the documentation files, and the set of recommended packages in <code>r-recommended</code>).</p>
-<pre><code>
-sudo apt install r-base</code></pre>
+<p>Install <code>r-base</code> (which includes <code>r-base-core</code>, <code>r-base-dev</code>, the documentation
+files, and the set of recommended packages in <code>r-recommended</code>).</p>
+<pre><code>sudo apt install r-base</code></pre>
 <h2 id="install-r-packages">Install R packages</h2>
-<p>To install R packages, you could rely on <code>install.packages()</code>. But unlike Windows and macOS, CRAN does not build binaries for any of the Linux distributions. This means that every package is installed from source, so packages like stringi will take minutes to install each time there is a new release. Thus I try as much as possible to rely on the binaries built for Ubuntu.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> There are almost 500 R package binaries available for Ubuntu.</p>
-<pre><code>
-$ apt list r-cran-* 2&gt; /dev/null | wc -l
+<p>To install R packages, you could rely on <code>install.packages()</code>. But unlike
+Windows and macOS, CRAN does not build binaries for any of the Linux
+distributions. This means that every package is installed from source, so
+packages like stringi will take minutes to install each time there is a new
+release. Thus I try as much as possible to rely on the binaries built for
+Ubuntu.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>
+There are almost 500 R package binaries available for Ubuntu.</p>
+<pre><code>$ apt list r-cran-* 2&gt; /dev/null | wc -l
 496</code></pre>
-<p>Unfortunately the RRutter v3.5 PPA (and its equivalent CRAN sync) added above only includes R itself and the dozen or so recommended packages. The remaining packages will be the version from when R 3.4.4. was released years ago, which isn’t very useful.</p>
-<p>Luckily Michael Rutter maintains a second PPA, <a href="https://launchpad.net/~marutter/+archive/ubuntu/c2d4u3.5">cran2deb4ubuntu_3.5</a>, that builds binaries for all the packages listed in the <a href="https://cran.r-project.org/web/views/">CRAN Task Views</a> (and their package dependencies), and these packages are regularly updated. It’s not immediate, but if you regularly upgrade your APT packages, you’ll have the latest version of any given R package within a few days of its release to CRAN. Add this PPA to access over 4000 R package binaries.</p>
-<pre><code>
-sudo add-apt-repository ppa:marutter/c2d4u3.5
+<p>Unfortunately the RRutter v3.5 PPA (and its equivalent CRAN sync) added above
+only includes R itself and the dozen or so recommended packages. The remaining
+packages will be the version from when R 3.4.4. was released years ago, which
+isn’t very useful.</p>
+<p>Luckily Michael Rutter maintains a second PPA,
+<a href="https://launchpad.net/~marutter/+archive/ubuntu/c2d4u3.5">cran2deb4ubuntu_3.5</a>,
+that builds binaries for all the packages listed in the <a href="https://cran.r-project.org/web/views/">CRAN Task
+Views</a> (and their package dependencies),
+and these packages are regularly updated. It’s not immediate, but if you
+regularly upgrade your APT packages, you’ll have the latest version of any given
+R package within a few days of its release to CRAN. Add this PPA to access over
+4000 R package binaries.</p>
+<pre><code>sudo add-apt-repository ppa:marutter/c2d4u3.5
 $ apt list r-cran-* 2&gt; /dev/null | wc -l
 4525</code></pre>
-<p>This allows you to install the entire tidyverse suite of R packages plus their system dependencies in only a few minutes.</p>
-<pre><code>
-sudo apt install r-cran-tidyverse</code></pre>
-<p>If a package you want isn’t available when you try to install <code>r-cran-foo</code> (note that the R package should always be lowercase), then you can install it with <code>install.packages()</code> into a personal library directory.</p>
-<p>Note that there is a downside to using the pre-built binary R packages. Since they were already built, they don’t include any system dependencies that are only required for compiling the package. For example, you can install and use the RCurl package with <code>sudo apt install r-cran-rcurl</code>, but still get an error when running <code>install.packages("RCurl")</code>. This is because RCurl requires the system library <a href="https://packages.ubuntu.com/bionic/libcurl4">libcurl4</a> to run, but it additionally needs the system library <a href="https://packages.ubuntu.com/bionic/libcurl4-openssl-dev">libcurl4-openssl-dev</a> to compile the package from source. Thus if you find yourself installing R packages from source because they aren’t available from a PPA, you’ll want to install some of the commonly required system libraries like libcurl4-openssl-dev:</p>
-<pre><code>
-sudo apt install libcurl4-openssl-dev</code></pre>
-<p>For other system software you may need to install, check out the <a href="https://github.com/r-hub/rhub-linux-builders/blob/b9f37a7bb1c966a11e6152d6d76a6cb48263a5cc/ubuntu/Dockerfile#L21">Dockerfile for the rhub Ubuntu image</a>.</p>
+<p>This allows you to install the entire tidyverse suite of R packages plus their
+system dependencies in only a few minutes.</p>
+<pre><code>sudo apt install r-cran-tidyverse</code></pre>
+<p>If a package you want isn’t available when you try to install <code>r-cran-foo</code> (note
+that the R package should always be lowercase), then you can install it with
+<code>install.packages()</code> into a personal library directory.</p>
+<p>Note that there is a downside to using the pre-built binary R packages. Since
+they were already built, they don’t include any system dependencies that are
+only required for compiling the package. For example, you can install and use
+the RCurl package with <code>sudo apt install r-cran-rcurl</code>, but still get an error
+when running <code>install.packages("RCurl")</code>. This is because RCurl requires the
+system library <a href="https://packages.ubuntu.com/bionic/libcurl4">libcurl4</a> to run,
+but it additionally needs the system library
+<a href="https://packages.ubuntu.com/bionic/libcurl4-openssl-dev">libcurl4-openssl-dev</a>
+to compile the package from source. Thus if you find yourself installing R
+packages from source because they aren’t available from a PPA, you’ll want to
+install some of the commonly required system libraries like
+libcurl4-openssl-dev:</p>
+<pre><code>sudo apt install libcurl4-openssl-dev</code></pre>
+<p>For other system software you may need to install, check out the <a href="https://github.com/r-hub/rhub-linux-builders/blob/b9f37a7bb1c966a11e6152d6d76a6cb48263a5cc/ubuntu/Dockerfile#L21">Dockerfile for
+the rhub Ubuntu
+image</a>.</p>
 <h2 id="install-bioconductor-packages">Install Bioconductor packages</h2>
-<p>There are a decent number of Bioconductor packages available for Ubuntu, but they are all outdated.</p>
-<pre><code>
-$ apt list r-bioc-* 2&gt; /dev/null | wc -l
+<p>There are a decent number of Bioconductor packages available for Ubuntu, but
+they are all outdated.</p>
+<pre><code>$ apt list r-bioc-* 2&gt; /dev/null | wc -l
 84</code></pre>
-<p>Thus I recommend installing <a href="https://cran.r-project.org/package=BiocManager">BiocManager</a> with APT. It’s part of the c2d4u PPA, so it will be kept up-to-date.</p>
-<pre><code>
-sudo apt install r-cran-biocmanager</code></pre>
-<p>And then you can install individual Bioconductor packages as needed from within R:</p>
-<pre><code>
-BiocManager::install(c(&quot;GenomicRanges&quot;, &quot;SummarizedExperiment&quot;))</code></pre>
+<p>Thus I recommend installing
+<a href="https://cran.r-project.org/package=BiocManager">BiocManager</a> with APT. It’s
+part of the c2d4u PPA, so it will be kept up-to-date.</p>
+<pre><code>sudo apt install r-cran-biocmanager</code></pre>
+<p>And then you can install individual Bioconductor packages as needed from within
+R:</p>
+<pre><code>BiocManager::install(c(&quot;GenomicRanges&quot;, &quot;SummarizedExperiment&quot;))</code></pre>
 <p>This will unfortunately take awhile since the packages are built from source.</p>
-<p>If some packages fail to install, it is likely due to the new <a href="https://developer.r-project.org/Blog/public/2019/02/14/staged-install/index.html">staged install check</a> introduced in R 3.6. I got this <a href="https://github.com/Bioconductor/Biobase/issues/5">error trying to install Biobase</a>, and others have reported WSL-specific issues, e.g. for <a href="https://stackoverflow.com/questions/56241007/non-zero-exit-status-r-3-6-0-biobase">Biobase</a> and <a href="https://stackoverflow.com/questions/56615734/r-package-ps-fails-to-install-because-permission-denied-to-mv-in-final-step-of">ps</a>. A workaround is to disable this check prior to installation by setting an environment variable with <code>Sys.setenv(R_INSTALL_STAGED = FALSE)</code>.</p>
+<p>If some packages fail to install, it is likely due to the new <a href="https://developer.r-project.org/Blog/public/2019/02/14/staged-install/index.html">staged install
+check</a>
+introduced in R 3.6. I got this <a href="https://github.com/Bioconductor/Biobase/issues/5">error trying to install
+Biobase</a>, and others have
+reported WSL-specific issues, e.g. for
+<a href="https://stackoverflow.com/questions/56241007/non-zero-exit-status-r-3-6-0-biobase">Biobase</a>
+and
+<a href="https://stackoverflow.com/questions/56615734/r-package-ps-fails-to-install-because-permission-denied-to-mv-in-final-step-of">ps</a>.
+A workaround is to disable this check prior to installation by setting an
+environment variable with <code>Sys.setenv(R_INSTALL_STAGED = FALSE)</code>.</p>
 <h2 id="install-opencpu-server">Install OpenCPU server</h2>
-<p>Unless you’re a devoted emacs or vi user, you probably aren’t overly excited about the prospect of doing all of your R development from a bash shell. You’re in luck! As I mentioned at the beginning of the post, Jeroen Ooms’ amazing <a href="https://www.opencpu.org/download.html">OpenCPU project</a> conveniently provides all the infrastructure to install and serve RStudio Server via the Apache web server.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
-<p>As you might have guessed, the first step is to add the OpenCPU PPA. Then you can install OpenCPU server, which also installs the Apache web server, and RStudio Server. Note that you will be prompted about email addresses. Since you are not setting up an email server, you can accept the default settings. Also, you’ll again need to have admin rights to install Apache and RStudio Server.</p>
-<pre><code>
-sudo add-apt-repository -y ppa:opencpu/opencpu-2.1
+<p>Unless you’re a devoted emacs or vi user, you probably aren’t overly excited
+about the prospect of doing all of your R development from a bash shell. You’re
+in luck! As I mentioned at the beginning of the post, Jeroen Ooms’ amazing
+<a href="https://www.opencpu.org/download.html">OpenCPU project</a> conveniently provides
+all the infrastructure to install and serve RStudio Server via the Apache web
+server.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>As you might have guessed, the first step is to add the OpenCPU PPA. Then you
+can install OpenCPU server, which also installs the Apache web server, and
+RStudio Server. Note that you will be prompted about email addresses. Since you
+are not setting up an email server, you can accept the default settings. Also,
+you’ll again need to have admin rights to install Apache and RStudio Server.</p>
+<pre><code>sudo add-apt-repository -y ppa:opencpu/opencpu-2.1
 sudo apt install opencpu-server
 sudo apt install rstudio-server</code></pre>
-<p>Note that the <a href="https://launchpad.net/~opencpu/+archive/ubuntu/opencpu-2.1">OpenCPU PPA</a> is versioned, i.e. the <code>2.1</code>. Instead of updating the software in one PPA, he creates new ones (thus each PPA is stable long-term). Therefore you might want to check back in the future to see if there is a new PPA available.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
-<p>Now you should be able to navigate to <a href="http://localhost/rstudio/" class="uri">http://localhost/rstudio/</a> with your browser. This is the RStudio Server you are running in the Ubuntu WSL. Login with your Ubuntu username and password, and then run <code>sessionInfo()</code> to confirm.</p>
-<p>RStudio Server is setup automatically when you first install it. However, the next time you start your machine and open Ubuntu, it won’t be ready to use. Thus I always create a file called <code>start.sh</code> that contains the startup steps from the <a href="https://opencpu.github.io/server-manual/opencpu-server.pdf">OpenCPU Server Manual</a>:</p>
-<pre><code>
-#!/bin/bash
+<p>Note that the <a href="https://launchpad.net/~opencpu/+archive/ubuntu/opencpu-2.1">OpenCPU
+PPA</a> is versioned,
+i.e. the <code>2.1</code>. Instead of updating the software in one PPA, he creates new ones
+(thus each PPA is stable long-term). Therefore you might want to check back in
+the future to see if there is a new PPA available.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<p>Now you should be able to navigate to <a href="http://localhost/rstudio/" class="uri">http://localhost/rstudio/</a> with your
+browser. This is the RStudio Server you are running in the Ubuntu WSL. Login
+with your Ubuntu username and password, and then run <code>sessionInfo()</code> to confirm.</p>
+<p>RStudio Server is setup automatically when you first install it. However, the
+next time you start your machine and open Ubuntu, it won’t be ready to use. Thus
+I always create a file called <code>start.sh</code> that contains the startup steps from
+the <a href="https://opencpu.github.io/server-manual/opencpu-server.pdf">OpenCPU Server
+Manual</a>:</p>
+<pre><code>#!/bin/bash
 set -eux
 
 # Enable OpenCPU for Apache
@@ -2275,10 +2490,15 @@ apachectl restart
 
 # Start RStudio Server
 rstudio-server start</code></pre>
-<p>You’ll need root access, so execute it with <code>sudo bash start.sh</code>. Then you’ll once again be able to access RStudio Server via your browser at <a href="http://localhost/rstudio/" class="uri">http://localhost/rstudio/</a>. Importantly, the RStudio Server will continue running even if you close the Ubuntu terminal. Thus the only time you need to re-run <code>start.sh</code> is after you shutdown your computer.</p>
-<p>The above instructions work fine on my personal laptop running Windows 10 Home edition. However, I wasn’t able to use port 80 on my work laptop running Windows 10 Pro.</p>
-<pre><code>
-$ sudo bash start.sh
+<p>You’ll need root access, so execute it with <code>sudo bash start.sh</code>. Then you’ll
+once again be able to access RStudio Server via your browser at
+<a href="http://localhost/rstudio/" class="uri">http://localhost/rstudio/</a>. Importantly, the RStudio Server will continue running
+even if you close the Ubuntu terminal. Thus the only time you need to re-run
+<code>start.sh</code> is after you shutdown your computer.</p>
+<p>The above instructions work fine on my personal laptop running Windows 10 Home
+edition. However, I wasn’t able to use port 80 on my work laptop running Windows
+10 Pro.</p>
+<pre><code>$ sudo bash start.sh
 + a2ensite opencpu
 Site opencpu already enabled
 + apachectl restart
@@ -2289,9 +2509,12 @@ no listening sockets available, shutting down
 AH00015: Unable to open logs
 Action &#39;restart&#39; failed.
 The Apache error log may have more information.</code></pre>
-<p>If you also receive the error about not being able to bind to port 80, then follow the instructions in this <a href="https://askubuntu.com/questions/338218/why-am-i-getting-permission-denied-make-sock-could-not-bind-to-address-when/338239#338239">Ask Ubuntu answer</a>. The default port used by Apache is 80, which you can verify by viewing the ports configuration file.</p>
-<pre><code>
-$ cat /etc/apache2/ports.conf
+<p>If you also receive the error about not being able to bind to port 80, then
+follow the instructions in this <a href="https://askubuntu.com/questions/338218/why-am-i-getting-permission-denied-make-sock-could-not-bind-to-address-when/338239#338239">Ask Ubuntu
+answer</a>.
+The default port used by Apache is 80, which you can verify by viewing the ports
+configuration file.</p>
+<pre><code>$ cat /etc/apache2/ports.conf
 # If you just change the port or add more ports here, you will likely also
 # have to change the VirtualHost statement in
 # /etc/apache2/sites-enabled/000-default.conf
@@ -2307,46 +2530,128 @@ Listen 80
 &lt;/IfModule&gt;
 
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet</code></pre>
-<p>To get around a blocked port 80, edit that file (<code>sudo nano /etc/apache2/ports.conf</code>) so that Apache listens on any high port, e.g. <code>Listen 8080</code>. After changing the port, you can access RStudio Server in the browser by including the port in the URL, e.g. <a href="http://localhost:8080/rstudio/" class="uri">http://localhost:8080/rstudio/</a>.</p>
-<p>Note that you’ll still probably receive a warning like <code>[core:warn] [pid 62] (92)Protocol not available: AH00076: Failed to enable APR_TCP_DEFER_ACCEPT</code>. You can safely ignore this because its a known issue and it doesn’t affect Apache’s ability to run (<a href="https://github.com/Microsoft/WSL/issues/1953">source</a>).</p>
-<p>Since we are discussing editing ports, it’s a good time to discuss security. With this setup, you are running a web server on your local machine. Now this shouldn’t be a big deal, since if your computer was open to outside network traffic, you’d have way bigger problems (<a href="https://security.stackexchange.com/questions/6798/how-safe-is-it-to-install-xampp-on-my-home-computer-to-test-php-code/6807#comment11479_6807">source</a>). But if you are worried about any potential issue, you can be overly cautious and restrict Apache to only listen to ports on your local machine, i.e. <code>localhost</code> or the equivalent IP address <code>127.0.0.1</code>. In other words, edit <code>/etc/apache2/ports.conf</code>, replacing <code>Listen 8080</code> and <code>Listen 443</code> with <code>Listen 127.0.0.1:8080</code> and <code>Listen 127.0.0.1:443</code> (<a href="https://security.stackexchange.com/a/6807">source</a>).</p>
+<p>To get around a blocked port 80, edit that file (<code>sudo nano /etc/apache2/ports.conf</code>) so that Apache listens on any high port, e.g. <code>Listen 8080</code>. After changing the port, you can access RStudio Server in the browser by
+including the port in the URL, e.g. <a href="http://localhost:8080/rstudio/" class="uri">http://localhost:8080/rstudio/</a>.</p>
+<p>Note that you’ll still probably receive a warning like <code>[core:warn] [pid 62] (92)Protocol not available: AH00076: Failed to enable APR_TCP_DEFER_ACCEPT</code>. You
+can safely ignore this because its a known issue and it doesn’t affect Apache’s
+ability to run (<a href="https://github.com/Microsoft/WSL/issues/1953">source</a>).</p>
+<p>Since we are discussing editing ports, it’s a good time to discuss security.
+With this setup, you are running a web server on your local machine. Now this
+shouldn’t be a big deal, since if your computer was open to outside network
+traffic, you’d have way bigger problems
+(<a href="https://security.stackexchange.com/questions/6798/how-safe-is-it-to-install-xampp-on-my-home-computer-to-test-php-code/6807#comment11479_6807">source</a>).
+But if you are worried about any potential issue, you can be overly cautious and
+restrict Apache to only listen to ports on your local machine, i.e. <code>localhost</code>
+or the equivalent IP address <code>127.0.0.1</code>. In other words, edit
+<code>/etc/apache2/ports.conf</code>, replacing <code>Listen 8080</code> and <code>Listen 443</code> with <code>Listen 127.0.0.1:8080</code> and <code>Listen 127.0.0.1:443</code>
+(<a href="https://security.stackexchange.com/a/6807">source</a>).</p>
 <h2 id="ssh-keys">SSH keys</h2>
-<p>To make it easy to clone, push, and pull repositories from online Git hosting services, e.g. GitHub, you’ll want to create SSH keys on the WSL and register them with the service. I recommend the instructions from <a href="https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">GitHub</a>, which I’ve modified below. Note that I added the flag <code>-o</code> to use the newer, more secure OpenSSH format for creating the key.</p>
-<pre><code>
-# Create new SSH keys
+<p>To make it easy to clone, push, and pull repositories from online Git hosting
+services, e.g. GitHub, you’ll want to create SSH keys on the WSL and register
+them with the service. I recommend the instructions from
+<a href="https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">GitHub</a>,
+which I’ve modified below. Note that I added the flag <code>-o</code> to use the newer,
+more secure OpenSSH format for creating the key.</p>
+<pre><code># Create new SSH keys
 ssh-keygen -o -t rsa -b 4096 -C &quot;Any message you would like to annotate the key&quot;
 # Start the SSH agent
 eval &quot;$(ssh-agent -s)&quot;
 # Add SSH key to SSH agent
 ssh-add ~/.ssh/id_rsa</code></pre>
-<p>Once you’ve created the key pair, you can <a href="https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">copy the public key to GitHub</a> and/or the other services you use.</p>
-<p>Unfortunately the experience with using SSH keys is not as seamless as it is with a standard Ubuntu installation. If you use a passphrase with your SSH key, you will be prompted to enter your passphrase every time. On standard Ubuntu, you only have to enter it the first time you use your key after restarting your computer. I found a workaround for this, but it is hacky, so please let me know if you know of a better solution. First, add the line <code>eval "$(ssh-agent -s)" &gt;/dev/null</code> to <code>~/.bashrc</code> so that the agent is automatically started each time you open a window. <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Second, add the line <code>AddKeysToAgent yes</code> to the file <code>~/.ssh/config</code>. Now you will only have to enter your passphrase once, though you will have to do it for every new window you open.</p>
+<p>Once you’ve created the key pair, you can <a href="https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">copy the public key to
+GitHub</a>
+and/or the other services you use.</p>
+<p>Unfortunately the experience with using SSH keys is not as seamless as it is
+with a standard Ubuntu installation. If you use a passphrase with your SSH key,
+you will be prompted to enter your passphrase every time. On standard Ubuntu,
+you only have to enter it the first time you use your key after restarting your
+computer. I found a workaround for this, but it is hacky, so please let me know
+if you know of a better solution. First, add the line <code>eval "$(ssh-agent -s)" &gt;/dev/null</code> to <code>~/.bashrc</code> so that the agent is automatically started each time
+you open a window. <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Second, add the line
+<code>AddKeysToAgent yes</code> to the file <code>~/.ssh/config</code>. Now you will only have to
+enter your passphrase once, though you will have to do it for every new window
+you open.</p>
 <h2 id="access-windows-filesystem">Access Windows filesystem</h2>
-<p>Another nice feature of the WSL is that it is straightforward to access the files on your Windows machine. Unlike a virtual machine or Docker container, you don’t have to take any extra steps to configure this. From Ubuntu, you can access your Windows filesystem mounted at <code>/mnt/c/</code>. For example, a common use case for me is to download a file from the internet to my Windows desktop, and then copy it to the WSL for analysis.</p>
-<pre><code>
-cp /mnt/c/Users/demo/Desktop/file.txt .</code></pre>
-<p>However, transferring files between Ubuntu and Windows has its gotchas, so you’ll want to use this feature sparingly. For example, if you want to access your Git repos from Ubuntu and Windows, I’d recommend cloning them separately to Windows and Ubuntu, i.e. treating them as if they were on separate machines.</p>
+<p>Another nice feature of the WSL is that it is straightforward to access the
+files on your Windows machine. Unlike a virtual machine or Docker container, you
+don’t have to take any extra steps to configure this. From Ubuntu, you can
+access your Windows filesystem mounted at <code>/mnt/c/</code>. For example, a common use
+case for me is to download a file from the internet to my Windows desktop, and
+then copy it to the WSL for analysis.</p>
+<pre><code>cp /mnt/c/Users/demo/Desktop/file.txt .</code></pre>
+<p>However, transferring files between Ubuntu and Windows has its gotchas, so
+you’ll want to use this feature sparingly. For example, if you want to access
+your Git repos from Ubuntu and Windows, I’d recommend cloning them separately to
+Windows and Ubuntu, i.e. treating them as if they were on separate machines.</p>
 <p>Some guidelines:</p>
 <ul>
-<li><p>File paths are case-sensitive on Ubuntu, but not on Windows. This can create some real headaches. If you are accessing Windows files from Ubuntu via <code>/mnt/c/</code>, the WSL performs some magic so that the names are non-case-sensitive. But you really don’t to rely on that behavior. Also, if you are creating files from Ubuntu on Windows, you can <a href="https://devblogs.microsoft.com/commandline/per-directory-case-sensitivity-and-wsl/">configure the case-sensitivity of the filenames on a per-directory basis</a>. But again, I’d recommend you avoid this complication by naming all your files on both Ubuntu and Windows such that they don’t rely on case to be distinguished.</p></li>
-<li><p>Windows and Linux use different end of line characters to specify a <a href="https://en.wikipedia.org/wiki/Newline">newline</a>. This is the main reason I recommended above that you should keep separate copies of Git repos, otherwise you have <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_resolving-git-line-ending-issues-in-wsl-resulting-in-many-modified-files">configure your Git settings to handle different line endings</a>, otherwise it will constantly look like all of your files have been edited. Confusingly, it may appear that the line endings are fine when copying back and forth because they display ok. I recommend running <code>dos2unix</code> after copying from Windows to Ubuntu, and <code>unix2dos</code> before copying from Ubuntu to Windows (you can install these tools with <code>sudo apt install dos2unix</code>).</p></li>
-<li><p>While you can, with caution, create or modify Windows files directly from Ubuntu, <a href="https://devblogs.microsoft.com/commandline/do-not-change-linux-files-using-windows-apps-and-tools/"><strong>never</strong> create or modify the Ubuntu files located in the AppData directory from Windows</a>. If you need to copy a file between the two, I recommend always doing this from the Ubuntu terminal via <code>/mnt/c/</code>. If you really want to edit Ubuntu files from Windows, you can run <code>explorer.exe .</code> in the Ubuntu terminal to launch Windows File Explorer, or you can access them from PowerShell using the path <code>\\wsl$\{distro name}\</code>, e.g. <code>ls \\wsl$\Ubuntu-18.04\home\demo\</code> (<a href="https://devblogs.microsoft.com/commandline/whats-new-for-wsl-in-windows-10-version-1903/">source</a>).</p></li>
+<li><p>File paths are case-sensitive on Ubuntu, but not on Windows. This can create
+some real headaches. If you are accessing Windows files from Ubuntu via
+<code>/mnt/c/</code>, the WSL performs some magic so that the names are
+non-case-sensitive. But you really don’t to rely on that behavior. Also, if
+you are creating files from Ubuntu on Windows, you can <a href="https://devblogs.microsoft.com/commandline/per-directory-case-sensitivity-and-wsl/">configure the
+case-sensitivity of the filenames on a per-directory
+basis</a>.
+But again, I’d recommend you avoid this complication by naming all your files
+on both Ubuntu and Windows such that they don’t rely on case to be
+distinguished.</p></li>
+<li><p>Windows and Linux use different end of line characters to specify a
+<a href="https://en.wikipedia.org/wiki/Newline">newline</a>. This is the main reason I
+recommended above that you should keep separate copies of Git repos, otherwise
+you have <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_resolving-git-line-ending-issues-in-wsl-resulting-in-many-modified-files">configure your Git settings to handle different line
+endings</a>,
+otherwise it will constantly look like all of your files have been edited.
+Confusingly, it may appear that the line endings are fine when copying back
+and forth because they display ok. I recommend running <code>dos2unix</code> after
+copying from Windows to Ubuntu, and <code>unix2dos</code> before copying from Ubuntu to
+Windows (you can install these tools with <code>sudo apt install dos2unix</code>).</p></li>
+<li><p>While you can, with caution, create or modify Windows files directly from
+Ubuntu, <a href="https://devblogs.microsoft.com/commandline/do-not-change-linux-files-using-windows-apps-and-tools/"><strong>never</strong> create or modify the Ubuntu files located in the AppData
+directory from
+Windows</a>.
+If you need to copy a file between the two, I recommend always doing this from
+the Ubuntu terminal via <code>/mnt/c/</code>. If you really want to edit Ubuntu files
+from Windows, you can run <code>explorer.exe .</code> in the Ubuntu terminal to launch
+Windows File Explorer, or you can access them from PowerShell using the path
+<code>\\wsl$\{distro name}\</code>, e.g. <code>ls \\wsl$\Ubuntu-18.04\home\demo\</code>
+(<a href="https://devblogs.microsoft.com/commandline/whats-new-for-wsl-in-windows-10-version-1903/">source</a>).</p></li>
 </ul>
 <h2 id="vs-code-remote-extension">VS Code remote extension</h2>
-<p>Another option for developing your code from the WSL is to use <a href="https://code.visualstudio.com/">Visual Studio Code</a>. You can install the extension for <a href="https://code.visualstudio.com/docs/remote/wsl">remote development in the WSL</a>.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> This extension allows you to open VS Code in Windows, but switch to developing as if you were in the WSL. You can access all your files, and if you open a terminal, it is a bash shell running in the WSL!</p>
+<p>Another option for developing your code from the WSL is to use <a href="https://code.visualstudio.com/">Visual Studio
+Code</a>. You can install the extension for <a href="https://code.visualstudio.com/docs/remote/wsl">remote
+development in the WSL</a>.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> This extension allows you to open VS Code in
+Windows, but switch to developing as if you were in the WSL. You can access all
+your files, and if you open a terminal, it is a bash shell running in the WSL!</p>
 <p>Steps:</p>
 <ol type="1">
 <li>Open VS Code in Windows</li>
 <li>Type <code>Ctrl</code>+<code>Shift</code>+<code>P</code> to open the command palette</li>
-<li>Type <code>wsl</code> and then choose <code>Remote-WSL: New Window</code> (you’ll need admin rights to approve this the first time) <img src="img/remote-wsl-new-window.png" alt="Open a remote connection to the WSL with VS Code." /></li>
+<li>Type <code>wsl</code> and then choose <code>Remote-WSL: New Window</code> (you’ll need admin rights
+to approve this the first time)
+<img src="img/remote-wsl-new-window.png" alt="Open a remote connection to the WSL with VS Code." /></li>
 <li>Open a file or folder in the WSL</li>
-<li>Open a new terminal (<code>Ctrl</code>+<code>Shift</code>+<code>`</code>) to run bash commands directly in the WSL <img src="img/remote-wsl-terminal.png" alt="The VS Code terminal runs bash when connected to the WSL." style="width: 100%" /></li>
-<li>To exit from the WSL, open the command palette and choose <code>Remote: Close Remote Connection</code> <img src="img/remote-wsl-close-connection.png" alt="Close the remote connection to the WSL with VS Code." /></li>
+<li>Open a new terminal (<code>Ctrl</code>+<code>Shift</code>+<code>`</code>) to run bash commands
+directly in the WSL
+<img src="img/remote-wsl-terminal.png" alt="The VS Code terminal runs bash when connected to the WSL." style="width: 100%" /></li>
+<li>To exit from the WSL, open the command palette and choose <code>Remote: Close Remote Connection</code>
+<img src="img/remote-wsl-close-connection.png" alt="Close the remote connection to the WSL with VS Code." /></li>
 </ol>
-<p>If you have any issues with Git, there is documentation for <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_resolving-git-line-ending-issues-in-wsl-resulting-in-many-modified-files">fixing line ending issues</a> and <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_sharing-git-credentials-between-windows-and-wsl">sharing credentials between Windows and the WSL</a> (but you shouldn’t need to worry about the latter if you created SSH keys above).</p>
-<p>And if you find you really like VS Code, you can configure it for R development. To learn more, check out these blog posts from <a href="https://renkun.me/2019/12/11/writing-r-in-vscode-a-fresh-start/">Kun Ren</a> (one of the co-developers of the <a href="https://github.com/REditorSupport/languageserver">languageserver</a> package), <a href="https://milesmcbain.xyz/alt-r-with-vscode/">Miles McBain</a>, and <a href="https://jozef.io/r300-language-server-setup/">Jozef Hajnala</a>.</p>
+<p>If you have any issues with Git, there is documentation for <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_resolving-git-line-ending-issues-in-wsl-resulting-in-many-modified-files">fixing line ending
+issues</a>
+and <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_sharing-git-credentials-between-windows-and-wsl">sharing credentials between Windows and the
+WSL</a>
+(but you shouldn’t need to worry about the latter if you created SSH keys
+above).</p>
+<p>And if you find you really like VS Code, you can configure it for R development.
+To learn more, check out these blog posts from <a href="https://renkun.me/2019/12/11/writing-r-in-vscode-a-fresh-start/">Kun
+Ren</a> (one of
+the co-developers of the
+<a href="https://github.com/REditorSupport/languageserver">languageserver</a> package),
+<a href="https://milesmcbain.xyz/alt-r-with-vscode/">Miles McBain</a>, and <a href="https://jozef.io/r300-language-server-setup/">Jozef
+Hajnala</a>.</p>
 <h2 id="run-bash-terminal-from-rstudio">Run Bash terminal from RStudio</h2>
-<p>If you only want to occasionally test your code on Ubuntu, you can open a terminal running bash in the WSL directly in RStudio.</p>
+<p>If you only want to occasionally test your code on Ubuntu, you can open a
+terminal running bash in the WSL directly in RStudio.</p>
 <p>Steps:</p>
 <ol type="1">
 <li>Open RStudio in Windows</li>
@@ -2355,38 +2660,104 @@ cp /mnt/c/Users/demo/Desktop/file.txt .</code></pre>
 <li>Open a new terminal with <code>Alt</code>+<code>Shift</code>+<code>R</code></li>
 <li>Run <code>pwd</code> to confirm the terminal is running in the WSL</li>
 <li>Type <code>R</code> to start the R console in the WSL terminal</li>
-<li>Send code from your R scripts directly to the terminal with <code>Ctrl</code>+<code>Alt</code>+<code>Enter</code><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></li>
+<li>Send code from your R scripts directly to the terminal with
+<code>Ctrl</code>+<code>Alt</code>+<code>Enter</code><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></li>
 </ol>
 <h2 id="copy-and-paste-to-and-from-terminal">Copy and paste to and from terminal</h2>
-<p>If you are familiar with the behavior of the terminal window on Linux and macOS, you will find the Windows terminal to be very strange. However, if you’ve used Git Bash before, then you will already know how it works.</p>
-<p>To copy text from the terminal, highlight the text and press <code>Enter</code>. Alternatively, you can right-click the Ubuntu icon in the top left of the window, select <code>Edit</code>, and finally select <code>Copy</code>. Now you can paste into another window with <code>Ctrl</code>+<code>V</code>.</p>
+<p>If you are familiar with the behavior of the terminal window on Linux and macOS,
+you will find the Windows terminal to be very strange. However, if you’ve used
+Git Bash before, then you will already know how it works.</p>
+<p>To copy text from the terminal, highlight the text and press <code>Enter</code>.
+Alternatively, you can right-click the Ubuntu icon in the top left of the
+window, select <code>Edit</code>, and finally select <code>Copy</code>. Now you can paste into another
+window with <code>Ctrl</code>+<code>V</code>.</p>
 <p><img src="img/terminal-copy.png" alt="Copy text from the terminal." /></p>
-<p>To paste text into the terminal, right click with the mouse. Alternatively, you can use the menu: <code>Edit</code>-&gt;<code>Paste</code>. You can also try <code>Ctrl</code>+<code>V</code> or the <code>Insert</code> key to see if either of those happen to work on your computer.</p>
+<p>To paste text into the terminal, right click with the mouse. Alternatively, you
+can use the menu: <code>Edit</code>-&gt;<code>Paste</code>. You can also try <code>Ctrl</code>+<code>V</code> or the <code>Insert</code>
+key to see if either of those happen to work on your computer.</p>
 <p><img src="img/terminal-paste.png" alt="Paste text into the terminal." /></p>
 <h2 id="wsl2">WSL2</h2>
-<p>Technically everything I have said above applies to WSL1. The new <a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-index">WSL2</a> is a rewrite that changes the technical implementation of running Linux on Windows (it uses a lightweight VM to run the Linux kernel), with the goal of faster file access. From the user perspective, you shouldn’t have to worry much if you want to try out the WSL2. You should still be able to access RStudio Server at <a href="http://localhost/rstudio/" class="uri">http://localhost/rstudio/</a> (<a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-ux-changes#accessing-linux-applications-from-windows">source</a>). And you can switch back and forth between WSL1 and WSL2, or run them both. However, it is still in development, so you may have to do some more troubleshooting. For example, the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl">VS Code Remote-WSL extension</a> explicitly states that its support for the WSL2 is experimental.</p>
-<p>If you’re feeling ambitious, you can <a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-install">install the WSL2</a>. Also, see this post for using the <a href="https://code.visualstudio.com/blogs/2019/09/03/wsl2">WSL 2 with Visual Studio Code</a>. Note that you’ll need a Windows account to be able to access this new feature via the Windows Insiders Program.</p>
+<p>Technically everything I have said above applies to WSL1. The new
+<a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-index">WSL2</a> is a rewrite
+that changes the technical implementation of running Linux on Windows (it uses a
+lightweight VM to run the Linux kernel), with the goal of faster file access.
+From the user perspective, you shouldn’t have to worry much if you want to try
+out the WSL2. You should still be able to access RStudio Server at
+<a href="http://localhost/rstudio/" class="uri">http://localhost/rstudio/</a>
+(<a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-ux-changes#accessing-linux-applications-from-windows">source</a>).
+And you can switch back and forth between WSL1 and WSL2, or run them both.
+However, it is still in development, so you may have to do some more
+troubleshooting. For example, the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl">VS Code Remote-WSL
+extension</a>
+explicitly states that its support for the WSL2 is experimental.</p>
+<p>If you’re feeling ambitious, you can <a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-install">install the
+WSL2</a>. Also, see this
+post for using the <a href="https://code.visualstudio.com/blogs/2019/09/03/wsl2">WSL 2 with Visual Studio
+Code</a>. Note that you’ll
+need a Windows account to be able to access this new feature via the Windows
+Insiders Program.</p>
 <h2 id="conclusions">Conclusions</h2>
-<p>After following these steps, hopefully you are now able to productively develop your R code on Ubuntu running via the WSL. Please let me know if you ran into any issues or if a critical step is missing. Also, please let me know if you have any tips and tricks to share, especially if you have a better strategy for activating the SSH agent.</p>
+<p>After following these steps, hopefully you are now able to productively develop
+your R code on Ubuntu running via the WSL. Please let me know if you ran into
+any issues or if a critical step is missing. Also, please let me know if you have
+any tips and tricks to share, especially if you have a better strategy for
+activating the SSH agent.</p>
 <h2 id="other-resources">Other resources</h2>
 <ul>
 <li>Dave Tang’s post on <a href="https://davetang.org/muse/2019/04/09/setting-up-windows-for-bioinformatics-in-2019/">Setting up Windows for bioinformatics in 2019</a></li>
 <li><a href="https://ubuntu.com/tutorials/tutorial-ubuntu-on-windows#1-overview">Canonical’s instructions for installing Ubuntu with the WSL</a></li>
 <li>RStudio’s instructions for <a href="https://support.rstudio.com/hc/en-us/articles/360049776974-Using-RStudio-Server-in-Windows-WSL2">Using RStudio Server in Windows WSL2</a></li>
 </ul>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1" role="doc-endnote"><p>Not to mention that sharing host files with the VM requires <a href="https://www.howtogeek.com/189974/how-to-share-your-computers-files-with-a-virtual-machine/">additional setup</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn2" role="doc-endnote"><p>For whatever reason, read/write operations and filepath manipulations, e.g. converting an absolute path to a relative path, take a lot longer on Windows 10. On the WSL, which has access to the same computational resources on my laptop as Windows, workflowr functions run a lot faster.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn3" role="doc-endnote"><p>Note that bionic refers to Bionic Beaver, the release name for Ubuntu 18.04.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn4" role="doc-endnote"><p>Don’t be concerned about the 3.5. There was a big change between versions 3.4 and 3.5 in how R was packaged for Debian/Ubuntu. We’re far enough away from that event that you shouldn’t have to worry about it. Just remember that for the latest version of R, you want the 3.5 version.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn5" role="doc-endnote"><p>See this recent blog post from Jumping Rivers on various strategies for <a href="https://www.jumpingrivers.com/blog/faster-r-package-installation-rstudio/">Faster R package installation</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn6" role="doc-endnote"><p>Serving RStudio Server is a very limited use case for OpenCPU. It’s primary purpose is for converting R code into web applications. This post is already too long to include a detailed description, but you should check out the <a href="https://www.opencpu.org/apps.html">example apps</a> to get a sense of the possibilities.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn7" role="doc-endnote"><p>Also note that his PPA contains r-base and the r-recommended packages. These will eventually become outdated, but since you’ve added the <a href="https://launchpad.net/~marutter/+archive/ubuntu/rrutter3.5">RRutter v3.5 PPA</a>, you’ll continue to get the latest version of R from there. Thus you are only relying on the OpenCPU PPA for OpenCPU server, Apache, and RStudio Server.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn8" role="doc-endnote"><p>I got this idea from this <a href="https://chaijiaxun.com/automatically-starting-ssh-agent-for-windows-10-bash/">blog post</a>. However, I don’t agree with all of his conclusions. He says that the ssh-agent doesn’t persist. When I run <code>ps -ef | grep ssh-agent</code>, it clearly persists across sessions. But for whatever reason it doesn’t work, and a new agent has to be started. One reason I feel this is so hacky is that each time I open a window, a new ssh-agent process is spawned.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn9" role="doc-endnote"><p>There are similar extensions for remote development in <a href="https://code.visualstudio.com/docs/remote/containers">Docker containers</a> or in <a href="https://code.visualstudio.com/docs/remote/ssh">any remote machine accessible via SSH</a>, e.g. an HPC cluster. I’ve used all 3, and they are amazing.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩</a></p></li>
-<li id="fn10" role="doc-endnote"><p>Unfortunately none of the other RStudio panes are aware of R running in the terminal. Plots won’t display, and the Environment pane won’t update. If you need these features, use the RStudio Server strategy described above.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn1" role="doc-endnote"><p>Not to
+mention that sharing host files with the VM requires <a href="https://www.howtogeek.com/189974/how-to-share-your-computers-files-with-a-virtual-machine/">additional
+setup</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn2" role="doc-endnote"><p>For whatever reason,
+read/write operations and filepath manipulations, e.g. converting an absolute
+path to a relative path, take a lot longer on Windows 10. On the WSL, which has
+access to the same computational resources on my laptop as Windows, workflowr
+functions run a lot faster.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn3" role="doc-endnote"><p>Note that bionic refers to Bionic Beaver, the release name for
+Ubuntu 18.04.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn4" role="doc-endnote"><p>Don’t be
+concerned about the 3.5. There was a big change between versions 3.4 and 3.5 in
+how R was packaged for Debian/Ubuntu. We’re far enough away from that event that
+you shouldn’t have to worry about it. Just remember that for the latest version
+of R, you want the 3.5 version.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn5" role="doc-endnote"><p>See this recent blog post from Jumping Rivers on various strategies for
+<a href="https://www.jumpingrivers.com/blog/faster-r-package-installation-rstudio/">Faster R package
+installation</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn6" role="doc-endnote"><p>Serving RStudio Server is a very limited use case for OpenCPU. It’s
+primary purpose is for converting R code into web applications. This post is
+already too long to include a detailed description, but you should check out the
+<a href="https://www.opencpu.org/apps.html">example apps</a> to get a sense of the
+possibilities.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn7" role="doc-endnote"><p>Also note that his PPA
+contains r-base and the r-recommended packages. These will eventually become
+outdated, but since you’ve added the <a href="https://launchpad.net/~marutter/+archive/ubuntu/rrutter3.5">RRutter v3.5
+PPA</a>, you’ll
+continue to get the latest version of R from there. Thus you are only relying on
+the OpenCPU PPA for OpenCPU server, Apache, and RStudio Server.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn8" role="doc-endnote"><p>I got this idea from this <a href="https://chaijiaxun.com/automatically-starting-ssh-agent-for-windows-10-bash/">blog
+post</a>.
+However, I don’t agree with all of his conclusions. He says that the ssh-agent
+doesn’t persist. When I run <code>ps -ef | grep ssh-agent</code>, it clearly persists
+across sessions. But for whatever reason it doesn’t work, and a new agent has to
+be started. One reason I feel this is so hacky is that each time I open a
+window, a new ssh-agent process is spawned.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn9" role="doc-endnote"><p>There
+are similar extensions for remote development in <a href="https://code.visualstudio.com/docs/remote/containers">Docker
+containers</a> or in <a href="https://code.visualstudio.com/docs/remote/ssh">any
+remote machine accessible via
+SSH</a>, e.g. an HPC cluster. I’ve
+used all 3, and they are amazing.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩</a></p></li>
+<li id="fn10" role="doc-endnote"><p>Unfortunately none of the other RStudio panes are aware
+of R running in the terminal. Plots won’t display, and the Environment pane
+won’t update. If you need these features, use the RStudio Server strategy
+described above.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩</a></p></li>
 </ol>
 </section>
 <!--radix_placeholder_article_footer-->
