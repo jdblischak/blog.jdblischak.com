@@ -19,6 +19,25 @@ categories:
   - Windows
 ---
 
+**Updates (2022-11-04)**
+
+* This post is now a few years old, thus some of the specifics are outdated. It
+installs Ubuntu Bionic (18.04) on Windows via WSL1. The general strategy below
+is still valid, but I recommend you install a more recent version of Ubuntu via
+WSL2 (which is now the default)
+
+* If you previously installed Ubuntu via WSL1, you can [upgrade the existing
+installation to WSL2](https://learn.microsoft.com/en-us/windows/wsl/install#upgrade-version-from-wsl-1-to-wsl-2)
+
+* This post describes how to run RStudio Server in the WSL and access it from
+your browser running in Windows. However, [Tom
+Palmer](https://github.com/remlapmot) taught me about an alternative option. You
+can install a graphical desktop environment in WSL and then run RStudio Desktop
+directly on Ubuntu. This requires some extra setup, but if you want a more
+integrated Ubuntu experience, the effort will be worth it. See [Tom's
+Issue](https://github.com/jdblischak/blog.jdblischak.com/issues/1) for more
+details
+
 ## Introduction
 
 The [Windows Subsystem for Linux][wsl] (WSL) is really impressive. It provides a
