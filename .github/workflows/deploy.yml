@@ -28,11 +28,12 @@ jobs:
     - name: Commit changes and push to repo
       if: github.repository_owner == 'jdblischak' && github.event_name != 'pull_request'
       run: |
+        git status
+        git diff
         git config user.name "GitHub Actions"
         git config user.email "runneradmin@users.noreply.github.com"
-        git fetch origin
-        git checkout main
         git pull origin main
         git add _posts/ public/
         git commit -a --allow-empty -m "Blog built from ${GITHUB_SHA} on `date --rfc-3339=s`"
+        git log -n 1 --stat
         git push origin main
