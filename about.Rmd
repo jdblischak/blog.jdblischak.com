@@ -28,6 +28,4 @@ Some of my favorite tools that I use often and hope to blog about in the future
 [cc-by]: https://creativecommons.org/licenses/by/4.0/legalcode
 [css]: https://github.com/jdblischak/blog.jdblischak.com/blob/master/static/styles.css
 [distill]: https://rstudio.github.io/distill/
-[hugo-xmin]: https://xmin.yihui.name/
 [workflowr]: https://github.com/jdblischak/workflowr
-[yihui]: https://yihui.name/
