@@ -1,0 +1,38 @@
+name: Deploy website
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'LICENSE'
+      - 'README.md'
+      - '_posts/*.html'
+      - '_posts/*/*_files/**'
+      - 'blog.jdblischak.com.Rproj'
+      - 'public/**'
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup r2u
+      run: sudo bash scripts/setup-r2u.sh
+    - name: Install dependencies
+      run: sudo bash scripts/install-dependencies-r2u.sh
+    - name: Build site
+      run: Rscript scripts/build-ci.R
+    # Netlify is configured to deploy files in subdir `public/`
+    - name: Commit changes and push to repo
+      if: github.repository_owner == 'jdblischak' && github.event_name != 'pull_request'
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "runneradmin@users.noreply.github.com"
+        git fetch origin
+        git checkout main
+        git pull origin main
+        git add _posts/ public/
+        git commit -a --allow-empty -m "Blog built from ${GITHUB_SHA} on `date --rfc-3339=s`"
+        git push origin main
