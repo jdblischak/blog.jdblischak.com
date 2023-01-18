@@ -2,8 +2,7 @@ title: "John Blischak's blog"
 description: |
   My tech blog
 output_dir: "public"
-# Doesn't appear to be possible to ignore the README file
-exclude: ["README.Rmd", "README.md", "README.utf8.md", "README.knit.md", "README.html"]
+exclude: ["scripts"]
 navbar:
   right:
     - text: "Home"
