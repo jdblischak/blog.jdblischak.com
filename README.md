@@ -11,7 +11,14 @@ Build post for publication:
 ```
 library(rmarkdown)
 render("_posts/<post>/<post>.Rmd")
-render_site(input = "index.Rmd", encoding = "UTF-8")
+render_site(input = ".", encoding = "UTF-8")
 ```
 
 * [distill docs](https://rstudio.github.io/distill/)
+
+Only commit changes to the R Markdown files and other supporting files. The
+HTML files in `_posts/` and all the files in `public/` are automatically built
+and committed by GitHub Actions.
+
+This site is configured to deploy the subdirectory `public/` in the Netlify
+settings.
