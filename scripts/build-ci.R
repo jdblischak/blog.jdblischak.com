@@ -66,4 +66,4 @@ for (r in rmd[outdated]) {
 }
 
 cat("Rebuilding site\n")
-render_site(input = "index.Rmd", encoding = "UTF-8")
+render_site(input = ".", encoding = "UTF-8")
