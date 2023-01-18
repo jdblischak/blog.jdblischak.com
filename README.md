@@ -22,3 +22,4 @@ and committed by GitHub Actions.
 
 This site is configured to deploy the subdirectory `public/` in the Netlify
 settings.
+
