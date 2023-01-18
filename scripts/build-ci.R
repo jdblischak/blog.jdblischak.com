@@ -65,7 +65,5 @@ for (r in rmd[outdated]) {
   render(r, quiet = TRUE)
 }
 
-if (sum(outdated) > 0) {
-  cat("Rebuilding site\n")
-  render_site(input = "index.Rmd", encoding = "UTF-8")
-}
+cat("Rebuilding site\n")
+render_site(input = "index.Rmd", encoding = "UTF-8")

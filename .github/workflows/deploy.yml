@@ -23,7 +23,9 @@ jobs:
     - name: Install dependencies
       run: sudo bash scripts/install-dependencies-r2u.sh
     - name: Build site
-      run: Rscript scripts/build-ci.R
+      run: |
+        rm -r public/
+        Rscript scripts/build-ci.R
     # Netlify is configured to deploy files in subdir `public/`
     - name: Commit changes and push to repo
       if: github.repository_owner == 'jdblischak' && github.event_name != 'pull_request'
